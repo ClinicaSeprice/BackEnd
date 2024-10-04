@@ -1,0 +1,68 @@
+# Archivos binarios y de compilación
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+*.cache
+*.zip
+*.rar
+
+# Paquetes NuGet
+*.nupkg
+*.snupkg
+packages/
+.nuget/
+
+# Configuración de Visual Studio
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Archivos de publicación
+.publish/
+*.publishsettings
+*.pubxml
+*.pubxml.user
+
+# Configuración local y temporal
+appsettings.Development.json
+appsettings.Local.json
+appsettings.*.json
+secrets.json
+*.log
+logs/
+temp/
+tmp/
+*.tmp
+*.bak
+
+# Archivos generados por el sistema
+.vs/
+_ReSharper.Caches/
+*.orig
+
+# Archivos de MacOS
+.DS_Store
+
+# Archivos de configuración específicos del IDE
+.idea/
+*.Rider/
+
+# Archivos relacionados con la integración continua
+*.coverage
+*.coveragexml
+TestResults/
+
+# Archivos generados por npm o yarn (si usas frontend)
+node_modules/
+package-lock.json
+yarn.lock
+
+# Archivos de Docker
+docker-compose.override.yml
+
+# Archivos de cache
+*.dbmdl
+*.jfm

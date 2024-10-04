@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.11.35312.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClinicaSepriceAPI", "ClinicaSepriceAPI.csproj", "{A136E481-6869-4416-B2C5-E03241C6E525}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClinicaSepriceTest", "..\ClinicaSepriceTest\ClinicaSepriceTest.csproj", "{02E19BFC-EE60-49E2-A72E-B2C6F9FD941F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A136E481-6869-4416-B2C5-E03241C6E525}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A136E481-6869-4416-B2C5-E03241C6E525}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A136E481-6869-4416-B2C5-E03241C6E525}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A136E481-6869-4416-B2C5-E03241C6E525}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02E19BFC-EE60-49E2-A72E-B2C6F9FD941F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02E19BFC-EE60-49E2-A72E-B2C6F9FD941F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02E19BFC-EE60-49E2-A72E-B2C6F9FD941F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02E19BFC-EE60-49E2-A72E-B2C6F9FD941F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {7B685A4A-057F-42B3-B7FD-E35AB75C0B40}
+	EndGlobalSection
+EndGlobal
