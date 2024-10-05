@@ -1,0 +1,57 @@
+name: .NET Build and Test
+
+on:
+  push:
+    branches:
+      - main
+      - develop    # Añadimos la rama de desarrollo
+      - feature/*  # Para cualquier rama de características
+  pull_request:
+    branches:
+      - main
+      - develop    # Ejecutamos en PR hacia develop y main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Paso 1: Obtener el código del repositorio
+      - uses: actions/checkout@v4
+      
+      # Paso 2: Configurar la versión de .NET
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x   # Versión específica de .NET
+
+      # Paso 3: Restaurar dependencias
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # Paso 4: Compilar el proyecto
+      - name: Build
+        run: dotnet build --no-restore
+
+  # Trabajo de pruebas, solo se ejecuta en main y develop
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
+    steps:
+      # Paso 1: Chequear código (opcional si se reutiliza el repositorio del build)
+      - uses: actions/checkout@v4
+      
+      # Paso 2: Configurar .NET
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      # Paso 3: Restaurar dependencias
+      - name: Restore dependencies
+        run: dotnet restore
+
+      # Paso 4: Ejecutar pruebas
+      - name: Test
+        run: dotnet test --no-build --verbosity normal
