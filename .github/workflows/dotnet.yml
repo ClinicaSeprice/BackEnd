@@ -25,17 +25,13 @@ jobs:
         with:
           dotnet-version: 8.0.x   # Ajusta la versión de .NET si es diferente
 
-      # Paso 3: Cambiar al directorio del proyecto API
-      - name: Cambiar al directorio ClinicaSepriceAPI
-        working-directory: ClinicaSepriceAPI
-
-      # Paso 4: Restaurar dependencias
+      # Paso 3: Restaurar dependencias
       - name: Restore dependencies
-        run: dotnet restore ClinicaSepriceAPI.csproj
+        run: dotnet restore ClinicaSepriceAPI/ClinicaSepriceAPI.csproj
 
-      # Paso 5: Compilar el proyecto
+      # Paso 4: Compilar el proyecto
       - name: Build
-        run: dotnet build ClinicaSepriceAPI.csproj --no-restore
+        run: dotnet build ClinicaSepriceAPI/ClinicaSepriceAPI.csproj --no-restore
 
   test:
     runs-on: ubuntu-latest
@@ -51,14 +47,10 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
-      # Paso 3: Cambiar al directorio del proyecto de pruebas
-      - name: Cambiar al directorio ClinicaSepriceTest
-        working-directory: ClinicaSepriceTest
-
-      # Paso 4: Restaurar dependencias del proyecto de pruebas
+      # Paso 3: Restaurar dependencias del proyecto de pruebas
       - name: Restore Test dependencies
-        run: dotnet restore ClinicaSepriceTest.csproj
+        run: dotnet restore ClinicaSepriceTest/ClinicaSepriceTest.csproj
 
-      # Paso 5: Ejecutar pruebas
+      # Paso 4: Ejecutar pruebas
       - name: Test
-        run: dotnet test ClinicaSepriceTest.csproj --no-build --verbosity normal
+        run: dotnet test ClinicaSepriceTest/ClinicaSepriceTest.csproj --no-build --verbosity normal
