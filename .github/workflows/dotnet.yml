@@ -4,12 +4,12 @@ on:
   push:
     branches:
       - main
-      - develop    # Añadimos la rama de desarrollo
-      - feature/*  # Para cualquier rama de características
+      - develop
+      - feature/*
   pull_request:
     branches:
       - main
-      - develop    # Ejecutamos en PR hacia develop y main
+      - develop
 
 jobs:
   build:
@@ -18,40 +18,47 @@ jobs:
     steps:
       # Paso 1: Obtener el código del repositorio
       - uses: actions/checkout@v4
-      
+
       # Paso 2: Configurar la versión de .NET
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.x   # Versión específica de .NET
+          dotnet-version: 8.0.x   # Ajusta la versión de .NET si es diferente
 
-      # Paso 3: Restaurar dependencias
+      # Paso 3: Cambiar al directorio del proyecto principal
+      - name: Cambiar al directorio ClinicaSeprice
+        working-directory: ClinicaSeprice
+
+      # Paso 4: Restaurar dependencias
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore ClinicaSeprice.csproj
 
-      # Paso 4: Compilar el proyecto
+      # Paso 5: Compilar el proyecto
       - name: Build
-        run: dotnet build --no-restore
+        run: dotnet build ClinicaSeprice.csproj --no-restore
 
-  # Trabajo de pruebas, solo se ejecuta en main y develop
   test:
     runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
     steps:
-      # Paso 1: Chequear código (opcional si se reutiliza el repositorio del build)
+      # Paso 1: Obtener el código (si es necesario)
       - uses: actions/checkout@v4
-      
+
       # Paso 2: Configurar .NET
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
           dotnet-version: 8.0.x
 
-      # Paso 3: Restaurar dependencias
-      - name: Restore dependencies
-        run: dotnet restore
+      # Paso 3: Cambiar al directorio del proyecto de pruebas
+      - name: Cambiar al directorio ClinicaSepriceTest
+        working-directory: ClinicaSepriceTest
 
-      # Paso 4: Ejecutar pruebas
+      # Paso 4: Restaurar dependencias del proyecto de pruebas
+      - name: Restore Test dependencies
+        run: dotnet restore ClinicaSepriceTest.csproj
+
+      # Paso 5: Ejecutar pruebas
       - name: Test
-        run: dotnet test --no-build --verbosity normal
+        run: dotnet test ClinicaSepriceTest.csproj --no-build --verbosity normal
