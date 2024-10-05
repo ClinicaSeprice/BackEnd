@@ -27,11 +27,11 @@ jobs:
 
       # Paso 3: Restaurar dependencias
       - name: Restore dependencies
-        run: dotnet restore ClinicaSepriceAPI/ClinicaSepriceAPI.csproj
+        run: dotnet restore ClinicaSeprice/ClinicaSepriceAPI.csproj
 
       # Paso 4: Compilar el proyecto
       - name: Build
-        run: dotnet build ClinicaSepriceAPI/ClinicaSepriceAPI.csproj --no-restore
+        run: dotnet build ClinicaSeprice/ClinicaSepriceAPI.csproj --no-restore
 
   test:
     runs-on: ubuntu-latest
