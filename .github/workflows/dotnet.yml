@@ -25,24 +25,24 @@ jobs:
         with:
           dotnet-version: 8.0.x   # Ajusta la versión de .NET si es diferente
 
-      # Paso 3: Cambiar al directorio del proyecto principal
-      - name: Cambiar al directorio ClinicaSeprice
-        working-directory: ClinicaSeprice
+      # Paso 3: Cambiar al directorio del proyecto API
+      - name: Cambiar al directorio ClinicaSepriceAPI
+        working-directory: ClinicaSepriceAPI
 
       # Paso 4: Restaurar dependencias
       - name: Restore dependencies
-        run: dotnet restore ClinicaSeprice.csproj
+        run: dotnet restore ClinicaSepriceAPI.csproj
 
       # Paso 5: Compilar el proyecto
       - name: Build
-        run: dotnet build ClinicaSeprice.csproj --no-restore
+        run: dotnet build ClinicaSepriceAPI.csproj --no-restore
 
   test:
     runs-on: ubuntu-latest
     needs: build
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop'
     steps:
-      # Paso 1: Obtener el código (si es necesario)
+      # Paso 1: Obtener el código del repositorio
       - uses: actions/checkout@v4
 
       # Paso 2: Configurar .NET
