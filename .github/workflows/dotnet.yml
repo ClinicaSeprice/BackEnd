@@ -51,6 +51,6 @@ jobs:
       - name: Restore Test dependencies
         run: dotnet restore ClinicaSepriceTest/ClinicaSepriceTest.csproj
 
-      # Paso 4: Ejecutar pruebas
+      # Paso 4: Ejecutar pruebas sin --no-build (para que se compile antes de las pruebas)
       - name: Test
-        run: dotnet test ClinicaSepriceTest/ClinicaSepriceTest.csproj --no-build --verbosity normal
+        run: dotnet test ClinicaSepriceTest/ClinicaSepriceTest.csproj --verbosity normal
