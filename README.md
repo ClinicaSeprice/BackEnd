@@ -15,9 +15,11 @@ ClinicaSepriceAPI/
 ├── Controllers/
 ├── Data/
 ├── DTOs/
+├── Execeptions/
 ├── Filters/
 ├── Helpers/
 ├── Models/
+├── Migrations/
 ├── Repositories/
 ├── Services/
 ```
