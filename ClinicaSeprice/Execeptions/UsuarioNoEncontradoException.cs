@@ -6,11 +6,11 @@
         {
 
         }
-        public UsuarioNoEncontradoException(string mensaje) : base(mensaje)
+        public UsuarioNoEncontradoException(string message) : base(message)
         {
 
         }
-        public UsuarioNoEncontradoException(string mensaje, Exception inner) : base(mensaje, inner)
+        public UsuarioNoEncontradoException(string message, Exception inner) : base(message, inner)
         {
 
         }

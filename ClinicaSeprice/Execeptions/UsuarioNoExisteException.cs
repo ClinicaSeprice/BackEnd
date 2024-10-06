@@ -6,11 +6,11 @@
         {
             
         }
-        public UsuarioNoExisteException(string mensaje):base(mensaje)
+        public UsuarioNoExisteException(string message) :base(message)
         {
 
         }
-        public UsuarioNoExisteException(string mensaje,Exception inner) : base(mensaje, inner)
+        public UsuarioNoExisteException(string message, Exception inner) : base(message, inner)
         {
 
         }
