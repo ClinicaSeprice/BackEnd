@@ -1,23 +1,29 @@
 ﻿using ClinicaSepriceAPI.Data;
 using ClinicaSepriceAPI.DTOs;
 using ClinicaSepriceAPI.Execeptions;
+using ClinicaSepriceAPI.Helpers;
+using ClinicaSepriceAPI.Interfaces;
 using ClinicaSepriceAPI.Models;
+using System.Threading.Tasks;
 
 namespace ClinicaSepriceAPI.Services
 {
     public class UsuarioService
     {
-        private readonly AppDbContext dbContext;
+        private readonly IUsuarioRepository _usuarioRepository;
+        private readonly IConfiguration _configuration;
 
-        public UsuarioService(AppDbContext dbContext)
+        public UsuarioService(IUsuarioRepository usuarioRepository, IConfiguration configuration)
         {
-            this.dbContext = dbContext;
+            _usuarioRepository = usuarioRepository;
+            _configuration = configuration;
         }
 
-        // registrar un nuevo usuario
-        public void RegistrarUsuario(UsuarioDTO usuarioDTO)
+        // Registrar un nuevo usuario
+        public async Task RegistrarUsuarioAsync(UsuarioDTO usuarioDTO)
         {
-            if (dbContext.Usuarios.Any(u => u.User == usuarioDTO.User))
+            var usuarios = await _usuarioRepository.ObtenerTodosAsync();
+            if (usuarios.Any(u => u.User == usuarioDTO.User))
             {
                 throw new UsuarioNoExisteException();
             }
@@ -27,42 +33,59 @@ namespace ClinicaSepriceAPI.Services
                 Nombre = usuarioDTO.Nombre,
                 Apellido = usuarioDTO.Apellido,
                 User = usuarioDTO.User,
-                Pass = usuarioDTO.Pass
+                Pass = PasswordHelper.HashPassword(usuarioDTO.Pass)
             };
 
-            dbContext.Usuarios.Add(nuevoUsuario);
-            dbContext.SaveChanges();
+            await _usuarioRepository.CrearUsuarioAsync(nuevoUsuario);
+            await _usuarioRepository.GuardarCambiosAsync();
         }
 
-        // autenticar usuario
-        public Usuario Login(LoginDTO loginDTO)
+        // Autenticar usuario
+        public async Task<LoginResponseDTO> LoginAsync(LoginDTO loginDTO)
         {
-            var usuario = dbContext.Usuarios
-                .FirstOrDefault(p => p.User == loginDTO.User && p.Pass == loginDTO.Pass);
+            var usuario = (await _usuarioRepository.ObtenerTodosAsync())
+                .FirstOrDefault(p => p.User == loginDTO.User);
 
             if (usuario == null)
             {
                 throw new AutenticacionFallidaException();
             }
 
-            return usuario;
+            if (!PasswordHelper.VerifyPassword(loginDTO.Pass, usuario.Pass))
+            {
+                throw new AutenticacionFallidaException();
+            }
+
+            JwtHelper.ValidarConfiguracionJWT(_configuration);
+
+            var claims = JwtHelper.CrearClaims(usuario, _configuration);
+
+            var tokenValue = JwtHelper.GenerarTokenJWT(claims, _configuration);
+
+            return new LoginResponseDTO
+            {
+                Token = tokenValue,
+                Usuario = new UsuarioDTO
+                {
+                    Nombre = usuario.Nombre,
+                    Apellido = usuario.Apellido,
+                    User = usuario.User
+                }
+            };
         }
 
-        // Obtener todos los usuarios
-        public IQueryable<Usuario> ObtenerUsuarios()
+        public async Task<IEnumerable<Usuario>> ObtenerUsuariosAsync()
         {
-            return dbContext.Usuarios;
+            return await _usuarioRepository.ObtenerTodosAsync();
         }
 
-        // Obtener usuario por ID
-        public Usuario ObtenerUsuarioPorId(int id)
+        public async Task<Usuario> ObtenerUsuarioPorIdAsync(int id)
         {
-            var usuario = dbContext.Usuarios.FirstOrDefault(p => p.IdUsuario == id);
+            var usuario = await _usuarioRepository.ObtenerPorIdAsync(id);
             if (usuario == null)
             {
                 throw new UsuarioNoEncontradoException();
             }
-
             return usuario;
         }
     }

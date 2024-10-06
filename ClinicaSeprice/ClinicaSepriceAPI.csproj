@@ -23,9 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Helpers\" />
     <Folder Include="Filters\" />
-    <Folder Include="Repositories\" />
   </ItemGroup>
 
 </Project>

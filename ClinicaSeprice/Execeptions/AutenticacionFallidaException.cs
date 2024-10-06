@@ -3,7 +3,7 @@
     public class AutenticacionFallidaException:Exception
     {
         public AutenticacionFallidaException()
-           : base("La autenticación falló. Usuario o contraseña incorrecta.")
+           : base("Usuario o contraseña incorrecta.")
         {
         }
 

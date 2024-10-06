@@ -1,7 +1,9 @@
 ﻿using ClinicaSepriceAPI.DTOs;
 using ClinicaSepriceAPI.Execeptions;
 using ClinicaSepriceAPI.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace ClinicaSepriceAPI.Controllers
 {
@@ -17,9 +19,8 @@ namespace ClinicaSepriceAPI.Controllers
         }
 
         // Registro de usuario
-        [HttpPost]
-        [Route("Registrar")]
-        public IActionResult Registrar(UsuarioDTO usuarioDTO)
+        [HttpPost("Registrar")]
+        public async Task<IActionResult> Registrar(UsuarioDTO usuarioDTO)
         {
             if (!ModelState.IsValid)
             {
@@ -27,12 +28,12 @@ namespace ClinicaSepriceAPI.Controllers
             }
             try
             {
-                usuarioService.RegistrarUsuario(usuarioDTO);
+                await usuarioService.RegistrarUsuarioAsync(usuarioDTO);
                 return Ok("Usuario Registrado Correctamente");
             }
             catch (UsuarioNoExisteException ex)
             {
-                return BadRequest(ex.Message);  // Usuario ya existe
+                return Conflict(ex.Message);  // 409 Conflict
             }
             catch (Exception ex)
             {
@@ -41,18 +42,22 @@ namespace ClinicaSepriceAPI.Controllers
         }
 
         // Inicio de sesión
-        [HttpPost]
-        [Route("Login")]
-        public IActionResult Login(LoginDTO loginDTO)
+        [HttpPost("Login")]
+        public async Task<ActionResult<LoginResponseDTO>> Login(LoginDTO loginDTO)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
             try
             {
-                var usuario = usuarioService.Login(loginDTO);
-                return Ok(usuario);
+                var loginResponse = await usuarioService.LoginAsync(loginDTO);
+                return Ok(loginResponse);
             }
             catch (AutenticacionFallidaException ex)
             {
-                return Unauthorized(ex.Message);  
+                return Unauthorized(ex.Message);
             }
             catch (Exception ex)
             {
@@ -60,15 +65,14 @@ namespace ClinicaSepriceAPI.Controllers
             }
         }
 
-        // Obtener todos los usuarios
-        [HttpGet]
-        [Route("GetUsuarios")]
-        public IActionResult GetUsuarios()
+        [Authorize]
+        [HttpGet("all")]// Obtener todos los usuarios
+        public async Task<IActionResult> GetUsuarios()
         {
             try
             {
-                var usuarios = usuarioService.ObtenerUsuarios().ToList();
-                return Ok(usuarios);
+                var usuarios = await usuarioService.ObtenerUsuariosAsync();
+                return Ok(usuarios.ToList());
             }
             catch (Exception ex)
             {
@@ -76,19 +80,22 @@ namespace ClinicaSepriceAPI.Controllers
             }
         }
 
-        // Obtener un usuario por ID
-        [HttpGet]
-        [Route("GetUsuario")]
-        public IActionResult GetUsuario(int id)
+        [Authorize]
+        [HttpGet("{id:int}")]// Obtener un usuario por ID
+        public async Task<IActionResult> GetUsuario(int id)
         {
             try
             {
-                var usuario = usuarioService.ObtenerUsuarioPorId(id);
+                var usuario = await usuarioService.ObtenerUsuarioPorIdAsync(id);
+                if (usuario == null)
+                {
+                    return NotFound("Usuario no encontrado.");
+                }
                 return Ok(usuario);
             }
             catch (UsuarioNoEncontradoException ex)
             {
-                return NotFound(ex.Message);  
+                return NotFound(ex.Message);
             }
             catch (Exception ex)
             {
