@@ -48,9 +48,9 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// Configurar DbContext para SQL Server
+// Configurar DbContext para MySql
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 2))));
 
 var app = builder.Build();
 

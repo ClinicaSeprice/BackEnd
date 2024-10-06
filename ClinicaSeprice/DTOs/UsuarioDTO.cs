@@ -18,5 +18,7 @@ namespace ClinicaSepriceAPI.DTOs
     [Required(ErrorMessage = MensajesDeErrorUsuarios.ContraseñaObligatoria)]
     [StringLength(100, MinimumLength = 6, ErrorMessage = MensajesDeErrorUsuarios.CaracteresPass)]
     public string Pass { get; set; }
+
+    public string Email { get; set; }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using ClinicaSepriceAPI.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 
 namespace ClinicaSepriceAPI.Data
 {
@@ -12,5 +11,14 @@ namespace ClinicaSepriceAPI.Data
         }
 
         public DbSet<Usuario> Usuarios { get; set; }
+        public DbSet<Administrador> Administradores { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {            
+            modelBuilder.Entity<Usuario>()
+                .HasDiscriminator<string>("TipoUsuario")
+                .HasValue<Usuario>("Usuario")
+                .HasValue<Administrador>("Administrador");
+        }
     }
 }

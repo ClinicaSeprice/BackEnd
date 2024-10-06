@@ -19,6 +19,8 @@ namespace ClinicaSepriceAPI.Models
         [Required]
         public string Pass { get; set; }
 
+        public string Email { get; set; }
+
         public bool Activo { get; set; } = true;
 
         public DateTime FechaCreacion { get; set; } = DateTime.Now;

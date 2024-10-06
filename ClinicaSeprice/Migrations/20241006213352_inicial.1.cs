@@ -5,24 +5,24 @@
 namespace ClinicaSepriceAPI.Migrations
 {
     /// <inheritdoc />
-    public partial class modificacion_clase_usuario : Migration
+    public partial class inicial1 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "Id",
+                name: "Discriminator",
                 table: "Usuarios",
-                newName: "IdUsuario");
+                newName: "TipoUsuario");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.RenameColumn(
-                name: "IdUsuario",
+                name: "TipoUsuario",
                 table: "Usuarios",
-                newName: "Id");
+                newName: "Discriminator");
         }
     }
 }
