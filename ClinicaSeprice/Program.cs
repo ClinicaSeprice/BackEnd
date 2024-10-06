@@ -2,6 +2,7 @@ using ClinicaSepriceAPI.Data;
 using ClinicaSepriceAPI.Interfaces;
 using ClinicaSepriceAPI.Repositories;
 using ClinicaSepriceAPI.Services;
+using ClinicaSepriceAPI.Helpers;  // Añadimos el using para usar JwtHelper
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -9,15 +10,8 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Validar que las configuraciones de JWT existan
-var jwtKey = builder.Configuration["Jwt:Key"];
-var jwtIssuer = builder.Configuration["Jwt:Issuer"];
-var jwtAudience = builder.Configuration["Jwt:Audience"];
-
-if (string.IsNullOrEmpty(jwtKey) || string.IsNullOrEmpty(jwtIssuer) || string.IsNullOrEmpty(jwtAudience))
-{
-    throw new Exception("Faltan configuraciones de JWT en appsettings.json");
-}
+// Validar configuraciones JWT
+JwtHelper.ValidarConfiguracionJWT(builder.Configuration);
 
 // Add services to the container.
 builder.Services.AddControllers();
@@ -42,9 +36,9 @@ builder.Services.AddAuthentication(options =>
         ValidateAudience = true,
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true,
-        ValidIssuer = jwtIssuer,
-        ValidAudience = jwtAudience,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtKey))
+        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+        ValidAudience = builder.Configuration["Jwt:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
     };
 });
 
