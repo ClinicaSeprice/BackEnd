@@ -1,6 +1,6 @@
-﻿using ClinicaSepriceAPI.Data;
-using ClinicaSepriceAPI.DTOs;
-using ClinicaSepriceAPI.Models;
+﻿using ClinicaSepriceAPI.DTOs;
+using ClinicaSepriceAPI.Execeptions;
+using ClinicaSepriceAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicaSepriceAPI.Controllers
@@ -9,12 +9,14 @@ namespace ClinicaSepriceAPI.Controllers
     [ApiController]
     public class UsuariosController : ControllerBase
     {
-        private readonly AppDbContext dbContext;
-        public UsuariosController(AppDbContext dbContext)
+        private readonly UsuarioService usuarioService;
+
+        public UsuariosController(UsuarioService usuarioService)
         {
-            this.dbContext = dbContext;
+            this.usuarioService = usuarioService;
         }
 
+        // Registro de usuario
         [HttpPost]
         [Route("Registrar")]
         public IActionResult Registrar(UsuarioDTO usuarioDTO)
@@ -23,59 +25,75 @@ namespace ClinicaSepriceAPI.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var objUsuario= dbContext.Usuarios.FirstOrDefault(p => p.User== usuarioDTO.User);
-            if (objUsuario == null) {
-
-            dbContext.Usuarios.Add(new Usuario
+            try
             {
-                Nombre = usuarioDTO.Nombre,
-                Apellido = usuarioDTO.Apellido,
-                User = usuarioDTO.User,
-                Pass = usuarioDTO.Pass
-            });
-            dbContext.SaveChanges();
-            return Ok("Usuario Registrado Correctamente");
+                usuarioService.RegistrarUsuario(usuarioDTO);
+                return Ok("Usuario Registrado Correctamente");
             }
-            else
+            catch (UsuarioNoExisteException ex)
             {
-                return BadRequest("El usuario ya existe");
+                return BadRequest(ex.Message);  // Usuario ya existe
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Ocurrió un error al registrar el usuario: " + ex.Message);
             }
         }
 
+        // Inicio de sesión
         [HttpPost]
         [Route("Login")]
         public IActionResult Login(LoginDTO loginDTO)
         {
-            var usuario = dbContext.Usuarios.FirstOrDefault(p => p.User==loginDTO.User && p.Pass==loginDTO.Pass);
-            if (usuario != null) 
+            try
             {
+                var usuario = usuarioService.Login(loginDTO);
                 return Ok(usuario);
             }
-            return NoContent();
+            catch (AutenticacionFallidaException ex)
+            {
+                return Unauthorized(ex.Message);  
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Ocurrió un error al iniciar sesión: " + ex.Message);
+            }
         }
 
+        // Obtener todos los usuarios
         [HttpGet]
         [Route("GetUsuarios")]
         public IActionResult GetUsuarios()
         {
-            return Ok( dbContext.Usuarios.ToList());
+            try
+            {
+                var usuarios = usuarioService.ObtenerUsuarios().ToList();
+                return Ok(usuarios);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Ocurrió un error al obtener los usuarios: " + ex.Message);
+            }
         }
 
+        // Obtener un usuario por ID
         [HttpGet]
         [Route("GetUsuario")]
         public IActionResult GetUsuario(int id)
         {
-            var usuario = dbContext.Usuarios.FirstOrDefault(p => p.IdUsuario == id);
-            if (usuario != null)
+            try
             {
+                var usuario = usuarioService.ObtenerUsuarioPorId(id);
                 return Ok(usuario);
             }
-            else
+            catch (UsuarioNoEncontradoException ex)
             {
-                return NoContent();
+                return NotFound(ex.Message);  
             }
-
+            catch (Exception ex)
+            {
+                return StatusCode(500, "Ocurrió un error al obtener el usuario: " + ex.Message);
+            }
         }
-
     }
 }
