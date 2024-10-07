@@ -1,44 +1,71 @@
-El proyecto es un ASP.NET Core Web API  con .NET 8.0 y ademas un proyecto para Unit Test  Nunit
+#ClinicaSepriceAPI
 
-El proyecto esta hecho con .NET 8.0 y para la comunicación  con la base de datos utilizaremos Entity Framework  Core 8.0.8  y la Base de datos a utilizar sera SQL SERVER
+##Este proyecto es una ASP.NET Core Web API desarrollada con .NET 8.0, que incluye un proyecto para pruebas unitarias con NUnit.
 
-Los paquetes NuGet necesarios seran los siguientes: 
+**Descripción del Proyecto**
 
-- Microsoft.EntityFrameworkCore
-- Microsoft.EntityFrameworkCore.SqlServer
-- Microsoft.EntityFrameworkCore.Tools
+El proyecto está implementado en .NET 8.0 y utiliza Entity Framework Core 8.0.8 para la comunicación con la base de datos MySql. También está configurado para usar autenticación JWT y soporte de Swagger para documentación de la API.
 
-La estructura de carpetas adicionales creadas para el son las siguientes. 
+**Paquetes NuGet necesarios**
+Para ejecutar y desarrollar el proyecto principal y el proyecto de pruebas, asegúrate de tener instalados los siguientes paquetes:
+
+**Microsoft.AspNet.WebApi.Core (5.3.0)**: Proporciona soporte de API Web en ASP.NET.
+**Microsoft.AspNetCore.Authentication.JwtBearer (8.0.8)**: Para la autenticación basada en JWT.
+**Microsoft.EntityFrameworkCore (8.0.8)**: ORM para interactuar con bases de datos relacionales.
+**Microsoft.EntityFrameworkCore.Design (8.0.8)**: Herramientas de diseño necesarias para las migraciones de Entity Framework.
+**Microsoft.EntityFrameworkCore.Tools (8.0.8)**: Herramientas de línea de comandos para EF Core.
+**Pomelo.EntityFrameworkCore.MySql (8.0.2)**: Proveedor de Entity Framework Core para bases de datos MySQL.
+**Microsoft.EntityFrameworkCore.InMemory (8.0.8)**: Proveedor en memoria para pruebas con bases de datos simuladas (usado en el proyecto de pruebas).
+**Moq (4.20.72)**: Biblioteca para crear objetos simulados (mocks) en pruebas.
+
+Estructura de Carpetas
+La organización del proyecto sigue una estructura modular para facilitar el desarrollo y mantenimiento. A continuación, se describe la función de cada carpeta:
 
 ```bash
 ClinicaSepriceAPI/
+├──Common/
 ├── Controllers/
 ├── Data/
 ├── DTOs/
-├── Execeptions/
+├── Exceptions/
 ├── Filters/
 ├── Helpers/
-├── Models/
+├── Interfaces/
 ├── Migrations/
+├── Models/
 ├── Repositories/
 ├── Services/
+├── appsettings.json
+└── Program.cs
 ```
 Breve descripcion de que contiene cada carpeta. 
 
-Controllers/: En esta carpeta se ubican los controladores de la API. Cada controlador gestiona rutas específicas y define los puntos finales (endpoints) que recibirán solicitudes HTTP (GET, POST, PUT, DELETE, etc.). Cada controlador hereda de ControllerBase.
+**Common/:** Actualmente contiene constantes  para ser utilizadas en los DTOs  
 
-Data/: Aquí se incluyen los archivos relacionados con el acceso a la base de datos, como el contexto de Entity Framework (DbContext). También puede incluir migraciones y configuraciones de la base de datos.
+**Controllers/:** Define los controladores de la API, que manejan las rutas y definen los endpoints (GET, POST, PUT, DELETE, etc.). Cada controlador hereda de ControllerBase.
 
-DTOs/: Contiene los Data Transfer Objects (DTOs), que son clases que definen cómo los datos se transfieren entre el cliente y el servidor. Los DTOs permiten enviar o recibir solo los datos necesarios, protegiendo la estructura interna de las entidades.
+**Data/:** Incluye archivos relacionados con el acceso a la base de datos, como el contexto de Entity Framework (DbContext). También puede contener migraciones y configuraciones adicionales de la base de datos.
 
-Filters/: Contiene filtros personalizados que se aplican a las acciones del controlador. Estos pueden ser filtros de acción, de autorización, de excepción, etc., que te permiten aplicar lógica antes o después de que se ejecuten las acciones.
+**DTOs/:** Contiene los Data Transfer Objects, clases que definen cómo se transfieren los datos entre el cliente y el servidor. Estos objetos permiten transferir solo la información necesaria, ocultando la estructura interna de las entidades.
 
-Helpers/: En esta carpeta se ubican clases auxiliares que contienen funciones reutilizables, métodos estáticos y utilidades que no encajan en las demás capas pero que son necesarias para la lógica del negocio o manejo de errores.
+**Exceptions/:** Aquí se encuentran las excepciones personalizadas utilizadas en el proyecto, como UsuarioNoExisteException o AutenticacionFallidaException, para un manejo de errores más específico.
 
-Models/: Aquí se definen las clases de modelo que representan las entidades y objetos de dominio de la clínica. Estas clases mapean a las tablas de la base de datos si estás usando Entity Framework.
+**Filters/:** Contiene filtros personalizados aplicables a las acciones de los controladores. Estos filtros pueden incluir lógica de autorización, manejo de excepciones, validación, entre otros.
 
-Repositories/: Esta carpeta contiene las clases de repositorio que gestionan el acceso a los datos. El patrón Repositorio se utiliza para encapsular la lógica de acceso a datos, permitiendo un acceso más limpio a la base de datos y facilitando la prueba unitaria.
+**Helpers/:** Clases auxiliares que contienen funciones reutilizables y métodos utilitarios. Incluye, por ejemplo, el PasswordHelper para el manejo de hash y verificación de contraseñas.
 
-Services/: Aquí se colocan los servicios que contienen la lógica de negocio de la aplicación. Estos servicios son invocados desde los controladores y suelen interactuar con los repositorios o modelos de datos.
+**Interfaces/:** Define las interfaces que representan contratos para servicios y repositorios, lo cual facilita la inyección de dependencias y la separación de responsabilidades.
 
+**Migrations/:** Carpeta generada por Entity Framework que contiene las migraciones para gestionar cambios en la base de datos.
 
+**Models/:** Define las clases de modelo que representan las entidades y objetos de dominio. Estas clases se mapean a las tablas de la base de datos al usar Entity Framework.
+
+**Repositories/:** Implementa el patrón de repositorio para encapsular la lógica de acceso a datos. Facilita la interacción con la base de datos y permite un acceso más limpio y fácil de probar.
+
+**Services/:** Contiene la lógica de negocio de la aplicación. Los servicios son invocados desde los controladores y generalmente interactúan con los repositorios o modelos de datos.
+
+**Properties/:** Incluye archivos de propiedades, como el de configuración de ensamblado AssemblyInfo.cs.
+
+**appsettings.json:** Archivo de configuración que incluye parámetros de la base de datos, JWT y otras configuraciones de la aplicación.
+
+**Program.cs:**Configura los servicios y el middleware necesarios para que la API funcione correctamente.
