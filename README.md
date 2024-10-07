@@ -1,6 +1,6 @@
-#ClinicaSepriceAPI
+# ClinicaSepriceAPI
 
-##Este proyecto es una ASP.NET Core Web API desarrollada con .NET 8.0, que incluye un proyecto para pruebas unitarias con NUnit.
+## Este proyecto es una ASP.NET Core Web API desarrollada con .NET 8.0, que incluye un proyecto para pruebas unitarias con NUnit.
 
 **Descripción del Proyecto**
 
@@ -10,15 +10,23 @@ El proyecto está implementado en .NET 8.0 y utiliza Entity Framework Core 8.0.8
 Para ejecutar y desarrollar el proyecto principal y el proyecto de pruebas, asegúrate de tener instalados los siguientes paquetes:
 
 **Microsoft.AspNet.WebApi.Core (5.3.0)**: Proporciona soporte de API Web en ASP.NET.
+
 **Microsoft.AspNetCore.Authentication.JwtBearer (8.0.8)**: Para la autenticación basada en JWT.
+
 **Microsoft.EntityFrameworkCore (8.0.8)**: ORM para interactuar con bases de datos relacionales.
+
 **Microsoft.EntityFrameworkCore.Design (8.0.8)**: Herramientas de diseño necesarias para las migraciones de Entity Framework.
+
 **Microsoft.EntityFrameworkCore.Tools (8.0.8)**: Herramientas de línea de comandos para EF Core.
+
 **Pomelo.EntityFrameworkCore.MySql (8.0.2)**: Proveedor de Entity Framework Core para bases de datos MySQL.
+
 **Microsoft.EntityFrameworkCore.InMemory (8.0.8)**: Proveedor en memoria para pruebas con bases de datos simuladas (usado en el proyecto de pruebas).
+
 **Moq (4.20.72)**: Biblioteca para crear objetos simulados (mocks) en pruebas.
 
-Estructura de Carpetas
+# Estructura de Carpetas
+
 La organización del proyecto sigue una estructura modular para facilitar el desarrollo y mantenimiento. A continuación, se describe la función de cada carpeta:
 
 ```bash
@@ -68,4 +76,4 @@ Breve descripcion de que contiene cada carpeta.
 
 **appsettings.json:** Archivo de configuración que incluye parámetros de la base de datos, JWT y otras configuraciones de la aplicación.
 
-**Program.cs:**Configura los servicios y el middleware necesarios para que la API funcione correctamente.
+**Program.cs:** Configura los servicios y el middleware necesarios para que la API funcione correctamente.
