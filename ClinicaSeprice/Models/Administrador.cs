@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace ClinicaSepriceAPI.Models
+﻿namespace ClinicaSepriceAPI.Models
 {
     public class Administrador:Usuario
     {      

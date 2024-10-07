@@ -1,10 +1,8 @@
-﻿using ClinicaSepriceAPI.Data;
-using ClinicaSepriceAPI.DTOs;
+﻿using ClinicaSepriceAPI.DTOs;
 using ClinicaSepriceAPI.Execeptions;
 using ClinicaSepriceAPI.Helpers;
 using ClinicaSepriceAPI.Interfaces;
 using ClinicaSepriceAPI.Models;
-using System.Threading.Tasks;
 
 namespace ClinicaSepriceAPI.Services
 {

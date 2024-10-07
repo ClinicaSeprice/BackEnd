@@ -1,8 +1,4 @@
-﻿using NUnit.Framework;
-using System.Security.Cryptography;
-using System.Text;
-
-namespace ClinicaSepriceTest
+﻿namespace ClinicaSepriceTest
 {
     [TestFixture]
     public class PasswordHelperTest

@@ -2,7 +2,7 @@ using ClinicaSepriceAPI.Data;
 using ClinicaSepriceAPI.Interfaces;
 using ClinicaSepriceAPI.Repositories;
 using ClinicaSepriceAPI.Services;
-using ClinicaSepriceAPI.Helpers;  // Añadimos el using para usar JwtHelper
+using ClinicaSepriceAPI.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

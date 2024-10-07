@@ -3,7 +3,6 @@ using ClinicaSepriceAPI.Execeptions;
 using ClinicaSepriceAPI.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
 namespace ClinicaSepriceAPI.Controllers
 {
