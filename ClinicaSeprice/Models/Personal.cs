@@ -4,28 +4,28 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClinicaSepriceAPI.Models
 {
-    public class Usuario
+    public class Personal
     {
-        [Key]
-        public int IdUsuario { get; set; }
+        [Key, ForeignKey("Persona")]
+        public int IdPersona { get; set; }
 
         [Required]
         [MaxLength(100)]
-        public string User { get; set; }
+        public string Cargo { get; set; }
 
         [Required]
-        [MaxLength(255)]
-        public string Password { get; set; }
+        public DateTime FechaContratacion { get; set; }
 
-        public int? IdPersona { get; set; }
-
-        public DateTime FechaRegistro { get; set; } = DateTime.Now;
+        [Required]
+        [Range(1, int.MaxValue)]
+        public int Legajo { get; set; }
 
         public bool Baja { get; set; } = false;
 
+        public DateTime FechaAlta { get; set; } = DateTime.Now;
+
         public DateTime FechaModificacion { get; set; } = DateTime.Now;
 
-        [ForeignKey("IdPersona")]
         public Persona Persona { get; set; }
     }
 }

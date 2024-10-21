@@ -1,9 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClinicaSepriceAPI.Models
 {
     public class Direccion
     {
+        [Key]
         public int IdDireccion { get; set; }
 
         [Required]
@@ -19,9 +22,11 @@ namespace ClinicaSepriceAPI.Models
         [MaxLength(100)]
         public string Complemento { get; set; }
 
+        [Required]
         [MaxLength(100)]
         public string Ciudad { get; set; }
 
+        [Required]
         [MaxLength(100)]
         public string Provincia { get; set; }
 
@@ -33,7 +38,8 @@ namespace ClinicaSepriceAPI.Models
         public DateTime FechaAlta { get; set; } = DateTime.Now;
 
         public DateTime FechaModificacion { get; set; } = DateTime.Now;
-       
+
+        [ForeignKey("IdPersona")]
         public Persona Persona { get; set; }
     }
 }
