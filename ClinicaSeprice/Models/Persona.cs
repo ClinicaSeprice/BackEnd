@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ClinicaSepriceAPI.Models
 {
@@ -9,24 +7,22 @@ namespace ClinicaSepriceAPI.Models
         [Key]
         public int IdPersona { get; set; }
 
-        [Required]        
-        public int DNI { get; set; }
-
         [Required]
-        [MaxLength(100)]
+        [StringLength(100)]
         public string Nombre { get; set; }
 
         [Required]
-        [MaxLength(100)]
+        [StringLength(100)]
         public string Apellido { get; set; }
 
-        public DateTime? FechaNacimiento { get; set; }
+        public int Dni { get; set; }
 
-        [MaxLength(15)]
+        public DateTime FechaNacimiento { get; set; }
+
+        [StringLength(15)]
         public string Telefono { get; set; }
 
-        [MaxLength(100)]
-        [EmailAddress]
+        [StringLength(100)]
         public string Email { get; set; }
 
         public DateTime FechaRegistro { get; set; } = DateTime.Now;
@@ -36,10 +32,17 @@ namespace ClinicaSepriceAPI.Models
         public DateTime FechaModificacion { get; set; } = DateTime.Now;
 
         public ICollection<Direccion> Direcciones { get; set; }
+
         public ICollection<PersonaRol> PersonaRoles { get; set; }
+
+        public ICollection<Turno> Turnos { get; set; }
+
         public Medico Medico { get; set; }
+
         public Personal Personal { get; set; }
-        public HistoriaClinica HistoriaClinica { get; set; }
+
         public Usuario Usuario { get; set; }
+
+        public HistoriaClinica HistoriaClinica { get; set; }
     }
 }

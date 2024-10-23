@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ClinicaSepriceAPI.Models
 {
@@ -13,24 +11,22 @@ namespace ClinicaSepriceAPI.Models
         public int IdPersona { get; set; }
 
         [Required]
-        [MaxLength(255)]
+        [StringLength(255)]
         public string Calle { get; set; }
 
-        [MaxLength(10)]
+        [StringLength(10)]
         public string Numero { get; set; }
 
-        [MaxLength(100)]
+        [StringLength(100)]
         public string Complemento { get; set; }
 
-        [Required]
-        [MaxLength(100)]
+        [StringLength(100)]
         public string Ciudad { get; set; }
 
-        [Required]
-        [MaxLength(100)]
+        [StringLength(100)]
         public string Provincia { get; set; }
 
-        [MaxLength(10)]
+        [StringLength(10)]
         public string CodigoPostal { get; set; }
 
         public bool Baja { get; set; } = false;
@@ -39,7 +35,6 @@ namespace ClinicaSepriceAPI.Models
 
         public DateTime FechaModificacion { get; set; } = DateTime.Now;
 
-        [ForeignKey("IdPersona")]
         public Persona Persona { get; set; }
     }
 }
