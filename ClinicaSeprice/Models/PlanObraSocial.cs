@@ -17,6 +17,12 @@ namespace ClinicaSepriceAPI.Models
 
         public decimal Cobertura { get; set; }
 
+        public bool baja {  get; set; } = false;
+
+        public DateTime FechaAlta { get; set; } = DateTime.Now;
+
+        public DateTime FechaModificacion { get; set; } = DateTime.Now;
+
         [ForeignKey("IdObraSocial")]
         public ObraSocial ObraSocial { get; set; }
     }
