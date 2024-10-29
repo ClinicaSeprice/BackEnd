@@ -2,8 +2,9 @@
 {
     public class AutenticacionFallidaException : Exception
     {
+        public static readonly string userPassIncorrecto = "Usuario o contraseña incorrecta.";
         public AutenticacionFallidaException()
-           : base("Usuario o contraseña incorrecta.")
+           : base(userPassIncorrecto)
         {
         }
 

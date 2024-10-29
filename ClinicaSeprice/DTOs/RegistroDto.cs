@@ -30,8 +30,10 @@ namespace ClinicaSepriceAPI.DTOs
 
         [Required]
         [MaxLength(255)]
+        [MinLength(8, ErrorMessage = "La contraseña debe tener al menos 8 caracteres")]
         public string Password { get; set; }
 
+        [DataType(DataType.Date)]
         public DateTime? FechaNacimiento { get; set; }
     }
 }
