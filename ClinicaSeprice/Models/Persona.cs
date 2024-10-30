@@ -17,7 +17,7 @@ namespace ClinicaSepriceAPI.Models
 
         public int Dni { get; set; }
 
-        public DateTime FechaNacimiento { get; set; }
+        public DateTime? FechaNacimiento { get; set; }
 
         [StringLength(15)]
         public string Telefono { get; set; }

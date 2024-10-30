@@ -7,6 +7,8 @@ using System;
 using System.Text;
 using ClinicaSepriceAPI.Helpers;
 using ClinicaSepriceAPI.Data;
+using ClinicaSepriceAPI.Interfaces;
+using ClinicaSepriceAPI.Services;
 
 namespace ClinicaSepriceAPI
 {
@@ -41,9 +43,10 @@ namespace ClinicaSepriceAPI
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
-            // Inyectar dependencias 
-            //services.AddScoped<IUsuarioRepository, UsuarioRepository>();
-            //services.AddScoped<UsuarioService>();
+            //Inyectar dependencias 
+            services.AddScoped<IUsuarioService, UsuarioService>();
+            services.AddScoped<IDireccionService, DireccionService>();
+
         }
 
         public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)
