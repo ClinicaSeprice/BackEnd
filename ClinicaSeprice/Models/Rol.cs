@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Collections.Generic;
+
 
 namespace ClinicaSepriceAPI.Models
 {
@@ -11,6 +11,10 @@ namespace ClinicaSepriceAPI.Models
         [Required]
         [MaxLength(50)]
         public string NombreRol { get; set; }
+        public DateTime FechaAlta { get; set; } 
+        public DateTime? FechaBaja {  get; set; }
+
+        public bool Baja {  get; set; }
 
         public ICollection<PersonaRol> PersonaRoles { get; set; }
     }

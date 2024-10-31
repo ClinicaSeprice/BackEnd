@@ -1,7 +1,5 @@
 ﻿using ClinicaSepriceAPI.DTOs;
-using ClinicaSepriceAPI.Models;
-using System.Collections.Generic;
-using System.Threading.Tasks;
+
 
 namespace ClinicaSepriceAPI.Interfaces
 {
