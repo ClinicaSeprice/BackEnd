@@ -4,6 +4,7 @@ using ClinicaSepriceAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClinicaSepriceAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241031025451_modificoRol")]
+    partial class modificoRol
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -516,7 +519,7 @@ namespace ClinicaSepriceAPI.Migrations
                     b.Property<DateTime>("FechaAlta")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime?>("FechaBaja")
+                    b.Property<DateTime>("FechaBaja")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("NombreRol")

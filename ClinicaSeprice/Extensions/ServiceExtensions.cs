@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System;
 using System.Text;
 using ClinicaSepriceAPI.Helpers;
 using ClinicaSepriceAPI.Data;
@@ -46,6 +44,9 @@ namespace ClinicaSepriceAPI
             //Inyectar dependencias 
             services.AddScoped<IUsuarioService, UsuarioService>();
             services.AddScoped<IDireccionService, DireccionService>();
+            services.AddScoped<IPacienteService, PacienteService>();
+            services.AddScoped<IRolService, RolService>();
+            services.AddScoped<IMedicoService, MedicoService>();
 
         }
 
