@@ -47,6 +47,7 @@ namespace ClinicaSepriceAPI
             services.AddScoped<IPacienteService, PacienteService>();
             services.AddScoped<IRolService, RolService>();
             services.AddScoped<IMedicoService, MedicoService>();
+            services.AddScoped<IObraSocialService, ObraSocialService>();
 
         }
 
