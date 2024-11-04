@@ -26,5 +26,8 @@ namespace ClinicaSepriceAPI.DTOs
         [DataType(DataType.Date)]
         public DateTime? FechaNacimiento { get; set; }
 
+        [DataType(DataType.Date)]
+        public DateTime? Baja { get; set; }
+
     }
 }

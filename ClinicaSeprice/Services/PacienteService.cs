@@ -3,12 +3,13 @@ using ClinicaSepriceAPI.DTOs;
 using ClinicaSepriceAPI.Exceptions;
 using ClinicaSepriceAPI.Interfaces;
 using ClinicaSepriceAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 
 namespace ClinicaSepriceAPI.Services
 
 {
-    public class PacienteService: IPacienteService
+    public class PacienteService : IPacienteService
     {
         private readonly AppDbContext _dbContext;
         private readonly IConfiguration _configuration;
@@ -19,7 +20,7 @@ namespace ClinicaSepriceAPI.Services
             _configuration = configuration;
         }
 
-        // Método para registrar un nuevo usuario
+        // Método para registrar un nuevo paciente
         public async Task<bool> RegistrarPacienteAsync(PacienteDTO pacienteDto)
         {
             if (_dbContext.Personas.Any(p => p.Dni == pacienteDto.Dni))
@@ -40,7 +41,5 @@ namespace ClinicaSepriceAPI.Services
             await _dbContext.SaveChangesAsync();
             return true;
         }
-
     }
-
 }

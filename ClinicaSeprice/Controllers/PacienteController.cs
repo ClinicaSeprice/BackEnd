@@ -32,7 +32,5 @@ namespace ClinicaSepriceAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-
     }
 }

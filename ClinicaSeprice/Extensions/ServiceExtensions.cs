@@ -41,12 +41,22 @@ namespace ClinicaSepriceAPI
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
-            //Inyectar dependencias 
+            //Inyectar dependencias Usuarios
             services.AddScoped<IUsuarioService, UsuarioService>();
+
+            //Inyectar dependencias Persona
             services.AddScoped<IDireccionService, DireccionService>();
+
+            //Inyectar dependencias Paciente
             services.AddScoped<IPacienteService, PacienteService>();
+           
+            //Inyectar dependencia de Rol
             services.AddScoped<IRolService, RolService>();
+
+            //Inyectar dependendia de Medico
             services.AddScoped<IMedicoService, MedicoService>();
+
+            //Inyectar dependencia de Obras Sociales
             services.AddScoped<IObraSocialService, ObraSocialService>();
 
         }

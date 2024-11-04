@@ -18,6 +18,8 @@ namespace ClinicaSepriceAPI.DTOs
         public DateTime FechaAlta { get; set; } = DateTime.Now;
 
         public DateTime FechaModificacion { get; set; } = DateTime.Now;
+        public string Plan {  get; set; }
+
 
     }
 }
