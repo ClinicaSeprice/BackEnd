@@ -7,6 +7,7 @@ using ClinicaSepriceAPI.Helpers;
 using ClinicaSepriceAPI.Data;
 using ClinicaSepriceAPI.Interfaces;
 using ClinicaSepriceAPI.Services;
+using ClinicaSepriceAPI.Profiles;
 
 namespace ClinicaSepriceAPI
 {
@@ -41,12 +42,26 @@ namespace ClinicaSepriceAPI
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
 
-            //Inyectar dependencias 
+            services.AddAutoMapper(typeof(AutoMapperProfileService));
+
+            //Inyectar dependencias Usuarios
             services.AddScoped<IUsuarioService, UsuarioService>();
+
+            //Inyectar dependencias Persona
             services.AddScoped<IDireccionService, DireccionService>();
+
+            //Inyectar dependencias Paciente
             services.AddScoped<IPacienteService, PacienteService>();
+           
+            //Inyectar dependencia de Rol
             services.AddScoped<IRolService, RolService>();
+
+            //Inyectar dependendia de Medico
             services.AddScoped<IMedicoService, MedicoService>();
+
+            //Inyectar dependencia de Obras Sociales
+            services.AddScoped<IObraSocialService, ObraSocialService>();
+            services.AddScoped<IPlanObraSocialService, PlanObraSocialService>();
 
         }
 

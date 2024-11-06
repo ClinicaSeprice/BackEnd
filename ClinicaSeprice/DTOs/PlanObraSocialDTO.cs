@@ -1,13 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ClinicaSepriceAPI.Models;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
-namespace ClinicaSepriceAPI.Models
+namespace ClinicaSepriceAPI.DTOs
 {
-    public class PlanObraSocial
+    public class PlanObraSocialDTO
     {
-        [Key]
-        public int IdPlan { get; set; }
-
         [Required]
         public int IdObraSocial { get; set; }
 
@@ -17,13 +15,12 @@ namespace ClinicaSepriceAPI.Models
 
         public decimal Cobertura { get; set; }
 
-        public bool Baja {  get; set; } = false;
+        public bool Baja { get; set; } = false;
 
         public DateTime FechaAlta { get; set; } = DateTime.Now;
 
         public DateTime FechaModificacion { get; set; } = DateTime.Now;
 
-        [ForeignKey("IdObraSocial")]
-        public ObraSocial ObraSocial { get; set; }
+        
     }
 }

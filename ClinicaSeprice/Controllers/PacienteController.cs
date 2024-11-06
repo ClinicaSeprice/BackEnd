@@ -33,6 +33,23 @@ namespace ClinicaSepriceAPI.Controllers
             }
         }
 
-
+        [HttpGet("buscarPacientePorDni/{dni}")]
+        public async Task<IActionResult> ObtenerPacientePorDni(int dni)
+        {
+            try
+            {
+                var pacientes = await _pacienteService.ObtenerPacientePorDniAsync(dni);
+                if (!pacientes?.Any() ?? true)
+                {
+                    return NotFound($"No se encontró ningun paciente con Dni {dni}");
+                }
+                return Ok(pacientes);
+            }
+            catch
+            (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

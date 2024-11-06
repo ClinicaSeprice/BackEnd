@@ -16,7 +16,6 @@ namespace ClinicaSepriceAPI.DTOs
         [Range(1000000, 99999999)]
         public int Dni { get; set; }
 
-        //[Required]
         [EmailAddress]
         [MaxLength(100)]
         public string Email { get; set; }
@@ -26,6 +25,11 @@ namespace ClinicaSepriceAPI.DTOs
 
         [DataType(DataType.Date)]
         public DateTime? FechaNacimiento { get; set; }
+
+        [DataType(DataType.Date)]
+        public DateTime? FechaRegistro { get; set; }
+
+        public bool Baja { get; set; }
 
     }
 }
