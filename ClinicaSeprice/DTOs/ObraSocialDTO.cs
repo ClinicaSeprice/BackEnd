@@ -4,8 +4,9 @@ namespace ClinicaSepriceAPI.DTOs
 {
     public class ObraSocialDTO
     {
-       
-        [Required]
+
+        public int IdObraSocial { get; set; }
+
         [StringLength(100)]
         public string Nombre { get; set; }
 

@@ -12,6 +12,14 @@ namespace ClinicaSepriceAPI.Profiles
             CreateMap<Persona, PacienteDTO>().ForMember(
                 dto => dto.Nombre, 
                 opt => opt.MapFrom(src => $"{src.Nombre} {src.Apellido}"));
+
+
+            CreateMap<ObraSocial, ObraSocialDTO>();
+            CreateMap<ObraSocialDTO, ObraSocial>();
+
+                
         }
+
+     
     }
 }

@@ -39,16 +39,17 @@ namespace ClinicaSepriceAPI.Controllers
             try
             {
                 var pacientes = await _pacienteService.ObtenerPacientePorDniAsync(dni);
-                if(!pacientes?.Any() ?? true)
+                if (!pacientes?.Any() ?? true)
                 {
                     return NotFound($"No se encontró ningun paciente con Dni {dni}");
-
                 }
                 return Ok(pacientes);
-            }catch
-            (Exception ex) {
+            }
+            catch
+            (Exception ex)
+            {
                 return BadRequest(ex.Message);
-        } 
+            }
+        }
     }
 }
-    }
