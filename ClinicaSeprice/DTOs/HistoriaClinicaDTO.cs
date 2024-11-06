@@ -1,38 +1,44 @@
-﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace ClinicaSepriceAPI.Models
+namespace ClinicaSepriceAPI.DTOs
 {
-    public class HistoriaClinica
+    public class HistoriaClinicaDTO
     {
-        [Key]
+
+        [Required]
         public int IdHistoria { get; set; }
 
         [Required]
         public int IdPersona { get; set; }
 
+
+        [Required]
+       // [MaxLength(100)]
         public string Antecedentes { get; set; }
 
+        [Required]
+        //[MaxLength(100)]
         public string Diagnosticos { get; set; }
 
+        [Required]
         public string Tratamientos { get; set; }
 
+        [Required]
         [Range(0, 999.999)]
         public decimal Peso { get; set; }
 
+        [Required]
         [Range(0, 999.99)]
         public decimal Altura { get; set; }
-
+        
         [Range(0, 99.99)]
-        public decimal Imc { get; set; }
+        public decimal? Imc { get; set; }
 
-        [Required]
+        [DataType(DataType.Date)]
         public DateTime FechaApertura { get; set; }
 
-        public DateTime FechaModificacion { get; set; } = DateTime.Now;
+        [DataType(DataType.Date)]
+        public DateTime? FechaModificacion { get; set; }
 
-        [ForeignKey("IdPersona")]
-        public Persona Persona { get; set; }
     }
 }
