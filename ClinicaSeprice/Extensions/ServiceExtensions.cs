@@ -61,6 +61,7 @@ namespace ClinicaSepriceAPI
 
             //Inyectar dependencia de Obras Sociales
             services.AddScoped<IObraSocialService, ObraSocialService>();
+            services.AddScoped<IPlanObraSocialService, PlanObraSocialService>();
 
         }
 

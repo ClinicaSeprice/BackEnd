@@ -7,7 +7,7 @@ namespace ClinicaSepriceAPI.DTOs
     public class PlanObraSocialDTO
     {
         [Required]
-        public int IdPlanObraSocial { get; set; }
+        public int IdObraSocial { get; set; }
 
         [Required]
         [StringLength(100)]
@@ -21,7 +21,6 @@ namespace ClinicaSepriceAPI.DTOs
 
         public DateTime FechaModificacion { get; set; } = DateTime.Now;
 
-        [Required]
-        public ObraSocial ObraSocial { get; set; }
+        
     }
 }

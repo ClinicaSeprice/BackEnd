@@ -4,8 +4,7 @@ namespace ClinicaSepriceAPI.DTOs
 {
     public class ObraSocialDTO
     {
-        public int IdObraSocial { get; set; }
-
+       
         [Required]
         [StringLength(100)]
         public string Nombre { get; set; }
@@ -18,7 +17,7 @@ namespace ClinicaSepriceAPI.DTOs
         public DateTime FechaAlta { get; set; } = DateTime.Now;
 
         public DateTime FechaModificacion { get; set; } = DateTime.Now;
-        public string Plan {  get; set; }
+       
 
 
     }

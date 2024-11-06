@@ -25,7 +25,9 @@ namespace ClinicaSepriceAPI.Services
 
             var nuevoPlanObraSocial = new PlanObraSocial
             {
+                IdObraSocial = planObraSocialDTO.IdObraSocial,
                 NombrePlan = planObraSocialDTO.NombrePlan,
+                Cobertura = planObraSocialDTO.Cobertura,
                 FechaAlta = DateTime.Now,
 
             };
