@@ -27,7 +27,7 @@ namespace ClinicaSepriceAPI.Models
 
         public DateTime FechaRegistro { get; set; } = DateTime.Now;
 
-        public DateTime? Baja { get; set; } 
+        public bool Baja { get; set; } = true;
 
         public DateTime FechaModificacion { get; set; } = DateTime.Now;
 

@@ -27,6 +27,7 @@ namespace ClinicaSepriceAPI.Services
             {
                 Nombre = obraSocialDTO.Nombre,
                 FechaAlta = DateTime.Now,
+               
 
             };
 

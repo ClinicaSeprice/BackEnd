@@ -4,6 +4,7 @@ using ClinicaSepriceAPI.Exceptions;
 using ClinicaSepriceAPI.Interfaces;
 using ClinicaSepriceAPI.Models;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 
 namespace ClinicaSepriceAPI.Services
@@ -13,11 +14,13 @@ namespace ClinicaSepriceAPI.Services
     {
         private readonly AppDbContext _dbContext;
         private readonly IConfiguration _configuration;
+        private readonly IMapper _mapper;
 
-        public PacienteService(AppDbContext dbContext, IConfiguration configuration)
+        public PacienteService(AppDbContext dbContext, IConfiguration configuration, IMapper mapper)
         {
             _dbContext = dbContext;
             _configuration = configuration;
+            _mapper = mapper;
         }
 
         // Método para registrar un nuevo paciente
@@ -40,6 +43,27 @@ namespace ClinicaSepriceAPI.Services
             _dbContext.Personas.Add(nuevaPersona);
             await _dbContext.SaveChangesAsync();
             return true;
+        }
+
+        //Metodo para consultar paciente por dni
+        public async Task<IEnumerable<PacienteDTO>> ObtenerPacientePorDniAsync(int dni)
+        {
+            try
+            {
+                var personaBuscada = await _dbContext.Personas.AsNoTracking()
+                    .Where(p => p.Dni == dni).ToListAsync();
+
+                if (personaBuscada == null || !personaBuscada.Any())
+                {
+                    throw new KeyNotFoundException($"No se encontró paciente con DNI: {dni}");
+                }
+                return _mapper.Map<IEnumerable<PacienteDTO>>(personaBuscada);
+            }
+            catch (Exception ex)
+            {
+                throw;
+
+            }
         }
     }
 }

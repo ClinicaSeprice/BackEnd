@@ -7,6 +7,7 @@ using ClinicaSepriceAPI.Helpers;
 using ClinicaSepriceAPI.Data;
 using ClinicaSepriceAPI.Interfaces;
 using ClinicaSepriceAPI.Services;
+using ClinicaSepriceAPI.Profiles;
 
 namespace ClinicaSepriceAPI
 {
@@ -40,6 +41,8 @@ namespace ClinicaSepriceAPI
             services.AddControllers();
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+
+            services.AddAutoMapper(typeof(AutoMapperProfileService));
 
             //Inyectar dependencias Usuarios
             services.AddScoped<IUsuarioService, UsuarioService>();

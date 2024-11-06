@@ -65,5 +65,7 @@ namespace ClinicaSepriceAPI.Services
 
             return TokenHelper.GenerarToken(usuario, _configuration);
         } 
+
+
     }
 }
