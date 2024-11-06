@@ -17,7 +17,7 @@ namespace ClinicaSepriceAPI.Controllers
             _HistoriaClinicaService = HistoriaClinicaService;
         }
 
-        // Registro de Obra Social 
+        // Registro de Historia Clínica 
 
         [HttpPost("altaHistoriaClinica")]
         public async Task<IActionResult> AltaHistoriaClinica([FromBody] HistoriaClinicaDTO HistoriaClinicaDTO)
@@ -27,9 +27,9 @@ namespace ClinicaSepriceAPI.Controllers
                 var registroExitoso = await _HistoriaClinicaService.RegistrarHistoriaClinicaAsync(HistoriaClinicaDTO);
                 if (!registroExitoso)
                 {
-                    return BadRequest("El registro de la obra social falló.");
+                    return BadRequest("El registro de la historia clinica falló.");
                 }
-                return Ok("Obra Social registrada exitosamente.");
+                return Ok("Historia clínica registrada exitosamente.");
             }
             catch (Exception ex)
             {
