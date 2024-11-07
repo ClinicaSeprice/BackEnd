@@ -16,10 +16,10 @@ namespace ClinicaSepriceAPI.Models
         public DateTime Fecha { get; set; }
 
         [Required]
-        public TimeSpan HoraInicio { get; set; }
+        public DateTime HoraInicio { get; set; }
 
         [Required]
-        public TimeSpan HoraFin { get; set; }
+        public DateTime HoraFin { get; set; }
 
         public bool Estado { get; set; } = false;
 

@@ -15,10 +15,10 @@ namespace ClinicaSepriceAPI.DTOs
         public DateTime Fecha { get; set; }
 
         [Required]
-        public TimeSpan HoraInicio { get; set; }
+        public DateTime HoraInicio { get; set; }
 
         [Required]
-        public TimeSpan HoraFin { get; set; }
+        public DateTime HoraFin { get; set; }
 
         public bool Estado { get; set; } = false;
 
@@ -29,6 +29,11 @@ namespace ClinicaSepriceAPI.DTOs
         public DateTime FechaModificacion { get; set; } = DateTime.Now;
 
         public Medico Medico { get; set; }
+
+         // Propiedades solo de lectura para el formato de hora
+            public string HoraInicioComoString => HoraInicio.ToString("HH:mm");
+            public string HoraFinComoString => HoraFin.ToString("HH:mm");
+        }
 
 
     }
