@@ -6,7 +6,6 @@ using ClinicaSepriceAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 
-
 namespace ClinicaSepriceAPI.Services
 
 {
@@ -22,6 +21,19 @@ namespace ClinicaSepriceAPI.Services
             _configuration = configuration;
             _mapper = mapper;
         }
+
+        public Task<IEnumerable<HorarioDisponibleDTO>> ObtenerHorarioDisponibleAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<bool> RegistrarHorarioDisponibleAsync(HorarioDisponibleDTO horarioDisponibleDTO)
+        {
+            throw new NotImplementedException();
+        }
+    }
+}
+
 
 //        // Método para registrar un nuevo paciente
 //        public async Task<bool> RegistrarPacienteAsync(PacienteDTO pacienteDto)
