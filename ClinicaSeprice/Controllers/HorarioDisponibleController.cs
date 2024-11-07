@@ -28,7 +28,7 @@ namespace ClinicaSepriceAPI.Controllers
             return Ok("Horario registrado con éxito.");
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("buscarHorariosMedico/{id}")]
         public async Task<IActionResult> ObtenerHorarioDisponibleDeMedico(int id)
         {
             var horarios = await _horarioService.ObtenerHorarioDisponibleDeMedicoAsync(id);
