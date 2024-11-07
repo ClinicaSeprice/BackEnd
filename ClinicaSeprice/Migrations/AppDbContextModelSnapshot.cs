@@ -210,10 +210,10 @@ namespace ClinicaSepriceAPI.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<TimeSpan>("HoraFin")
-                        .HasColumnType("time(6)");
+                        .HasColumnType("TIME");
 
                     b.Property<TimeSpan>("HoraInicio")
-                        .HasColumnType("time(6)");
+                        .HasColumnType("TIME");
 
                     b.Property<int>("IdMedico")
                         .HasColumnType("int");
@@ -262,8 +262,11 @@ namespace ClinicaSepriceAPI.Migrations
 
             modelBuilder.Entity("ClinicaSepriceAPI.Models.Medico", b =>
                 {
-                    b.Property<int>("IdPersona")
+                    b.Property<int>("IdMedico")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdMedico"));
 
                     b.Property<bool>("Baja")
                         .HasColumnType("tinyint(1)");
@@ -279,10 +282,15 @@ namespace ClinicaSepriceAPI.Migrations
                     b.Property<DateTime>("FechaModificacion")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("IdPersona")
+                        .HasColumnType("int");
+
                     b.Property<int>("Legajo")
                         .HasColumnType("int");
 
-                    b.HasKey("IdPersona");
+                    b.HasKey("IdMedico");
+
+                    b.HasIndex("IdPersona");
 
                     b.ToTable("Medicos");
                 });
@@ -370,6 +378,9 @@ namespace ClinicaSepriceAPI.Migrations
                     b.Property<DateTime>("FechaRegistro")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int?>("MedicoIdMedico")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -380,6 +391,8 @@ namespace ClinicaSepriceAPI.Migrations
                         .HasColumnType("varchar(15)");
 
                     b.HasKey("IdPersona");
+
+                    b.HasIndex("MedicoIdMedico");
 
                     b.ToTable("Personas");
                 });
@@ -448,6 +461,9 @@ namespace ClinicaSepriceAPI.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdPlan"));
 
+                    b.Property<bool>("Baja")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<decimal>("Cobertura")
                         .HasColumnType("decimal(65,30)");
 
@@ -464,9 +480,6 @@ namespace ClinicaSepriceAPI.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
-
-                    b.Property<bool>("baja")
-                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("IdPlan");
 
@@ -714,12 +727,21 @@ namespace ClinicaSepriceAPI.Migrations
             modelBuilder.Entity("ClinicaSepriceAPI.Models.Medico", b =>
                 {
                     b.HasOne("ClinicaSepriceAPI.Models.Persona", "Persona")
-                        .WithOne("Medico")
-                        .HasForeignKey("ClinicaSepriceAPI.Models.Medico", "IdPersona")
+                        .WithMany()
+                        .HasForeignKey("IdPersona")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Persona");
+                });
+
+            modelBuilder.Entity("ClinicaSepriceAPI.Models.Persona", b =>
+                {
+                    b.HasOne("ClinicaSepriceAPI.Models.Medico", "Medico")
+                        .WithMany()
+                        .HasForeignKey("MedicoIdMedico");
+
+                    b.Navigation("Medico");
                 });
 
             modelBuilder.Entity("ClinicaSepriceAPI.Models.PersonaRol", b =>
@@ -842,8 +864,6 @@ namespace ClinicaSepriceAPI.Migrations
                     b.Navigation("Direcciones");
 
                     b.Navigation("HistoriaClinica");
-
-                    b.Navigation("Medico");
 
                     b.Navigation("PersonaRoles");
 

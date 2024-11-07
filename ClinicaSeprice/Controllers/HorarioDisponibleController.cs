@@ -1,59 +1,38 @@
 ﻿using ClinicaSepriceAPI.DTOs;
 using ClinicaSepriceAPI.Interfaces;
-using ClinicaSepriceAPI.Services;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ClinicaSepriceAPI.Controllers
 {
-    [ApiController]
     [Route("api/[controller]")]
+    [ApiController]
     public class HorarioDisponibleController : ControllerBase
     {
-        private readonly IHorarioDisponibleService _horarioDisponibleService;
+        private readonly IHorarioDisponibleService _horarioService;
 
-        public HorarioDisponibleController(IHorarioDisponibleService horarioDisponibleService)
+        public HorarioDisponibleController(IHorarioDisponibleService horarioService)
         {
-            _horarioDisponibleService = horarioDisponibleService;
+            _horarioService = horarioService;
         }
 
-        // Registro de Horario Disponible 
-
-        [HttpPost("altaHorarioDisponibleDeMedico")]
-        public async Task<IActionResult> AltaHorarioDisponible([FromBody] HorarioDisponibleDTO horarioDisponibleDTO)
+        [HttpPost("RegistarHorarioMedico")]
+        public async Task<IActionResult> RegistrarHorarioDisponible([FromBody] HorarioDisponibleDTO horarioDto)
         {
-            try
-            {
-                var registroExitoso = await _horarioDisponibleService.RegistrarHorarioDisponibleDeMedicoAsync(horarioDisponibleDTO);
-                if (!registroExitoso)
-                {
-                    return BadRequest("El registro del horario falló.");
-                }
-                return Ok("Horario disponible para el profesional registrado exitosamente.");
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var result = await _horarioService.RegistrarHorarioDisponibleDeMedicoAsync(horarioDto);
+            if (!result)
+                return StatusCode(500, "Error al registrar el horario.");
+
+            return Ok("Horario registrado con éxito.");
         }
 
-        [HttpGet("buscarHorarioDisponibleDeMedico/{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> ObtenerHorarioDisponibleDeMedico(int id)
         {
-            try
-            {
-                var horarioDisponible = await _horarioDisponibleService.ObtenerHorarioDisponibleDeMedicoAsync(id);
-                if (!horarioDisponible?.Any() ?? true)
-                {
-                    return NotFound($"No hay horarios disponibles para el profesional con ID:  {id}");
-                }
-                return Ok(horarioDisponible);
-            }
-            catch
-            (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
+            var horarios = await _horarioService.ObtenerHorarioDisponibleDeMedicoAsync(id);
+            return Ok(horarios);
         }
     }
 }

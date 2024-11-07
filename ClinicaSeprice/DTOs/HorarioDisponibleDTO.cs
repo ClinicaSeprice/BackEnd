@@ -1,50 +1,24 @@
-﻿using ClinicaSepriceAPI.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ClinicaSepriceAPI.DTOs
 {
-  
     public class HorarioDisponibleDTO
     {
         [Required]
-        public int IdHorario { get; set; }
+        public int IdMedico { get; set; }
 
-       // [Required]
-        //public int IdMedico { get; set; }
+        public string NombreMedico { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
         public DateTime Fecha { get; set; }
 
         [Required]
-        public DateTime HoraInicio { get; set; }
+        public string HoraInicio { get; set; }
 
         [Required]
-        public DateTime HoraFin { get; set; }
+        public string HoraFin { get; set; }
 
         public bool Estado { get; set; } = false;
-
-        public bool Baja { get; set; } = false;
-
-        public DateTime FechaCreacion { get; set; } = DateTime.Now;
-
-        public DateTime FechaModificacion { get; set; } = DateTime.Now;
-
-        [Required]
-        public MedicoConDatosFiltradosDTO Medico { get; set; }
-
-        // Sub-DTO para evitar cargar todos los datos del médico
-        public class MedicoConDatosFiltradosDTO
-        {
-            [Required]
-           public int IdMedico { get; set; }
-        }
-
-
-        // Propiedades solo de lectura para el formato de hora
-        public string HoraInicioComoString => HoraInicio.ToString("HH:mm");
-        public string HoraFinComoString => HoraFin.ToString("HH:mm");
-       
-
-
     }
 }

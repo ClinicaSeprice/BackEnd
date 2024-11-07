@@ -13,13 +13,14 @@ namespace ClinicaSepriceAPI.Models
         public int IdMedico { get; set; }
 
         [Required]
+        [DataType(DataType.Date)]
         public DateTime Fecha { get; set; }
 
         [Required]
-        public DateTime HoraInicio { get; set; }
+        public TimeSpan HoraInicio { get; set; } 
 
         [Required]
-        public DateTime HoraFin { get; set; }
+        public TimeSpan HoraFin { get; set; }
 
         public bool Estado { get; set; } = false;
 

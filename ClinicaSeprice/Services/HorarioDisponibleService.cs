@@ -1,79 +1,64 @@
 ﻿using ClinicaSepriceAPI.Data;
 using ClinicaSepriceAPI.DTOs;
-using ClinicaSepriceAPI.Exceptions;
 using ClinicaSepriceAPI.Interfaces;
 using ClinicaSepriceAPI.Models;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace ClinicaSepriceAPI.Services
-
 {
     public class HorarioDisponibleService : IHorarioDisponibleService
     {
-        private readonly AppDbContext _dbContext;
-        private readonly IConfiguration _configuration;
-        private readonly IMapper _mapper;
+        private readonly AppDbContext _context;
 
-        public HorarioDisponibleService(AppDbContext dbContext, IConfiguration configuration, IMapper mapper)
+        public HorarioDisponibleService(AppDbContext context)
         {
-            _dbContext = dbContext;
-            _configuration = configuration;
-            _mapper = mapper;
+            _context = context;
         }
 
-                 
         public async Task<bool> RegistrarHorarioDisponibleDeMedicoAsync(HorarioDisponibleDTO horarioDisponibleDTO)
         {
-
-            if (_dbContext.HorariosDisponibles.Any(h => h.IdMedico == horarioDisponibleDTO.Medico.IdMedico))
+            // Verificar que el médico existe en la tabla Medicos
+            var existeMedico = await _context.Medicos.AnyAsync(m => m.IdMedico == horarioDisponibleDTO.IdMedico);
+            if (!existeMedico)
             {
-                throw new HorarioDisponibleException(HorarioDisponibleException.HorarioNoDisponibleConIdMedico);
+                throw new Exception("El médico especificado no existe.");
             }
 
-            var nuevoHorarioDisponible = new HorarioDisponible
+            var horarioDisponible = new HorarioDisponible
             {
-                IdMedico = horarioDisponibleDTO.Medico.IdMedico,
-                Fecha = horarioDisponibleDTO.Fecha,
-                HoraInicio = horarioDisponibleDTO.HoraInicio,
-                HoraFin = horarioDisponibleDTO.HoraFin,
+                IdMedico = horarioDisponibleDTO.IdMedico,
+                Fecha = horarioDisponibleDTO.Fecha.Date,
+                HoraInicio = TimeSpan.Parse(horarioDisponibleDTO.HoraInicio),
+                HoraFin = TimeSpan.Parse(horarioDisponibleDTO.HoraFin),
                 Estado = horarioDisponibleDTO.Estado,
-                Baja = horarioDisponibleDTO.Baja,
-                FechaCreacion = horarioDisponibleDTO.FechaCreacion,
-                FechaModificacion = horarioDisponibleDTO.FechaModificacion
-
+                FechaCreacion = DateTime.Now,
+                FechaModificacion = DateTime.Now
             };
 
-            _ = _dbContext.HorariosDisponibles.Add(nuevoHorarioDisponible);
-            _ = await _dbContext.SaveChangesAsync();
-            return true;
-
+            _context.HorariosDisponibles.Add(horarioDisponible);
+            return await _context.SaveChangesAsync() > 0;
         }
 
-        //Consultar HorarioDisponible por idMedico
+
 
         public async Task<IEnumerable<HorarioDisponibleDTO>> ObtenerHorarioDisponibleDeMedicoAsync(int id)
         {
-            try
-            {
-                var horarioDisponibleDeMedicoConsulta = await _dbContext.HorariosDisponibles.AsNoTracking()
-                .Where(h => h.IdMedico == id)
-                .ToListAsync();
-
-                if (horarioDisponibleDeMedicoConsulta == null || !horarioDisponibleDeMedicoConsulta.Any())
+            return await _context.HorariosDisponibles
+                .Where(h => h.IdMedico == id && !h.Baja)
+                .Include(h => h.Medico)  // Incluir la entidad Medico
+                .Select(h => new HorarioDisponibleDTO
                 {
-                    throw new KeyNotFoundException($"No hay horarios disponibles para el médico con ID: {id}");
-                }
-
-                IMapper _mapper1 = _mapper;
-                return _mapper1.Map<IEnumerable<HorarioDisponibleDTO>>(horarioDisponibleDeMedicoConsulta);
-            }
-            catch (Exception ex)
-            {
-                throw;
-            }
+                    IdMedico = h.IdMedico,
+                    NombreMedico = h.Medico.Persona.Nombre + " " + h.Medico.Persona.Apellido,  
+                    Fecha = h.Fecha,
+                    HoraInicio = h.HoraInicio.ToString(@"hh\:mm"), 
+                    HoraFin = h.HoraFin.ToString(@"hh\:mm"),
+                })
+                .ToListAsync();
         }
-        
+
     }
 }
-
