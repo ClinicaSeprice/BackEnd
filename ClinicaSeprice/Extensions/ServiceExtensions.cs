@@ -1,13 +1,13 @@
 ﻿
+using ClinicaSepriceAPI.Data;
+using ClinicaSepriceAPI.Helpers;
+using ClinicaSepriceAPI.Interfaces;
+using ClinicaSepriceAPI.Profiles;
+using ClinicaSepriceAPI.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
-using ClinicaSepriceAPI.Helpers;
-using ClinicaSepriceAPI.Data;
-using ClinicaSepriceAPI.Interfaces;
-using ClinicaSepriceAPI.Services;
-using ClinicaSepriceAPI.Profiles;
 
 namespace ClinicaSepriceAPI
 {
@@ -52,7 +52,7 @@ namespace ClinicaSepriceAPI
 
             //Inyectar dependencias Paciente
             services.AddScoped<IPacienteService, PacienteService>();
-           
+
             //Inyectar dependencia de Rol
             services.AddScoped<IRolService, RolService>();
 
@@ -69,6 +69,20 @@ namespace ClinicaSepriceAPI
         {
             services.AddDbContext<AppDbContext>(options =>
                 options.UseMySql(configuration.GetConnectionString("DefaultConnection"), new MySqlServerVersion(new Version(8, 0, 2))));
+        }
+
+        public static void ConfigureCors(this IServiceCollection services)
+        {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAngularApp", builder =>
+                {
+                    builder.WithOrigins("http://localhost:4200")
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
+                });
+            });
+
         }
     }
 }

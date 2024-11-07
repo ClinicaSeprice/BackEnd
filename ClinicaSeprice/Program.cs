@@ -8,6 +8,7 @@ builder.Services.ConfigureJWT(builder.Configuration);
 // Configuración de servicios y dependencias
 builder.Services.ConfigureServices();
 builder.Services.ConfigureDbContext(builder.Configuration);
+builder.Services.ConfigureCors();
 
 var app = builder.Build();
 
@@ -29,6 +30,7 @@ else
 
 // Middleware
 app.UseHttpsRedirection();
+app.UseCors("AllowAngularApp");
 app.UseAuthentication();
 app.UseAuthorization();
 

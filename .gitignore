@@ -29,6 +29,7 @@ packages/
 # Configuración local y temporal
 appsettings.Development.json
 appsettings.Local.json
+appsettings.json
 appsettings.*.json
 secrets.json
 *.log
