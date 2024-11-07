@@ -9,7 +9,7 @@ using AutoMapper;
 namespace ClinicaSepriceAPI.Services
 
 {
-    public class HorarioDisponibleService : IHorarioDisponible
+    public class HorarioDisponibleService : IHorarioDisponibleService
     {
         private readonly AppDbContext _dbContext;
         private readonly IConfiguration _configuration;
@@ -22,60 +22,58 @@ namespace ClinicaSepriceAPI.Services
             _mapper = mapper;
         }
 
-        public Task<IEnumerable<HorarioDisponibleDTO>> ObtenerHorarioDisponibleAsync(int id)
+                 
+        public async Task<bool> RegistrarHorarioDisponibleDeMedicoAsync(HorarioDisponibleDTO horarioDisponibleDTO)
         {
-            throw new NotImplementedException();
+
+            if (_dbContext.HorariosDisponibles.Any(h => h.IdMedico == horarioDisponibleDTO.IdMedico))
+            {
+                throw new HorarioDisponibleException(HorarioDisponibleException.HorarioNoDisponibleConIdMedico);
+            }
+
+            var nuevoHorarioDisponible = new HorarioDisponible
+            {
+                IdMedico = horarioDisponibleDTO.IdMedico,
+                Fecha = horarioDisponibleDTO.Fecha,
+                HoraInicio = horarioDisponibleDTO.HoraInicio,
+                HoraFin = horarioDisponibleDTO.HoraFin,
+                Estado = horarioDisponibleDTO.Estado,
+                Baja = horarioDisponibleDTO.Baja,
+                FechaCreacion = horarioDisponibleDTO.FechaCreacion,
+                FechaModificacion = horarioDisponibleDTO.FechaModificacion
+
+            };
+
+            _ = _dbContext.HorariosDisponibles.Add(nuevoHorarioDisponible);
+            _ = await _dbContext.SaveChangesAsync();
+            return true;
+
         }
 
-        public Task<bool> RegistrarHorarioDisponibleAsync(HorarioDisponibleDTO horarioDisponibleDTO)
+        //Consultar HorarioDisponible por idMedico
+
+        public async Task<IEnumerable<HorarioDisponibleDTO>> ObtenerHorarioDisponibleDeMedicoAsync(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var horarioDisponibleDeMedicoConsulta = await _dbContext.HorariosDisponibles.AsNoTracking()
+                .Where(h => h.IdMedico == id)
+                .ToListAsync();
+
+                if (horarioDisponibleDeMedicoConsulta == null || !horarioDisponibleDeMedicoConsulta.Any())
+                {
+                    throw new KeyNotFoundException($"No hay horarios disponibles para el médico con ID: {id}");
+                }
+
+                IMapper _mapper1 = _mapper;
+                return _mapper1.Map<IEnumerable<HorarioDisponibleDTO>>(horarioDisponibleDeMedicoConsulta);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
+        
     }
 }
 
-
-//        // Método para registrar un nuevo paciente
-//        public async Task<bool> RegistrarPacienteAsync(PacienteDTO pacienteDto)
-//        {
-//            if (_dbContext.Personas.Any(p => p.Dni == pacienteDto.Dni))
-//                throw new UsuarioExisteException(UsuarioExisteException.PacienteYaExisteConDNI);
-
-//            var nuevaPersona = new Persona
-//            {
-//                Nombre = pacienteDto.Nombre,
-//                Apellido = pacienteDto.Apellido,
-//                Dni = pacienteDto.Dni,
-//                Email = pacienteDto.Email,
-//                Telefono = pacienteDto.Telefono,
-//                FechaNacimiento = pacienteDto.FechaNacimiento,
-//                FechaRegistro = DateTime.Now
-//            };
-
-//            _dbContext.Personas.Add(nuevaPersona);
-//            await _dbContext.SaveChangesAsync();
-//            return true;
-//        }
-
-//        //Metodo para consultar paciente por dni
-//        public async Task<IEnumerable<PacienteDTO>> ObtenerPacientePorDniAsync(int dni)
-//        {
-//            try
-//            {
-//                var personaBuscada = await _dbContext.Personas.AsNoTracking()
-//                    .Where(p => p.Dni == dni).ToListAsync();
-
-//                if (personaBuscada == null || !personaBuscada.Any())
-//                {
-//                    throw new KeyNotFoundException($"No se encontró paciente con DNI: {dni}");
-//                }
-//                return _mapper.Map<IEnumerable<PacienteDTO>>(personaBuscada);
-//            }
-//            catch (Exception ex)
-//            {
-//                throw;
-
-//            }
-//        }
-//    }
-//}
