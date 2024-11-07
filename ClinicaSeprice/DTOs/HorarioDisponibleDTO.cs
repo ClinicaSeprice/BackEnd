@@ -3,19 +3,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace ClinicaSepriceAPI.DTOs
 {
-    // Sub-DTO para evitar cargar todos los datos del médico
-    public class MedicoConDatosFiltradosDTO
-    {
-        public int IdMedico { get; set; }
-        public string Nombre { get; set; }  // Traemos sólo los campos que necesitamos
-    }
+  
     public class HorarioDisponibleDTO
     {
         [Required]
         public int IdHorario { get; set; }
 
-        [Required]
-        public int IdMedico { get; set; }
+       // [Required]
+        //public int IdMedico { get; set; }
 
         [Required]
         public DateTime Fecha { get; set; }
@@ -34,16 +29,20 @@ namespace ClinicaSepriceAPI.DTOs
 
         public DateTime FechaModificacion { get; set; } = DateTime.Now;
 
+        [Required]
         public MedicoConDatosFiltradosDTO Medico { get; set; }
 
+        // Sub-DTO para evitar cargar todos los datos del médico
+        public class MedicoConDatosFiltradosDTO
+        {
+            [Required]
+           public int IdMedico { get; set; }
+        }
 
 
-        p
-
-
-    // Propiedades solo de lectura para el formato de hora
-    public string HoraInicioComoString => HoraInicio.ToString("HH:mm");
-            public string HoraFinComoString => HoraFin.ToString("HH:mm");
+        // Propiedades solo de lectura para el formato de hora
+        public string HoraInicioComoString => HoraInicio.ToString("HH:mm");
+        public string HoraFinComoString => HoraFin.ToString("HH:mm");
        
 
 

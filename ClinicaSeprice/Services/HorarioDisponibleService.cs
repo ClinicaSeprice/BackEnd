@@ -26,14 +26,14 @@ namespace ClinicaSepriceAPI.Services
         public async Task<bool> RegistrarHorarioDisponibleDeMedicoAsync(HorarioDisponibleDTO horarioDisponibleDTO)
         {
 
-            if (_dbContext.HorariosDisponibles.Any(h => h.IdMedico == horarioDisponibleDTO.IdMedico))
+            if (_dbContext.HorariosDisponibles.Any(h => h.IdMedico == horarioDisponibleDTO.Medico.IdMedico))
             {
                 throw new HorarioDisponibleException(HorarioDisponibleException.HorarioNoDisponibleConIdMedico);
             }
 
             var nuevoHorarioDisponible = new HorarioDisponible
             {
-                IdMedico = horarioDisponibleDTO.IdMedico,
+                IdMedico = horarioDisponibleDTO.Medico.IdMedico,
                 Fecha = horarioDisponibleDTO.Fecha,
                 HoraInicio = horarioDisponibleDTO.HoraInicio,
                 HoraFin = horarioDisponibleDTO.HoraFin,
