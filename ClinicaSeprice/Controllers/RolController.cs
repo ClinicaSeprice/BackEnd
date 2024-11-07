@@ -24,8 +24,9 @@ namespace ClinicaSepriceAPI.Controllers
             {
                 var registroExitoso = await _rolService.RegistrarRolAsync(rolDto);
                 if (!registroExitoso)
+                {
                     return BadRequest("El registro de rol falló.");
-
+                }
                 return Ok("Rol registrado exitosamente.");
             }
             catch (Exception ex)
@@ -33,7 +34,5 @@ namespace ClinicaSepriceAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
-
-
     }
 }
