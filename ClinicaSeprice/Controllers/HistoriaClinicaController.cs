@@ -43,11 +43,19 @@ namespace ClinicaSepriceAPI.Controllers
             try
             {
                 var HistoriaClinica = await _HistoriaClinicaService.ObtenerHistoriaClinicaPorIdAsync(id);
-                if (!HistoriaClinica?.Any() ?? true)
+                //if (!HistoriaClinica?.Any() ?? true)
+                // {
+                //    return NotFound($"No se encontró ninguna historia clínica con Id {id}");
+                // }
+                // return Ok(HistoriaClinica);
+
+                if (HistoriaClinica == null)
                 {
                     return NotFound($"No se encontró ninguna historia clínica con Id {id}");
                 }
                 return Ok(HistoriaClinica);
+
+
             }
             catch
             (Exception ex)
