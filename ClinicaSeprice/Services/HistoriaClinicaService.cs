@@ -13,6 +13,7 @@ namespace ClinicaSepriceAPI.Services
         private readonly AppDbContext _dbContext;
         private readonly IConfiguration _configuration;
 
+
         public HistoriaClinicaService(AppDbContext dbContext, IConfiguration configuration)
         {
             _dbContext = dbContext;
