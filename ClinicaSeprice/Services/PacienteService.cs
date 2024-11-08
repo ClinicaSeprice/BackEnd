@@ -16,7 +16,8 @@ namespace ClinicaSepriceAPI.Services
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
 
-        public PacienteService(AppDbContext dbContext, IConfiguration configuration, IMapper mapper)
+        public PacienteService(AppDbContext dbContext, IConfiguration configuration, 
+            IMapper mapper)
         {
             _dbContext = dbContext;
             _configuration = configuration;
