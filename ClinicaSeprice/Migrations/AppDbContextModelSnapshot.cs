@@ -210,10 +210,10 @@ namespace ClinicaSepriceAPI.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<TimeSpan>("HoraFin")
-                        .HasColumnType("time(6)");
+                        .HasColumnType("TIME");
 
                     b.Property<TimeSpan>("HoraInicio")
-                        .HasColumnType("time(6)");
+                        .HasColumnType("TIME");
 
                     b.Property<int>("IdMedico")
                         .HasColumnType("int");
@@ -262,8 +262,11 @@ namespace ClinicaSepriceAPI.Migrations
 
             modelBuilder.Entity("ClinicaSepriceAPI.Models.Medico", b =>
                 {
-                    b.Property<int>("IdPersona")
+                    b.Property<int>("IdMedico")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdMedico"));
 
                     b.Property<bool>("Baja")
                         .HasColumnType("tinyint(1)");
@@ -279,10 +282,16 @@ namespace ClinicaSepriceAPI.Migrations
                     b.Property<DateTime>("FechaModificacion")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("IdPersona")
+                        .HasColumnType("int");
+
                     b.Property<int>("Legajo")
                         .HasColumnType("int");
 
-                    b.HasKey("IdPersona");
+                    b.HasKey("IdMedico");
+
+                    b.HasIndex("IdPersona")
+                        .IsUnique();
 
                     b.ToTable("Medicos");
                 });
@@ -448,6 +457,9 @@ namespace ClinicaSepriceAPI.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdPlan"));
 
+                    b.Property<bool>("Baja")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<decimal>("Cobertura")
                         .HasColumnType("decimal(65,30)");
 
@@ -464,9 +476,6 @@ namespace ClinicaSepriceAPI.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
-
-                    b.Property<bool>("baja")
-                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("IdPlan");
 

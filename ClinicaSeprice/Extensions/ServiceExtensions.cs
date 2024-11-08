@@ -62,7 +62,14 @@ namespace ClinicaSepriceAPI
             //Inyectar dependencia de Obras Sociales
             services.AddScoped<IObraSocialService, ObraSocialService>();
             services.AddScoped<IPlanObraSocialService, PlanObraSocialService>();
+            //Inyectar dependencia de Historia Clínica
+            services.AddScoped<IHistoriaClinicaService, HistoriaClinicaService>();
 
+            services.AddScoped<IHorarioDisponibleService, HorarioDisponibleService>();          
+
+            services.AddScoped<IMetodoDePagosService, MetodoDePagoService>();
+
+            services.AddScoped<ITurnoService, TurnoService>();
         }
 
         public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)

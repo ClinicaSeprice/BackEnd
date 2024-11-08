@@ -31,6 +31,7 @@ namespace ClinicaSepriceAPI.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             // Relación uno a muchos entre Persona y Direccion
             modelBuilder.Entity<Direccion>()
                 .HasOne(d => d.Persona)
@@ -53,15 +54,17 @@ namespace ClinicaSepriceAPI.Data
 
             // Relación uno a uno entre Persona y Medico
             modelBuilder.Entity<Medico>()
-                .HasOne(m => m.Persona)
-                .WithOne(p => p.Medico)
-                .HasForeignKey<Medico>(m => m.IdPersona);
+                        .HasOne(m => m.Persona)
+                        .WithMany()
+                        .HasForeignKey(m => m.IdPersona)
+                        .OnDelete(DeleteBehavior.Cascade);
 
             // Relación uno a uno entre Persona y Personal
-            modelBuilder.Entity<Personal>()
-                .HasOne(pe => pe.Persona)
-                .WithOne(p => p.Personal)
-                .HasForeignKey<Personal>(pe => pe.IdPersona);
+            modelBuilder.Entity<Persona>()
+                        .HasOne(p => p.Medico)
+                        .WithOne(m => m.Persona)
+                        .HasForeignKey<Medico>(m => m.IdPersona)
+                        .OnDelete(DeleteBehavior.Cascade);
 
             // Relación uno a uno entre Persona y Usuario
             modelBuilder.Entity<Usuario>()
@@ -80,7 +83,17 @@ namespace ClinicaSepriceAPI.Data
             modelBuilder.Entity<HorarioDisponible>()
                 .HasOne(h => h.Medico)
                 .WithMany(m => m.HorariosDisponibles)
-                .HasForeignKey(h => h.IdMedico);
+                .HasForeignKey(h => h.IdMedico)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<HorarioDisponible>(entity =>
+            {
+                entity.Property(e => e.HoraInicio)
+                    .HasColumnType("TIME"); 
+
+                entity.Property(e => e.HoraFin)
+                    .HasColumnType("TIME");
+            });
 
             // Relación uno a muchos entre HorarioDisponible y Turno
             modelBuilder.Entity<Turno>()
@@ -146,6 +159,8 @@ namespace ClinicaSepriceAPI.Data
                 .HasOne(d => d.Turno)
                 .WithMany()
                 .HasForeignKey(d => d.IdTurno);
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

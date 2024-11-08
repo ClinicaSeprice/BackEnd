@@ -21,6 +21,5 @@ namespace ClinicaSepriceAPI.DTOs
 
         public DateTime FechaModificacion { get; set; } = DateTime.Now;
 
-        
     }
 }

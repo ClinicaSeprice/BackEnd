@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClinicaSepriceAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241023223544_initial")]
-    partial class initial
+    [Migration("20241108025434_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,35 @@ namespace ClinicaSepriceAPI.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
+
+            modelBuilder.Entity("ClinicaSepriceAPI.Models.DetalleLiquidacionMedico", b =>
+                {
+                    b.Property<int>("IdDetalle")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdDetalle"));
+
+                    b.Property<int>("IdLiquidacion")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdTurno")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("MontoLiquidado")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("MontoTurno")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.HasKey("IdDetalle");
+
+                    b.HasIndex("IdLiquidacion");
+
+                    b.HasIndex("IdTurno");
+
+                    b.ToTable("DetallesLiquidacionesMedicos");
+                });
 
             modelBuilder.Entity("ClinicaSepriceAPI.Models.Direccion", b =>
                 {
@@ -184,10 +213,10 @@ namespace ClinicaSepriceAPI.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.Property<TimeSpan>("HoraFin")
-                        .HasColumnType("time(6)");
+                        .HasColumnType("TIME");
 
                     b.Property<TimeSpan>("HoraInicio")
-                        .HasColumnType("time(6)");
+                        .HasColumnType("TIME");
 
                     b.Property<int>("IdMedico")
                         .HasColumnType("int");
@@ -199,10 +228,48 @@ namespace ClinicaSepriceAPI.Migrations
                     b.ToTable("HorariosDisponibles");
                 });
 
+            modelBuilder.Entity("ClinicaSepriceAPI.Models.LiquidacionMedico", b =>
+                {
+                    b.Property<int>("IdLiquidacion")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdLiquidacion"));
+
+                    b.Property<DateTime>("FechaLiquidacion")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("IdMedico")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IdMetodoPago")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("MontoTotal")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<string>("NumeroTransaccion")
+                        .HasColumnType("longtext");
+
+                    b.Property<decimal>("Porcentaje")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.HasKey("IdLiquidacion");
+
+                    b.HasIndex("IdMedico");
+
+                    b.HasIndex("IdMetodoPago");
+
+                    b.ToTable("LiquidacionesMedicos");
+                });
+
             modelBuilder.Entity("ClinicaSepriceAPI.Models.Medico", b =>
                 {
-                    b.Property<int>("IdPersona")
+                    b.Property<int>("IdMedico")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdMedico"));
 
                     b.Property<bool>("Baja")
                         .HasColumnType("tinyint(1)");
@@ -218,10 +285,16 @@ namespace ClinicaSepriceAPI.Migrations
                     b.Property<DateTime>("FechaModificacion")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<int>("IdPersona")
+                        .HasColumnType("int");
+
                     b.Property<int>("Legajo")
                         .HasColumnType("int");
 
-                    b.HasKey("IdPersona");
+                    b.HasKey("IdMedico");
+
+                    b.HasIndex("IdPersona")
+                        .IsUnique();
 
                     b.ToTable("Medicos");
                 });
@@ -255,10 +328,22 @@ namespace ClinicaSepriceAPI.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdObraSocial"));
 
+                    b.Property<int>("Cuit")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("FechaAlta")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("FechaModificacion")
+                        .HasColumnType("datetime(6)");
+
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
+
+                    b.Property<bool>("baja")
+                        .HasColumnType("tinyint(1)");
 
                     b.HasKey("IdObraSocial");
 
@@ -291,7 +376,7 @@ namespace ClinicaSepriceAPI.Migrations
                     b.Property<DateTime>("FechaModificacion")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("FechaNacimiento")
+                    b.Property<DateTime?>("FechaNacimiento")
                         .HasColumnType("datetime(6)");
 
                     b.Property<DateTime>("FechaRegistro")
@@ -375,8 +460,17 @@ namespace ClinicaSepriceAPI.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdPlan"));
 
+                    b.Property<bool>("Baja")
+                        .HasColumnType("tinyint(1)");
+
                     b.Property<decimal>("Cobertura")
                         .HasColumnType("decimal(65,30)");
+
+                    b.Property<DateTime>("FechaAlta")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("FechaModificacion")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<int>("IdObraSocial")
                         .HasColumnType("int");
@@ -393,6 +487,33 @@ namespace ClinicaSepriceAPI.Migrations
                     b.ToTable("PlanesObraSocial");
                 });
 
+            modelBuilder.Entity("ClinicaSepriceAPI.Models.PorcentajePagoMedico", b =>
+                {
+                    b.Property<int>("IdPorcentaje")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdPorcentaje"));
+
+                    b.Property<DateTime?>("FechaFin")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("FechaInicio")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<int>("IdMedico")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Porcentaje")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.HasKey("IdPorcentaje");
+
+                    b.HasIndex("IdMedico");
+
+                    b.ToTable("PorcentajesPagoMedicos");
+                });
+
             modelBuilder.Entity("ClinicaSepriceAPI.Models.Rol", b =>
                 {
                     b.Property<int>("IdRol")
@@ -400,6 +521,15 @@ namespace ClinicaSepriceAPI.Migrations
                         .HasColumnType("int");
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdRol"));
+
+                    b.Property<bool>("Baja")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("FechaAlta")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("FechaBaja")
+                        .HasColumnType("datetime(6)");
 
                     b.Property<string>("NombreRol")
                         .IsRequired()
@@ -495,6 +625,25 @@ namespace ClinicaSepriceAPI.Migrations
                     b.ToTable("Usuarios");
                 });
 
+            modelBuilder.Entity("ClinicaSepriceAPI.Models.DetalleLiquidacionMedico", b =>
+                {
+                    b.HasOne("ClinicaSepriceAPI.Models.LiquidacionMedico", "LiquidacionMedico")
+                        .WithMany("Detalles")
+                        .HasForeignKey("IdLiquidacion")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClinicaSepriceAPI.Models.Turno", "Turno")
+                        .WithMany()
+                        .HasForeignKey("IdTurno")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("LiquidacionMedico");
+
+                    b.Navigation("Turno");
+                });
+
             modelBuilder.Entity("ClinicaSepriceAPI.Models.Direccion", b =>
                 {
                     b.HasOne("ClinicaSepriceAPI.Models.Persona", "Persona")
@@ -555,6 +704,25 @@ namespace ClinicaSepriceAPI.Migrations
                     b.Navigation("Medico");
                 });
 
+            modelBuilder.Entity("ClinicaSepriceAPI.Models.LiquidacionMedico", b =>
+                {
+                    b.HasOne("ClinicaSepriceAPI.Models.Medico", "Medico")
+                        .WithMany("Liquidaciones")
+                        .HasForeignKey("IdMedico")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ClinicaSepriceAPI.Models.MetodoPago", "MetodoPago")
+                        .WithMany()
+                        .HasForeignKey("IdMetodoPago")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Medico");
+
+                    b.Navigation("MetodoPago");
+                });
+
             modelBuilder.Entity("ClinicaSepriceAPI.Models.Medico", b =>
                 {
                     b.HasOne("ClinicaSepriceAPI.Models.Persona", "Persona")
@@ -607,6 +775,17 @@ namespace ClinicaSepriceAPI.Migrations
                     b.Navigation("ObraSocial");
                 });
 
+            modelBuilder.Entity("ClinicaSepriceAPI.Models.PorcentajePagoMedico", b =>
+                {
+                    b.HasOne("ClinicaSepriceAPI.Models.Medico", "Medico")
+                        .WithMany("Porcentajes")
+                        .HasForeignKey("IdMedico")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Medico");
+                });
+
             modelBuilder.Entity("ClinicaSepriceAPI.Models.Turno", b =>
                 {
                     b.HasOne("ClinicaSepriceAPI.Models.HorarioDisponible", "HorarioDisponible")
@@ -649,9 +828,18 @@ namespace ClinicaSepriceAPI.Migrations
                     b.Navigation("Turnos");
                 });
 
+            modelBuilder.Entity("ClinicaSepriceAPI.Models.LiquidacionMedico", b =>
+                {
+                    b.Navigation("Detalles");
+                });
+
             modelBuilder.Entity("ClinicaSepriceAPI.Models.Medico", b =>
                 {
                     b.Navigation("HorariosDisponibles");
+
+                    b.Navigation("Liquidaciones");
+
+                    b.Navigation("Porcentajes");
 
                     b.Navigation("Turnos");
                 });

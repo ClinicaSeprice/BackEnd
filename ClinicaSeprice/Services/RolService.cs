@@ -21,22 +21,19 @@ namespace ClinicaSepriceAPI.Services
         public async Task<bool> RegistrarRolAsync(RolDTO rolDto)
         {
             if (_dbContext.Roles.Any(u => u.NombreRol == rolDto.NombreRol))
+            {
                 throw new RolException(RolException.RolYaExiste);
+            }
 
             var nuevoRol = new Rol
             {
                 NombreRol = rolDto.NombreRol,
                 FechaAlta = DateTime.Now,
-
             };
 
             _dbContext.Roles.Add(nuevoRol);
             await _dbContext.SaveChangesAsync();
             return true;
-
-
-
         }
     }
-
 }

@@ -6,7 +6,6 @@ using ClinicaSepriceAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 
-
 namespace ClinicaSepriceAPI.Services
 
 {
@@ -16,7 +15,8 @@ namespace ClinicaSepriceAPI.Services
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
 
-        public PacienteService(AppDbContext dbContext, IConfiguration configuration, IMapper mapper)
+        public PacienteService(AppDbContext dbContext, IConfiguration configuration, 
+            IMapper mapper)
         {
             _dbContext = dbContext;
             _configuration = configuration;
