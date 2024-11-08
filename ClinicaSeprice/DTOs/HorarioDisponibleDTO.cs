@@ -14,9 +14,11 @@ namespace ClinicaSepriceAPI.DTOs
         public DateTime Fecha { get; set; }
 
         [Required]
+        [DataType(DataType.Time)]
         public string HoraInicio { get; set; }
 
         [Required]
+        [DataType(DataType.Time)]
         public string HoraFin { get; set; }
 
         public bool Estado { get; set; } = false;

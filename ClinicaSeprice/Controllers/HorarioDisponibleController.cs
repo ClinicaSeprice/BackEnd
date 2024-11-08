@@ -1,6 +1,8 @@
 ﻿using ClinicaSepriceAPI.DTOs;
 using ClinicaSepriceAPI.Interfaces;
+using ClinicaSepriceAPI.Exceptions; // Asegúrate de importar el namespace de tus excepciones
 using Microsoft.AspNetCore.Mvc;
+using System;
 
 namespace ClinicaSepriceAPI.Controllers
 {
@@ -21,12 +23,16 @@ namespace ClinicaSepriceAPI.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            var result = await _horarioService.RegistrarHorarioDisponibleDeMedicoAsync(horarioDto);
-            if (!result)
-                return StatusCode(500, "Error al registrar el horario.");
+            var (success, errorMessage) = await _horarioService.RegistrarHorarioDisponibleDeMedicoAsync(horarioDto);
+
+            if (!success)
+            {
+                return BadRequest(new { message = errorMessage });  // Devolver solo el mensaje de error
+            }
 
             return Ok("Horario registrado con éxito.");
         }
+
 
         [HttpGet("buscarHorariosMedico/{id}")]
         public async Task<IActionResult> ObtenerHorarioDisponibleDeMedico(int id)

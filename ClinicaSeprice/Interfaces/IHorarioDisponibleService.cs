@@ -4,7 +4,7 @@ namespace ClinicaSepriceAPI.Interfaces
 {
     public interface IHorarioDisponibleService
     {
-        Task<bool> RegistrarHorarioDisponibleDeMedicoAsync(HorarioDisponibleDTO horarioDisponibleDTO);
+        Task<(bool Success, string ErrorMessage)> RegistrarHorarioDisponibleDeMedicoAsync(HorarioDisponibleDTO horarioDisponibleDTO);
         Task<IEnumerable<HorarioDisponibleDTO>> ObtenerHorarioDisponibleDeMedicoAsync(int id);
     }
 }
