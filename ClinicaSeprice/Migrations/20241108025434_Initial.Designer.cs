@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClinicaSepriceAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241107231344_Initial")]
+    [Migration("20241108025434_Initial")]
     partial class Initial
     {
         /// <inheritdoc />
@@ -293,7 +293,8 @@ namespace ClinicaSepriceAPI.Migrations
 
                     b.HasKey("IdMedico");
 
-                    b.HasIndex("IdPersona");
+                    b.HasIndex("IdPersona")
+                        .IsUnique();
 
                     b.ToTable("Medicos");
                 });
@@ -381,9 +382,6 @@ namespace ClinicaSepriceAPI.Migrations
                     b.Property<DateTime>("FechaRegistro")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int?>("MedicoIdMedico")
-                        .HasColumnType("int");
-
                     b.Property<string>("Nombre")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -394,8 +392,6 @@ namespace ClinicaSepriceAPI.Migrations
                         .HasColumnType("varchar(15)");
 
                     b.HasKey("IdPersona");
-
-                    b.HasIndex("MedicoIdMedico");
 
                     b.ToTable("Personas");
                 });
@@ -730,21 +726,12 @@ namespace ClinicaSepriceAPI.Migrations
             modelBuilder.Entity("ClinicaSepriceAPI.Models.Medico", b =>
                 {
                     b.HasOne("ClinicaSepriceAPI.Models.Persona", "Persona")
-                        .WithMany()
-                        .HasForeignKey("IdPersona")
+                        .WithOne("Medico")
+                        .HasForeignKey("ClinicaSepriceAPI.Models.Medico", "IdPersona")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Persona");
-                });
-
-            modelBuilder.Entity("ClinicaSepriceAPI.Models.Persona", b =>
-                {
-                    b.HasOne("ClinicaSepriceAPI.Models.Medico", "Medico")
-                        .WithMany()
-                        .HasForeignKey("MedicoIdMedico");
-
-                    b.Navigation("Medico");
                 });
 
             modelBuilder.Entity("ClinicaSepriceAPI.Models.PersonaRol", b =>
@@ -867,6 +854,8 @@ namespace ClinicaSepriceAPI.Migrations
                     b.Navigation("Direcciones");
 
                     b.Navigation("HistoriaClinica");
+
+                    b.Navigation("Medico");
 
                     b.Navigation("PersonaRoles");
 

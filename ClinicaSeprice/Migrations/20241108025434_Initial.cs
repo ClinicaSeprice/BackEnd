@@ -51,6 +51,32 @@ namespace ClinicaSepriceAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Personas",
+                columns: table => new
+                {
+                    IdPersona = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Nombre = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Apellido = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Dni = table.Column<int>(type: "int", nullable: false),
+                    FechaNacimiento = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    Telefono = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Email = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    FechaRegistro = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Baja = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    FechaModificacion = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Personas", x => x.IdPersona);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
@@ -95,23 +121,6 @@ namespace ClinicaSepriceAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "DetallesLiquidacionesMedicos",
-                columns: table => new
-                {
-                    IdDetalle = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    IdLiquidacion = table.Column<int>(type: "int", nullable: false),
-                    IdTurno = table.Column<int>(type: "int", nullable: false),
-                    MontoTurno = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    MontoLiquidado = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_DetallesLiquidacionesMedicos", x => x.IdDetalle);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
                 name: "Direcciones",
                 columns: table => new
                 {
@@ -137,38 +146,11 @@ namespace ClinicaSepriceAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Direcciones", x => x.IdDireccion);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Facturas",
-                columns: table => new
-                {
-                    IdFactura = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    IdTurno = table.Column<int>(type: "int", nullable: false),
-                    IdPlanObraSocial = table.Column<int>(type: "int", nullable: false),
-                    IdMetodoPago = table.Column<int>(type: "int", nullable: false),
-                    NumeroTransaccion = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    MontoTotal = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    MontoPaciente = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    FechaPago = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Facturas", x => x.IdFactura);
                     table.ForeignKey(
-                        name: "FK_Facturas_MetodosPago_IdMetodoPago",
-                        column: x => x.IdMetodoPago,
-                        principalTable: "MetodosPago",
-                        principalColumn: "IdMetodoPago",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Facturas_PlanesObraSocial_IdPlanObraSocial",
-                        column: x => x.IdPlanObraSocial,
-                        principalTable: "PlanesObraSocial",
-                        principalColumn: "IdPlan",
+                        name: "FK_Direcciones_Personas_IdPersona",
+                        column: x => x.IdPersona,
+                        principalTable: "Personas",
+                        principalColumn: "IdPersona",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -195,52 +177,11 @@ namespace ClinicaSepriceAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_HistoriasClinicas", x => x.IdHistoria);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "HorariosDisponibles",
-                columns: table => new
-                {
-                    IdHorario = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    IdMedico = table.Column<int>(type: "int", nullable: false),
-                    Fecha = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    HoraInicio = table.Column<TimeSpan>(type: "TIME", nullable: false),
-                    HoraFin = table.Column<TimeSpan>(type: "TIME", nullable: false),
-                    Estado = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    Baja = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    FechaCreacion = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    FechaModificacion = table.Column<DateTime>(type: "datetime(6)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_HorariosDisponibles", x => x.IdHorario);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "LiquidacionesMedicos",
-                columns: table => new
-                {
-                    IdLiquidacion = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    IdMedico = table.Column<int>(type: "int", nullable: false),
-                    FechaLiquidacion = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Porcentaje = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    MontoTotal = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    IdMetodoPago = table.Column<int>(type: "int", nullable: false),
-                    NumeroTransaccion = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4")
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_LiquidacionesMedicos", x => x.IdLiquidacion);
                     table.ForeignKey(
-                        name: "FK_LiquidacionesMedicos_MetodosPago_IdMetodoPago",
-                        column: x => x.IdMetodoPago,
-                        principalTable: "MetodosPago",
-                        principalColumn: "IdMetodoPago",
+                        name: "FK_HistoriasClinicas_Personas_IdPersona",
+                        column: x => x.IdPersona,
+                        principalTable: "Personas",
+                        principalColumn: "IdPersona",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -262,60 +203,11 @@ namespace ClinicaSepriceAPI.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Medicos", x => x.IdMedico);
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "Personas",
-                columns: table => new
-                {
-                    IdPersona = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    Nombre = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Apellido = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Dni = table.Column<int>(type: "int", nullable: false),
-                    FechaNacimiento = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    Telefono = table.Column<string>(type: "varchar(15)", maxLength: 15, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Email = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    FechaRegistro = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Baja = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    FechaModificacion = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    MedicoIdMedico = table.Column<int>(type: "int", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Personas", x => x.IdPersona);
                     table.ForeignKey(
-                        name: "FK_Personas_Medicos_MedicoIdMedico",
-                        column: x => x.MedicoIdMedico,
-                        principalTable: "Medicos",
-                        principalColumn: "IdMedico");
-                })
-                .Annotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.CreateTable(
-                name: "PorcentajesPagoMedicos",
-                columns: table => new
-                {
-                    IdPorcentaje = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    IdMedico = table.Column<int>(type: "int", nullable: false),
-                    Porcentaje = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    FechaInicio = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    FechaFin = table.Column<DateTime>(type: "datetime(6)", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PorcentajesPagoMedicos", x => x.IdPorcentaje);
-                    table.ForeignKey(
-                        name: "FK_PorcentajesPagoMedicos_Medicos_IdMedico",
-                        column: x => x.IdMedico,
-                        principalTable: "Medicos",
-                        principalColumn: "IdMedico",
+                        name: "FK_Medicos_Personas_IdPersona",
+                        column: x => x.IdPersona,
+                        principalTable: "Personas",
+                        principalColumn: "IdPersona",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -346,6 +238,33 @@ namespace ClinicaSepriceAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Usuarios",
+                columns: table => new
+                {
+                    IdUsuario = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    User = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Password = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    IdPersona = table.Column<int>(type: "int", nullable: true),
+                    FechaRegistro = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Baja = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    FechaModificacion = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Usuarios", x => x.IdUsuario);
+                    table.ForeignKey(
+                        name: "FK_Usuarios_Personas_IdPersona",
+                        column: x => x.IdPersona,
+                        principalTable: "Personas",
+                        principalColumn: "IdPersona",
+                        onDelete: ReferentialAction.SetNull);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "PersonaRoles",
                 columns: table => new
                 {
@@ -369,6 +288,88 @@ namespace ClinicaSepriceAPI.Migrations
                         column: x => x.IdRol,
                         principalTable: "Roles",
                         principalColumn: "IdRol",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "HorariosDisponibles",
+                columns: table => new
+                {
+                    IdHorario = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    IdMedico = table.Column<int>(type: "int", nullable: false),
+                    Fecha = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    HoraInicio = table.Column<TimeSpan>(type: "TIME", nullable: false),
+                    HoraFin = table.Column<TimeSpan>(type: "TIME", nullable: false),
+                    Estado = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    Baja = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    FechaCreacion = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    FechaModificacion = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_HorariosDisponibles", x => x.IdHorario);
+                    table.ForeignKey(
+                        name: "FK_HorariosDisponibles_Medicos_IdMedico",
+                        column: x => x.IdMedico,
+                        principalTable: "Medicos",
+                        principalColumn: "IdMedico",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "LiquidacionesMedicos",
+                columns: table => new
+                {
+                    IdLiquidacion = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    IdMedico = table.Column<int>(type: "int", nullable: false),
+                    FechaLiquidacion = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    Porcentaje = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    MontoTotal = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    IdMetodoPago = table.Column<int>(type: "int", nullable: false),
+                    NumeroTransaccion = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_LiquidacionesMedicos", x => x.IdLiquidacion);
+                    table.ForeignKey(
+                        name: "FK_LiquidacionesMedicos_Medicos_IdMedico",
+                        column: x => x.IdMedico,
+                        principalTable: "Medicos",
+                        principalColumn: "IdMedico",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_LiquidacionesMedicos_MetodosPago_IdMetodoPago",
+                        column: x => x.IdMetodoPago,
+                        principalTable: "MetodosPago",
+                        principalColumn: "IdMetodoPago",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "PorcentajesPagoMedicos",
+                columns: table => new
+                {
+                    IdPorcentaje = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    IdMedico = table.Column<int>(type: "int", nullable: false),
+                    Porcentaje = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    FechaInicio = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    FechaFin = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PorcentajesPagoMedicos", x => x.IdPorcentaje);
+                    table.ForeignKey(
+                        name: "FK_PorcentajesPagoMedicos_Medicos_IdMedico",
+                        column: x => x.IdMedico,
+                        principalTable: "Medicos",
+                        principalColumn: "IdMedico",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
@@ -417,29 +418,70 @@ namespace ClinicaSepriceAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "Usuarios",
+                name: "DetallesLiquidacionesMedicos",
                 columns: table => new
                 {
-                    IdUsuario = table.Column<int>(type: "int", nullable: false)
+                    IdDetalle = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                    User = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    Password = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    IdPersona = table.Column<int>(type: "int", nullable: true),
-                    FechaRegistro = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    Baja = table.Column<bool>(type: "tinyint(1)", nullable: false),
-                    FechaModificacion = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                    IdLiquidacion = table.Column<int>(type: "int", nullable: false),
+                    IdTurno = table.Column<int>(type: "int", nullable: false),
+                    MontoTurno = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    MontoLiquidado = table.Column<decimal>(type: "decimal(65,30)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Usuarios", x => x.IdUsuario);
+                    table.PrimaryKey("PK_DetallesLiquidacionesMedicos", x => x.IdDetalle);
                     table.ForeignKey(
-                        name: "FK_Usuarios_Personas_IdPersona",
-                        column: x => x.IdPersona,
-                        principalTable: "Personas",
-                        principalColumn: "IdPersona",
-                        onDelete: ReferentialAction.SetNull);
+                        name: "FK_DetallesLiquidacionesMedicos_LiquidacionesMedicos_IdLiquidac~",
+                        column: x => x.IdLiquidacion,
+                        principalTable: "LiquidacionesMedicos",
+                        principalColumn: "IdLiquidacion",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_DetallesLiquidacionesMedicos_Turnos_IdTurno",
+                        column: x => x.IdTurno,
+                        principalTable: "Turnos",
+                        principalColumn: "IdTurno",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Facturas",
+                columns: table => new
+                {
+                    IdFactura = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    IdTurno = table.Column<int>(type: "int", nullable: false),
+                    IdPlanObraSocial = table.Column<int>(type: "int", nullable: false),
+                    IdMetodoPago = table.Column<int>(type: "int", nullable: false),
+                    NumeroTransaccion = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    MontoTotal = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    MontoPaciente = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    FechaPago = table.Column<DateTime>(type: "datetime(6)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Facturas", x => x.IdFactura);
+                    table.ForeignKey(
+                        name: "FK_Facturas_MetodosPago_IdMetodoPago",
+                        column: x => x.IdMetodoPago,
+                        principalTable: "MetodosPago",
+                        principalColumn: "IdMetodoPago",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Facturas_PlanesObraSocial_IdPlanObraSocial",
+                        column: x => x.IdPlanObraSocial,
+                        principalTable: "PlanesObraSocial",
+                        principalColumn: "IdPlan",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Facturas_Turnos_IdTurno",
+                        column: x => x.IdTurno,
+                        principalTable: "Turnos",
+                        principalColumn: "IdTurno",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -497,17 +539,13 @@ namespace ClinicaSepriceAPI.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Medicos_IdPersona",
                 table: "Medicos",
-                column: "IdPersona");
+                column: "IdPersona",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_PersonaRoles_IdRol",
                 table: "PersonaRoles",
                 column: "IdRol");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Personas_MedicoIdMedico",
-                table: "Personas",
-                column: "MedicoIdMedico");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PlanesObraSocial_IdObraSocial",
@@ -539,79 +577,11 @@ namespace ClinicaSepriceAPI.Migrations
                 table: "Usuarios",
                 column: "IdPersona",
                 unique: true);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_DetallesLiquidacionesMedicos_LiquidacionesMedicos_IdLiquidac~",
-                table: "DetallesLiquidacionesMedicos",
-                column: "IdLiquidacion",
-                principalTable: "LiquidacionesMedicos",
-                principalColumn: "IdLiquidacion",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_DetallesLiquidacionesMedicos_Turnos_IdTurno",
-                table: "DetallesLiquidacionesMedicos",
-                column: "IdTurno",
-                principalTable: "Turnos",
-                principalColumn: "IdTurno",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Direcciones_Personas_IdPersona",
-                table: "Direcciones",
-                column: "IdPersona",
-                principalTable: "Personas",
-                principalColumn: "IdPersona",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Facturas_Turnos_IdTurno",
-                table: "Facturas",
-                column: "IdTurno",
-                principalTable: "Turnos",
-                principalColumn: "IdTurno",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_HistoriasClinicas_Personas_IdPersona",
-                table: "HistoriasClinicas",
-                column: "IdPersona",
-                principalTable: "Personas",
-                principalColumn: "IdPersona",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_HorariosDisponibles_Medicos_IdMedico",
-                table: "HorariosDisponibles",
-                column: "IdMedico",
-                principalTable: "Medicos",
-                principalColumn: "IdMedico",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_LiquidacionesMedicos_Medicos_IdMedico",
-                table: "LiquidacionesMedicos",
-                column: "IdMedico",
-                principalTable: "Medicos",
-                principalColumn: "IdMedico",
-                onDelete: ReferentialAction.Cascade);
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Medicos_Personas_IdPersona",
-                table: "Medicos",
-                column: "IdPersona",
-                principalTable: "Personas",
-                principalColumn: "IdPersona",
-                onDelete: ReferentialAction.Cascade);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Medicos_Personas_IdPersona",
-                table: "Medicos");
-
             migrationBuilder.DropTable(
                 name: "DetallesLiquidacionesMedicos");
 
@@ -658,10 +628,10 @@ namespace ClinicaSepriceAPI.Migrations
                 name: "HorariosDisponibles");
 
             migrationBuilder.DropTable(
-                name: "Personas");
+                name: "Medicos");
 
             migrationBuilder.DropTable(
-                name: "Medicos");
+                name: "Personas");
         }
     }
 }
