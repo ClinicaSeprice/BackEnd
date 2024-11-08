@@ -62,7 +62,6 @@ namespace ClinicaSepriceAPI.Services
             catch (Exception ex)
             {
                 throw;
-
             }
         }
 
