@@ -19,25 +19,26 @@ namespace ClinicaSepriceAPI.Services
         public async Task<bool> RegistrarTurnoAsync(TurnoDTO turnoDto)
         {
             // Verificar que el paciente existe
-            var existePaciente = await _context.Personas.AnyAsync(p => p.IdPersona == turnoDto.IdPersona);
+            bool existePaciente = await _context.Personas.AnyAsync((Persona p) => p.IdPersona == turnoDto.IdPersona);
             if (!existePaciente)
             {
                 throw new TurnoException(TurnoException.PacienteNoExiste);
-            }      
+            }
 
-            var existeMedico = await _context.Medicos.AnyAsync(m => m.IdMedico == turnoDto.IdMedico);
+            bool existeMedico = await _context.Medicos.AnyAsync((Medico m) => m.IdMedico == turnoDto.IdMedico);
             if (!existeMedico)
             {
                 throw new TurnoException(TurnoException.MedicoNoExiste);
-            }  
+            }
 
-            var existeHorario = await _context.HorariosDisponibles.AnyAsync(h => h.IdHorario == turnoDto.IdHorario);
-            if (!existeHorario)
+            HorarioDisponible? horarioDisponible = await _context.HorariosDisponibles.FirstOrDefaultAsync((HorarioDisponible h) => h.IdHorario == turnoDto.IdHorario);
+
+            if (horarioDisponible == null || horarioDisponible.Estado == true)
             {
                 throw new TurnoException(TurnoException.HorarioNoDisponible);
-            } 
-            
-            var turno = new Turno
+            }
+
+            Turno turno = new Turno
             {
                 IdPersona = turnoDto.IdPersona,
                 IdMedico = turnoDto.IdMedico,
@@ -50,8 +51,14 @@ namespace ClinicaSepriceAPI.Services
             };
 
             _context.Turnos.Add(turno);
+
+            // Actualizar el estado de HorarioDisponible a ocupado
+            horarioDisponible.Estado = true;
+            _context.HorariosDisponibles.Update(horarioDisponible);
+
             return await _context.SaveChangesAsync() > 0;
         }
+
 
         public async Task<IEnumerable<TurnoDetalleDTO>> ObtenerTodosLosTurnosAsync()
         {
