@@ -41,5 +41,22 @@ namespace ClinicaSepriceAPI.Controllers
             IEnumerable<TurnoDetalleDTO> turnos = await _turnoService.ObtenerTodosLosTurnosAsync();
             return Ok(turnos);
         }
+
+        [HttpDelete("AnularTurno/{idTurno}")]
+        public async Task<IActionResult> AnularTurno(int idTurno)
+        {
+            try
+            {
+                bool result = await _turnoService.AnularTurnoAsync(idTurno);
+                if (!result)
+                    return StatusCode(500, "Error al anular el turno.");
+
+                return Ok("Turno anulado con éxito.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 }

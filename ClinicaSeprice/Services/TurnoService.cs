@@ -93,5 +93,29 @@ namespace ClinicaSepriceAPI.Services
                 })
                 .ToListAsync();
         }
+
+        public async Task<bool> AnularTurnoAsync(int idTurno)
+        {
+            
+            Turno turno = await _context.Turnos.Include(t => t.HorarioDisponible).FirstOrDefaultAsync(t => t.IdTurno == idTurno);
+
+            if (turno == null)
+            {
+                throw new TurnoException(TurnoException.TurnoNoExiste);
+            }
+           
+            turno.Estado = "Anulado";
+            turno.Baja = true;
+            turno.FechaModificacion = DateTime.Now;
+            
+            if (turno.HorarioDisponible != null)
+            {
+                turno.HorarioDisponible.Estado = false;
+                _context.HorariosDisponibles.Update(turno.HorarioDisponible);
+            }
+
+            _context.Turnos.Update(turno);
+            return await _context.SaveChangesAsync() > 0;
+        }
     }
 }
