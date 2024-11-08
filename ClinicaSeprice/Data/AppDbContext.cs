@@ -60,10 +60,11 @@ namespace ClinicaSepriceAPI.Data
                         .OnDelete(DeleteBehavior.Cascade);
 
             // Relación uno a uno entre Persona y Personal
-            modelBuilder.Entity<Personal>()
-                .HasOne(pe => pe.Persona)
-                .WithOne(p => p.Personal)
-                .HasForeignKey<Personal>(pe => pe.IdPersona);
+            modelBuilder.Entity<Persona>()
+                        .HasOne(p => p.Medico)
+                        .WithOne(m => m.Persona)
+                        .HasForeignKey<Medico>(m => m.IdPersona)
+                        .OnDelete(DeleteBehavior.Cascade);
 
             // Relación uno a uno entre Persona y Usuario
             modelBuilder.Entity<Usuario>()
