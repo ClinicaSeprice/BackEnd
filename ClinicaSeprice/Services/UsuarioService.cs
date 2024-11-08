@@ -64,8 +64,6 @@ namespace ClinicaSepriceAPI.Services
                 throw new AutenticacionFallidaException(AutenticacionFallidaException.userPassIncorrecto);
 
             return TokenHelper.GenerarToken(usuario, _configuration);
-        } 
-
-
+        }
     }
 }

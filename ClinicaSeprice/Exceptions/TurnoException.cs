@@ -7,6 +7,7 @@
         public static readonly string MedicoNoExiste = "Medico ingresado no existe.";
         public static readonly string HorarioNoDisponible = "Horario no disponible.";
         public static readonly string TurnoNoExiste = "El turno no existe.";
+        public static readonly string TurnoSeEncuentraAnulado = "El turno ya está anulado y no puede ser modificado.";
         public TurnoException() : base(ErrorTurno)
         {
         }

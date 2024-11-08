@@ -103,7 +103,12 @@ namespace ClinicaSepriceAPI.Services
             {
                 throw new TurnoException(TurnoException.TurnoNoExiste);
             }
-           
+
+            if (turno.Estado == "Anulado" || turno.Baja)
+            {
+                throw new TurnoException(TurnoException.TurnoSeEncuentraAnulado);
+            }
+
             turno.Estado = "Anulado";
             turno.Baja = true;
             turno.FechaModificacion = DateTime.Now;

@@ -42,7 +42,7 @@ namespace ClinicaSepriceAPI.Controllers
             return Ok(turnos);
         }
 
-        [HttpDelete("AnularTurno/{idTurno}")]
+        [HttpPut("AnularTurno/{idTurno}")]
         public async Task<IActionResult> AnularTurno(int idTurno)
         {
             try

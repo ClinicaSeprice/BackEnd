@@ -6,7 +6,6 @@ using ClinicaSepriceAPI.Models;
 using Microsoft.EntityFrameworkCore;
 using AutoMapper;
 
-
 namespace ClinicaSepriceAPI.Services
 
 {
