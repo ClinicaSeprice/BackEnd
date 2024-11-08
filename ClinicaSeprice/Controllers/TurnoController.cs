@@ -1,8 +1,6 @@
 ﻿using ClinicaSepriceAPI.DTOs;
 using ClinicaSepriceAPI.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
 namespace ClinicaSepriceAPI.Controllers
 {
@@ -25,7 +23,7 @@ namespace ClinicaSepriceAPI.Controllers
 
             try
             {
-                var result = await _turnoService.RegistrarTurnoAsync(turnoDto);
+                bool result = await _turnoService.RegistrarTurnoAsync(turnoDto);
                 if (!result)
                     return StatusCode(500, "Error al registrar el turno.");
 
@@ -40,7 +38,7 @@ namespace ClinicaSepriceAPI.Controllers
         [HttpGet("ObtenerTodosLosTurnos")]
         public async Task<ActionResult<IEnumerable<TurnoDetalleDTO>>> ObtenerTodosLosTurnos()
         {
-            var turnos = await _turnoService.ObtenerTodosLosTurnosAsync();
+            IEnumerable<TurnoDetalleDTO> turnos = await _turnoService.ObtenerTodosLosTurnosAsync();
             return Ok(turnos);
         }
     }
