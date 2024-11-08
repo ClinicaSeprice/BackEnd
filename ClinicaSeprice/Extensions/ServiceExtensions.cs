@@ -62,12 +62,11 @@ namespace ClinicaSepriceAPI
             //Inyectar dependencia de Obras Sociales
             services.AddScoped<IObraSocialService, ObraSocialService>();
             services.AddScoped<IPlanObraSocialService, PlanObraSocialService>();
-
-
             //Inyectar dependencia de Historia Clínica
             services.AddScoped<IHistoriaClinicaService, HistoriaClinicaService>();
 
-            //Inyectar dependencia de metodos de pagos
+            services.AddScoped<IHorarioDisponibleService, HorarioDisponibleService>();          
+
             services.AddScoped<IMetodoDePagosService, MetodoDePagoService>();
 
 
