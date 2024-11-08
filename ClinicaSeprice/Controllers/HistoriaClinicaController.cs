@@ -37,7 +37,7 @@ namespace ClinicaSepriceAPI.Controllers
             }
         }
 
-        [HttpGet("buscarHistoriaClinicaPorId/{id}")]
+        [HttpGet("obtenerHistoriaClinicaPorId/{id}")]
         public async Task<IActionResult> ObtenerHistoriaClinicaPorId(int id)
         {
             try
