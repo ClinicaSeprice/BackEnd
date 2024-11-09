@@ -22,13 +22,13 @@ namespace ClinicaSepriceAPI.Services
         }
 
         //Metodo para registra una liquidacion de honorarios a los medicos
-        public async Task<LiqMedCrearDTO> CrearLiquidacionAsync(LiqMedCrearDTO liquidacionDTO)
+        public async Task<bool> CrearLiquidacionAsync(LiqMedCrearDTO liquidacionDTO)
         {
-            var liquidacion = _mapper.Map<LiquidacionMedico>(liquidacionDTO);
+            //var liquidacion = _mapper.Map<LiquidacionMedico>(liquidacionDTO);
 
             var medico = await _appDbContext.Medicos
                 .Include(m => m.Persona)
-                .FirstOrDefaultAsync(m => m.IdPersona == liquidacionDTO.IdMedico);
+                .FirstOrDefaultAsync(m => m.IdMedico == liquidacionDTO.IdMedico);
 
             if (medico == null)
             {
@@ -36,21 +36,27 @@ namespace ClinicaSepriceAPI.Services
             }
 
             var metodoPago = await _appDbContext.MetodosPago
-                .FirstOrDefaultAsync(m => m.IdMetodoPago == liquidacionDTO.IdMetodoDePago);
+                .FirstOrDefaultAsync(m => m.IdMetodoPago == liquidacionDTO.IdMetodoPago);
 
             if(metodoPago == null)
             {
-                throw new KeyNotFoundException($"No existe el metodo buscado: {liquidacionDTO.IdMetodoDePago}");
+                throw new KeyNotFoundException($"No existe el metodo buscado: {liquidacionDTO.IdMetodoPago}");
             }
 
-            liquidacion.FechaLiquidacion = DateTime.Now;
-            liquidacion.Medico = medico;
-            liquidacion.MetodoPago = metodoPago;
+            var nuevaLiquidacion = new LiquidacionMedico
+            {
+                IdMedico = liquidacionDTO.IdMedico,
+                Porcentaje = liquidacionDTO.Porcentaje,
+                MontoTotal = liquidacionDTO.MontoTotal,
+                FechaLiquidacion = DateTime.Now,
+                IdMetodoPago = liquidacionDTO.IdMetodoPago,
+                NumeroTransaccion = liquidacionDTO.NumeroTransaccion
+            };
 
-            await _appDbContext.LiquidacionesMedicos.AddAsync(liquidacion);
+            await _appDbContext.LiquidacionesMedicos.AddAsync(nuevaLiquidacion);
             await _appDbContext.SaveChangesAsync();
 
-            return _mapper.Map<LiqMedCrearDTO>(liquidacion);
+            return true;
 
         }
         

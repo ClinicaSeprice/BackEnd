@@ -12,10 +12,10 @@ namespace ClinicaSepriceAPI.DTOs
         public decimal Porcentaje { get; set; }
         public decimal MontoTotal { get; set; }
         [Required]
-        public int IdMetodoDePago { get; set; }
-        public string NumeroTransaccion { get; set; }
-        public Medico Medico { get; set; }
-        public MetodoPago MedodoPago { get; set; }  
+        public int IdMetodoPago { get; set; }
+        public string NumeroTransaccion {   get; set; }
+        //public Medico Medico { get; set; }
+        //public MetodoPago MedodoPago { get; set; }  
 
     }
 }

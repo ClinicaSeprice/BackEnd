@@ -4,7 +4,7 @@ namespace ClinicaSepriceAPI.Interfaces
 {
     public interface ILiquidacionMedicoService
     {
-        Task<LiqMedCrearDTO> CrearLiquidacionAsync(LiqMedCrearDTO liquidacionDTO);
+        Task<bool> CrearLiquidacionAsync(LiqMedCrearDTO liquidacionDTO);
         
 
     }

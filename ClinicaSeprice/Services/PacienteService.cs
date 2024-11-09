@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿    using AutoMapper;
 using ClinicaSepriceAPI.Data;
 using ClinicaSepriceAPI.DTOs;
 using ClinicaSepriceAPI.Exceptions;

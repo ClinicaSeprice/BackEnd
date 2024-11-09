@@ -29,10 +29,8 @@ namespace ClinicaSepriceAPI.Controllers
 
                 var resultado = await _liquidacionMedicoService.CrearLiquidacionAsync(liquidacionDTO);
 
-                return CreatedAtAction(
-                    nameof(CrearLiquidacion),
-                    resultado
-                );
+                return Ok(new { message = "Alta liquidacion registrada con éxito" });
+                
             }
             catch (KeyNotFoundException ex)
             {
