@@ -27,13 +27,13 @@ namespace ClinicaSepriceAPI.Controllers
                 var registroExitoso = await _HistoriaClinicaService.RegistrarHistoriaClinicaAsync(HistoriaClinicaDTO);
                 if (!registroExitoso)
                 {
-                    return BadRequest("El registro de la historia clinica falló.");
+                    return BadRequest(new {message = "El registro de la historia clinica falló."});
                 }
-                return Ok(new { message = "Historia clínica registrada exitosamente." });                
+                return Ok(new { message = "Historia clínica registrada exitosamente." });
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new {message = ex.Message});
             }
         }
 
@@ -51,7 +51,7 @@ namespace ClinicaSepriceAPI.Controllers
 
                 if (HistoriaClinica == null)
                 {
-                    return NotFound($"No se encontró ninguna historia clínica con Id {id}");
+                    return NotFound(new { message = "No se encontró ninguna historia clínica con Id " + id });
                 }
                 return Ok(HistoriaClinica);
 
@@ -60,7 +60,7 @@ namespace ClinicaSepriceAPI.Controllers
             catch
             (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
     }

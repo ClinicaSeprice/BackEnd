@@ -5,6 +5,7 @@
         public static readonly string UsuarioYaExiste = "El usuario ya existe";
         public static readonly string PersonaYaExisteConDNI = "Ya existe una persona con este DNI";
         public static readonly string PacienteYaExisteConDNI = "Ya existe un paciente con ese DNI";
+        public static readonly string PacienteNoExiste= "No existe un paciente con ese DNI:  ";
         public UsuarioExisteException() : base(UsuarioYaExiste)
         {
         }

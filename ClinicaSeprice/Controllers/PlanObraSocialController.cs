@@ -25,14 +25,20 @@ namespace ClinicaSepriceAPI.Controllers
                 var registroExitoso = await _planObraSocialService.RegistrarPlanObraSocialAsync(planObraSocialDTO);
                 if (!registroExitoso)
                 {
-                    return BadRequest("El registro del plan en la obra social falló.");
+                    return BadRequest(new
+                    {
+                        message = "El registro del plan en la obra social falló."
+                    });
                 }                   
                 return Ok(new { message = "Plan en Obra Social registrado exitosamente." });
                 
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new
+                {
+                    message = ex.Message
+                });
             }
         }
     }

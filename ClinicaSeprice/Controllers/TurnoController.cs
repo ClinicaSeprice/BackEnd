@@ -27,7 +27,10 @@ namespace ClinicaSepriceAPI.Controllers
                 bool result = await _turnoService.RegistrarTurnoAsync(turnoDto);
                 if (!result)
                 {
-                    return StatusCode(500, "Error al registrar el turno.");
+                    return StatusCode(500, new
+                    {
+                        message = "Error al registrar el turno."
+                    });
                 }
                 return Ok(new { message = "Turno registrado con éxito." });                
             }
@@ -52,7 +55,10 @@ namespace ClinicaSepriceAPI.Controllers
                 bool result = await _turnoService.AnularTurnoAsync(idTurno);
                 if (!result)
                 {
-                    return StatusCode(500, "Error al anular el turno.");
+                    return StatusCode(500, new
+                    {
+                        message = "Error al anular el turno."
+                    });
                 }                   
                 return Ok(new { message = "Turno anulado con éxito." });               
             }
@@ -73,7 +79,10 @@ namespace ClinicaSepriceAPI.Controllers
                 bool result = await _turnoService.CambiarPrecioDeTurnosAsync(precioTurnoDto.NuevoPrecio);
                 if (!result)
                 {
-                    return StatusCode(500, "Error al cambiar el precio de los turnos.");
+                    return StatusCode(500, new
+                    {
+                        message = "Error al cambiar el precio de los turnos."
+                    });
                 }                   
                 return Ok(new { message = "Precio de los turnos actualizado exitosamente." });               
             }

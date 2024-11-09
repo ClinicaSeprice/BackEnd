@@ -24,14 +24,17 @@ namespace ClinicaSepriceAPI.Controllers
                 var altaMetodoDePagoExitoso = await _metodoDePagoService.RegistrarMetodoDePagoAsync(metodoDePagoDTO);
                 if (!altaMetodoDePagoExitoso)
                 {
-                    return BadRequest("El Alta del metodo de pago falló");
+                    return BadRequest(new { message = "El Alta del metodo de pago falló" });
                 }
                 return Ok(new { message = "Alta Metodo de Pago registrado con éxito" });
 
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new
+                {
+                    message = ex.Message
+                });
             }
         }
 
@@ -45,7 +48,10 @@ namespace ClinicaSepriceAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new
+                {
+                    message = ex.Message
+                });
             }
         }
     }

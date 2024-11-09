@@ -24,13 +24,16 @@ namespace ClinicaSepriceAPI.Controllers
                 var registroExitoso = await _medicoService.RegistrarMedicoAsync(medicoDto);
                 if (!registroExitoso)
                 {
-                    return BadRequest("El registro del médico falló.");
+                    return BadRequest(new { message = "El registro del médico falló." });
                 }                   
                 return Ok(new { message = "Médico registrado exitosamente." });               
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new
+                {
+                    message = ex.Message
+                });
             }
         }
 
@@ -44,7 +47,10 @@ namespace ClinicaSepriceAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new
+                {
+                    message = ex.Message
+                });
             }
         }
 

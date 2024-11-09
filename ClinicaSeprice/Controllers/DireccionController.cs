@@ -23,7 +23,7 @@ namespace ClinicaSepriceAPI.Controllers
             var direccionExitosa = await _direccionService.AgregarDireccionAsync(idPersona, direccionDto);
             if (!direccionExitosa)
             {
-                return BadRequest("No se pudo agregar la dirección.");
+                return BadRequest(new { message = "No se pudo agregar la dirección." });
             }
             return Ok(new { message = "Dirección agregada exitosamente." });            
         }
