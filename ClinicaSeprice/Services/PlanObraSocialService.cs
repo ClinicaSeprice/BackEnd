@@ -46,7 +46,8 @@ namespace ClinicaSepriceAPI.Services
                 .AsNoTracking()
                 .Select(p => new PlanObraSocialDTO
                 {
-                    IdPlan = p.IdPlan,                   
+                    IdPlan = p.IdPlan,
+                    IdObraSocial= p.IdObraSocial,
                     NombrePlan = p.NombrePlan,
                     Cobertura = p.Cobertura,
                     FechaAlta = p.FechaAlta

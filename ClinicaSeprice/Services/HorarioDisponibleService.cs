@@ -68,8 +68,9 @@ namespace ClinicaSepriceAPI.Services
                 .Where(h => h.IdMedico == id && !h.Baja)
                 .Include(h => h.Medico)
                 .Select(h => new HorarioDisponibleDTO
-                {
+                {                   
                     IdMedico = h.IdMedico,
+                    IdHorario=h.IdHorario,
                     NombreMedico = h.Medico.Persona.Nombre + " " + h.Medico.Persona.Apellido,
                     Fecha = h.Fecha,
                     HoraInicio = h.HoraInicio.ToString(@"hh\:mm"),

@@ -48,5 +48,30 @@ namespace ClinicaSepriceAPI.Controllers
                 return StatusCode(500, new { message = "Error inesperado: " + ex.Message });
             }
         }
+
+
+
+        [HttpGet("obtenerTodasLasFacturasDetalladas")]
+        public async Task<IActionResult> ObtenerTodasLasFacturasDetalladas()
+        {
+            try
+            {
+                var facturas = await _facturaService.ObtenerTodasLasFacturasDetalladasAsync();
+                return Ok(facturas);
+            }
+            catch (KeyNotFoundException ex)
+            {               
+                return NotFound(new { message = ex.Message });
+            }
+            catch (FacturaException ex)
+            {                
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {              
+                return StatusCode(500, new { message = "Ocurrió un error inesperado", error = ex.Message });
+            }
+        }
+
     }
 }
