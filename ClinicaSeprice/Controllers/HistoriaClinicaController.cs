@@ -29,7 +29,7 @@ namespace ClinicaSepriceAPI.Controllers
                 {
                     return BadRequest("El registro de la historia clinica falló.");
                 }
-                return Ok("Historia clínica registrada exitosamente.");
+                return Ok(new { message = "Historia clínica registrada exitosamente." });                
             }
             catch (Exception ex)
             {

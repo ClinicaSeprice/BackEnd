@@ -29,7 +29,8 @@ namespace ClinicaSepriceAPI.Controllers
                 {
                     return BadRequest("El registro de la obra social falló.");
                 }
-                return Ok("Obra Social registrada exitosamente.");
+                return Ok(new { message = "Obra Social registrada exitosamente." });
+               
             }
             catch (Exception ex)
             {

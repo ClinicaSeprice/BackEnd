@@ -10,6 +10,7 @@ namespace ClinicaSepriceAPI.Controllers
     {
         private readonly ITurnoService _turnoService;
 
+
         public TurnoController(ITurnoService turnoService)
         {
             _turnoService = turnoService;
@@ -25,9 +26,10 @@ namespace ClinicaSepriceAPI.Controllers
             {
                 bool result = await _turnoService.RegistrarTurnoAsync(turnoDto);
                 if (!result)
+                {
                     return StatusCode(500, "Error al registrar el turno.");
-
-                return Ok("Turno registrado con éxito.");
+                }
+                return Ok(new { message = "Turno registrado con éxito." });                
             }
             catch (Exception ex)
             {
@@ -49,13 +51,35 @@ namespace ClinicaSepriceAPI.Controllers
             {
                 bool result = await _turnoService.AnularTurnoAsync(idTurno);
                 if (!result)
+                {
                     return StatusCode(500, "Error al anular el turno.");
-
-                return Ok("Turno anulado con éxito.");
+                }                   
+                return Ok(new { message = "Turno anulado con éxito." });               
             }
             catch (Exception ex)
             {
                 return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpPost("CambiarPrecio")]
+        public async Task<IActionResult> CambiarPrecio([FromBody] PrecioTurnoDTO precioTurnoDto)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                bool result = await _turnoService.CambiarPrecioDeTurnosAsync(precioTurnoDto.NuevoPrecio);
+                if (!result)
+                {
+                    return StatusCode(500, "Error al cambiar el precio de los turnos.");
+                }                   
+                return Ok(new { message = "Precio de los turnos actualizado exitosamente." });               
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex.Message });
             }
         }
     }

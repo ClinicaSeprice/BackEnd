@@ -23,9 +23,24 @@ namespace ClinicaSepriceAPI.Controllers
             {
                 var registroExitoso = await _medicoService.RegistrarMedicoAsync(medicoDto);
                 if (!registroExitoso)
+                {
                     return BadRequest("El registro del médico falló.");
+                }                   
+                return Ok(new { message = "Médico registrado exitosamente." });               
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
 
-                return Ok("Médico registrado exitosamente.");
+        [HttpGet("obtenerMedicos")]
+        public async Task<IActionResult> ObtenerMedicos()
+        {
+            try
+            {
+                var medicos = await _medicoService.ObtenerMedicosAsync();
+                return Ok(medicos);
             }
             catch (Exception ex)
             {

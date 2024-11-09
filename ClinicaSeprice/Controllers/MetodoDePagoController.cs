@@ -26,7 +26,22 @@ namespace ClinicaSepriceAPI.Controllers
                 {
                     return BadRequest("El Alta del metodo de pago falló");
                 }
-                return Ok("Alta Metodo de Pago registrado con éxito");
+                return Ok(new { message = "Alta Metodo de Pago registrado con éxito" });
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("obtenerMetodosDePago")]
+        public async Task<IActionResult> ObtenerMetodosDePago()
+        {
+            try
+            {
+                var metodosDePago = await _metodoDePagoService.ObtenerMetodosDePagoAsync();
+                return Ok(metodosDePago);
             }
             catch (Exception ex)
             {

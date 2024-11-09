@@ -15,6 +15,8 @@ namespace ClinicaSepriceAPI.Models
         [StringLength(100)]
         public string NombrePlan { get; set; }
 
+        [Required]
+        [Column(TypeName = "decimal(10,2)")]
         public decimal Cobertura { get; set; }
 
         public bool Baja {  get; set; } = false;

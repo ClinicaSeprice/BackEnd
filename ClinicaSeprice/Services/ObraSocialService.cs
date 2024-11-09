@@ -28,9 +28,9 @@ namespace ClinicaSepriceAPI.Services
                 throw new ObraSocialException(ObraSocialException.ObraSocialYaExiste);
 
             var nuevaObrasocial = new ObraSocial
-            {
-                IdObraSocial = obraSocialDTO.IdObraSocial,
+            {                
                 Nombre = obraSocialDTO.Nombre,
+                Cuit=  obraSocialDTO.Cuit,
                 FechaAlta = DateTime.Now,
             };
 

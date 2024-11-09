@@ -14,8 +14,12 @@ namespace ClinicaSepriceAPI.Models
         [Required]
         public int IdTurno { get; set; }
 
+        [Required]
+        [Column(TypeName = "decimal(10,2)")]
         public decimal MontoTurno { get; set; }
 
+        [Required]
+        [Column(TypeName = "decimal(10,2)")]
         public decimal MontoLiquidado { get; set; }
 
         [ForeignKey("IdLiquidacion")]

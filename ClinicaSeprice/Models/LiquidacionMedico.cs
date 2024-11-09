@@ -14,8 +14,12 @@ namespace ClinicaSepriceAPI.Models
         [Required]
         public DateTime FechaLiquidacion { get; set; } = DateTime.Now;
 
+        [Required]
+        [Column(TypeName = "decimal(10,2)")]
         public decimal Porcentaje { get; set; }
 
+        [Required]
+        [Column(TypeName = "decimal(10,2)")]
         public decimal MontoTotal { get; set; }
 
         [Required]

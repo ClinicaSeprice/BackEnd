@@ -25,7 +25,8 @@ namespace ClinicaSepriceAPI.Controllers
                 if (!registroExitoso)
                     return BadRequest("El registro de paciente falló.");
 
-                return Ok("Paciente registrado exitosamente.");
+                return Ok(new { message = "Paciente registrado exitosamente." });
+
             }
             catch (Exception ex)
             {
@@ -47,6 +48,20 @@ namespace ClinicaSepriceAPI.Controllers
             }
             catch
             (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("obtenerPacientesConDatosCompletos")]
+        public async Task<IActionResult> ObtenerPacientesConDatosCompletos()
+        {
+            try
+            {
+                var pacientes = await _pacienteService.ObtenerPacientesConDatosCompletosAsync();
+                return Ok(pacientes);
+            }
+            catch (Exception ex)
             {
                 return BadRequest(ex.Message);
             }

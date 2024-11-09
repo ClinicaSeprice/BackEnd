@@ -4,6 +4,7 @@ using ClinicaSepriceAPI.Exceptions;
 using ClinicaSepriceAPI.Helpers;
 using ClinicaSepriceAPI.Interfaces;
 using ClinicaSepriceAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClinicaSepriceAPI.Services
 {
@@ -59,8 +60,27 @@ namespace ClinicaSepriceAPI.Services
             _dbContext.Medicos.Add(nuevoMedico);
             await _dbContext.SaveChangesAsync();
             return true;
-
-
         }
+
+        public async Task<List<MedicoDTO>> ObtenerMedicosAsync()
+        {
+            var medicos = await _dbContext.Medicos
+                .Select(m => new MedicoDTO
+                {
+                    Nombre = m.Persona.Nombre,
+                    Apellido = m.Persona.Apellido,
+                    Dni = m.Persona.Dni,
+                    Email = m.Persona.Email,
+                    Telefono = m.Persona.Telefono,
+                    FechaNacimiento = m.Persona.FechaNacimiento,
+                    Legajo = m.Legajo,
+                    Especialidad = m.Especialidad,
+                    FechaAlta = m.FechaAlta
+                })
+                .ToListAsync();
+
+            return medicos;
+        }
+
     }
 }

@@ -4,6 +4,7 @@ using ClinicaSepriceAPI.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClinicaSepriceAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241109000802_Initial")]
+    partial class Initial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -37,10 +40,10 @@ namespace ClinicaSepriceAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("MontoLiquidado")
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<decimal>("MontoTurno")
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.HasKey("IdDetalle");
 
@@ -152,7 +155,7 @@ namespace ClinicaSepriceAPI.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdHistoria"));
 
                     b.Property<decimal>("Altura")
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<string>("Antecedentes")
                         .HasColumnType("longtext");
@@ -170,10 +173,10 @@ namespace ClinicaSepriceAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Imc")
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<decimal>("Peso")
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<string>("Tratamientos")
                         .HasColumnType("longtext");
@@ -243,13 +246,13 @@ namespace ClinicaSepriceAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("MontoTotal")
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.Property<string>("NumeroTransaccion")
                         .HasColumnType("longtext");
 
                     b.Property<decimal>("Porcentaje")
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.HasKey("IdLiquidacion");
 
@@ -502,7 +505,7 @@ namespace ClinicaSepriceAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Porcentaje")
-                        .HasColumnType("decimal(10,2)");
+                        .HasColumnType("decimal(65,30)");
 
                     b.HasKey("IdPorcentaje");
 

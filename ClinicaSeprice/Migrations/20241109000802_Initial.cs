@@ -39,7 +39,7 @@ namespace ClinicaSepriceAPI.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Nombre = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cuit = table.Column<int>(type: "int", nullable: false),
+                    Cuit = table.Column<long>(type: "bigint", nullable: false),
                     baja = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     FechaAlta = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     FechaModificacion = table.Column<DateTime>(type: "datetime(6)", nullable: false)
@@ -77,6 +77,24 @@ namespace ClinicaSepriceAPI.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "PreciosTurnos",
+                columns: table => new
+                {
+                    IdPrecio = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Precio = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    Activo = table.Column<bool>(type: "tinyint(1)", nullable: false),
+                    FechaAlta = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    FechaModificacion = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    FechaBaja = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PreciosTurnos", x => x.IdPrecio);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Roles",
                 columns: table => new
                 {
@@ -103,7 +121,7 @@ namespace ClinicaSepriceAPI.Migrations
                     IdObraSocial = table.Column<int>(type: "int", nullable: false),
                     NombrePlan = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Cobertura = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    Cobertura = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     Baja = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     FechaAlta = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     FechaModificacion = table.Column<DateTime>(type: "datetime(6)", nullable: false)
@@ -389,6 +407,7 @@ namespace ClinicaSepriceAPI.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Notas = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
+                    PrecioTurno = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     Baja = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     FechaCreacion = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     FechaModificacion = table.Column<DateTime>(type: "datetime(6)", nullable: false)
@@ -457,8 +476,8 @@ namespace ClinicaSepriceAPI.Migrations
                     IdMetodoPago = table.Column<int>(type: "int", nullable: false),
                     NumeroTransaccion = table.Column<string>(type: "longtext", nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    MontoTotal = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
-                    MontoPaciente = table.Column<decimal>(type: "decimal(65,30)", nullable: false),
+                    MontoTotal = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
+                    MontoPaciente = table.Column<decimal>(type: "decimal(10,2)", nullable: false),
                     FechaPago = table.Column<DateTime>(type: "datetime(6)", nullable: false)
                 },
                 constraints: table =>
@@ -602,6 +621,9 @@ namespace ClinicaSepriceAPI.Migrations
 
             migrationBuilder.DropTable(
                 name: "PorcentajesPagoMedicos");
+
+            migrationBuilder.DropTable(
+                name: "PreciosTurnos");
 
             migrationBuilder.DropTable(
                 name: "Usuarios");
