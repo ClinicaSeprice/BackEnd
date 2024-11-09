@@ -6,5 +6,6 @@ namespace ClinicaSepriceAPI.Interfaces
     {
         Task<bool> RegistrarObraSocialAsync(ObraSocialDTO obraSocialDTO);
         Task<IEnumerable<ObraSocialDTO>> ObtenerObraSocialPorIdAsync(int id);
+        Task<IEnumerable<ObraSocialDTO>> ObtenerTodasLasObrasSocialesAsync();
     }
 }

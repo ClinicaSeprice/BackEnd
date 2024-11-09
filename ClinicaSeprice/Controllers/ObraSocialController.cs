@@ -60,5 +60,12 @@ namespace ClinicaSepriceAPI.Controllers
                 });
             }
         }
+
+        [HttpGet("obtenerTodasLasObrasSociales")]
+        public async Task<IActionResult> ObtenerTodasLasObrasSociales()
+        {
+            var obrasSociales = await _obraSocialService.ObtenerTodasLasObrasSocialesAsync();
+            return Ok(obrasSociales);
+        }
     }
 }

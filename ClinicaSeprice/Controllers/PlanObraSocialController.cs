@@ -41,6 +41,21 @@ namespace ClinicaSepriceAPI.Controllers
                 });
             }
         }
+
+        [HttpGet("obtenerPlanesPorObraSocial/{idObraSocial}")]
+        public async Task<IActionResult> ObtenerPlanesPorObraSocial(int idObraSocial)
+        {
+            try
+            {
+                var planes = await _planObraSocialService.ObtenerPlanesPorIdObraSocialAsync(idObraSocial);
+                return Ok(planes);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
     }
 
 }

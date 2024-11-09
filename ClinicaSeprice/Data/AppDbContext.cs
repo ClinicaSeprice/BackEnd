@@ -28,7 +28,6 @@ namespace ClinicaSepriceAPI.Data
         public DbSet<PorcentajePagoMedico> PorcentajesPagoMedicos { get; set; }
         public DbSet<LiquidacionMedico> LiquidacionesMedicos { get; set; }
         public DbSet<DetalleLiquidacionMedico> DetallesLiquidacionesMedicos { get; set; }
-
         public DbSet<PrecioTurno> PreciosTurnos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

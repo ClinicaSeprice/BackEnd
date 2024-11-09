@@ -9,5 +9,6 @@ namespace ClinicaSepriceAPI.Interfaces
         Task<IEnumerable<TurnoDetalleDTO>> ObtenerTodosLosTurnosAsync();
         Task<bool> AnularTurnoAsync(int idTurno);
         Task<bool> CambiarPrecioDeTurnosAsync(decimal nuevoPrecio);
+        Task<PrecioTurnoDTO> ObtenerPrecioActualActivoAsync();
     }
 }

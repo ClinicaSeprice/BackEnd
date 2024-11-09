@@ -91,5 +91,17 @@ namespace ClinicaSepriceAPI.Controllers
                 return StatusCode(500, new { message = ex.Message });
             }
         }
+
+        [HttpGet("obtenerPrecioActual")]
+        public async Task<IActionResult> ObtenerPrecioActual()
+        {
+            var precioActual = await _turnoService.ObtenerPrecioActualActivoAsync();
+            if (precioActual == null)
+            {
+                return NotFound(new { message = "No hay un precio de turno activo en este momento." });
+            }
+            return Ok(precioActual);
+        }
+
     }
 }
