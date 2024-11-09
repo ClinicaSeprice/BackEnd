@@ -67,6 +67,7 @@ namespace ClinicaSepriceAPI.Services
             var medicos = await _dbContext.Medicos
                 .Select(m => new MedicoDTO
                 {
+                    IdMedico=m.IdMedico,
                     Nombre = m.Persona.Nombre,
                     Apellido = m.Persona.Apellido,
                     Dni = m.Persona.Dni,

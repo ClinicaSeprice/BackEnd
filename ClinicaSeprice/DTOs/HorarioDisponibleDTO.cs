@@ -4,6 +4,8 @@ namespace ClinicaSepriceAPI.DTOs
 {
     public class HorarioDisponibleDTO
     {
+        public int IdHorario { get; set; }
+
         [Required]
         public int IdMedico { get; set; }
 

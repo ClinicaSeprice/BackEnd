@@ -4,7 +4,6 @@ using ClinicaSepriceAPI.Exceptions;
 using ClinicaSepriceAPI.Interfaces;
 using ClinicaSepriceAPI.Models;
 using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
 
 namespace ClinicaSepriceAPI.Services
 {
@@ -55,5 +54,69 @@ namespace ClinicaSepriceAPI.Services
             _context.Facturas.Add(factura);
             return await _context.SaveChangesAsync() > 0;
         }
+
+
+        public async Task<IEnumerable<FacturaDetalleDTO>> ObtenerTodasLasFacturasDetalladasAsync()
+        {
+            return await _context.Facturas
+                .Include(f => f.Turno)
+                .ThenInclude(t => t.Persona)
+                .Include(f => f.Turno)
+                .ThenInclude(t => t.Medico)
+                .ThenInclude(m => m.Persona)
+                .Include(f => f.Turno)
+                .ThenInclude(t => t.HorarioDisponible)
+                .Include(f => f.PlanObraSocial)
+                .ThenInclude(po => po.ObraSocial)
+                .Include(f => f.MetodoPago)
+                .Select(f => new FacturaDetalleDTO
+                {
+                    // Información de la Factura
+                    IdFactura = f.IdFactura,
+                    NumeroTransaccion = f.NumeroTransaccion,
+                    MontoTotal = f.MontoTotal,
+                    MontoPaciente = f.MontoPaciente,
+                    FechaPago = f.FechaPago,
+
+                    // Información del Paciente
+                    IdPaciente = f.Turno.Persona.IdPersona,
+                    NombrePaciente = f.Turno.Persona.Nombre,
+                    ApellidoPaciente = f.Turno.Persona.Apellido,
+                    DniPaciente = f.Turno.Persona.Dni,
+
+                    // Información del Turno
+                    IdTurno = f.Turno.IdTurno,
+                    FechaTurno = f.Turno.HorarioDisponible.Fecha,
+                    Motivo = f.Turno.Motivo,
+                    Estado = f.Turno.Estado,
+                    PrecioTurno = f.Turno.PrecioTurno,
+                    NotasTurno = f.Turno.Notas,
+
+                    // Información del Horario del Turno
+                    FechaHorario = f.Turno.HorarioDisponible.Fecha,
+                    HoraInicio = f.Turno.HorarioDisponible.HoraInicio,
+                    HoraFin = f.Turno.HorarioDisponible.HoraFin,
+
+                    // Información del Médico
+                    IdMedico = f.Turno.Medico.IdMedico,
+                    NombreMedico = f.Turno.Medico.Persona.Nombre,
+                    ApellidoMedico = f.Turno.Medico.Persona.Apellido,
+                    EspecialidadMedico = f.Turno.Medico.Especialidad,
+
+                    // Información de la Obra Social y Plan de Obra Social
+                    IdObraSocial = f.PlanObraSocial.ObraSocial.IdObraSocial,
+                    NombreObraSocial = f.PlanObraSocial.ObraSocial.Nombre,
+                    IdPlanObraSocial = f.PlanObraSocial.IdPlan,
+                    NombrePlanObraSocial = f.PlanObraSocial.NombrePlan,
+                    Cobertura = f.PlanObraSocial.Cobertura,
+
+                    // Método de Pago
+                    IdMetodoPago = f.MetodoPago.IdMetodoPago,
+                    NombreMetodoPago = f.MetodoPago.Nombre
+                })
+                .ToListAsync();
+        }
+
+
     }
 }
