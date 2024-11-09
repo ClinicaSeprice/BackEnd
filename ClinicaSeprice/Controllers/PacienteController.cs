@@ -25,7 +25,7 @@ namespace ClinicaSepriceAPI.Controllers
                 if (!registroExitoso)
                     return BadRequest("El registro de paciente falló.");
 
-                return Ok("Paciente registrado exitosamente.");
+                return Ok(new { message = "Paciente registrado exitosamente." });
             }
             catch (Exception ex)
             {

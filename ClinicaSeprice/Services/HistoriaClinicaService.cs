@@ -13,27 +13,32 @@ namespace ClinicaSepriceAPI.Services
         private readonly AppDbContext _dbContext;
         private readonly IConfiguration _configuration;
 
+
         public HistoriaClinicaService(AppDbContext dbContext, IConfiguration configuration)
         {
             _dbContext = dbContext;
             _configuration = configuration;
         }
 
-        public Task<bool> ObtenerHistoriaClinicaPorIdAsync(int id)
+        public async Task<HistoriaClinica> ObtenerHistoriaClinicaPorIdAsync(int id)
         {
-            throw new NotImplementedException();
+            var historiaClinica = await _dbContext.HistoriasClinicas.FindAsync(id);
+            if (historiaClinica == null)
+            {
+                throw new HistoriaException(HistoriaException.historiaNoEncontrada);
+            }
+
+            return historiaClinica;
         }
 
-        public Task<bool> RegistrarHistoriaClinica(HistoriaClinicaDTO historiaClinicaDto)
-        {
-            throw new NotImplementedException();
-        }
+
+
 
         // Método para registrar una nueva HC
         public async Task<bool> RegistrarHistoriaClinicaAsync(HistoriaClinicaDTO historiaClinicaDto)
         {
             if (_dbContext.HistoriasClinicas.Any(u => u.IdHistoria == historiaClinicaDto.IdHistoria))
-                throw new HistoriaExisteException(HistoriaExisteException.historiaYaExiste);
+                throw new HistoriaException(HistoriaException.historiaYaExiste);
 
          
             var nuevaHistoriaClinica = new HistoriaClinica
@@ -57,5 +62,6 @@ namespace ClinicaSepriceAPI.Services
 
 
         }
+
     }
 }
