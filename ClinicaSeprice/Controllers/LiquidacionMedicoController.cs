@@ -1,0 +1,48 @@
+﻿using ClinicaSepriceAPI.DTOs;
+using ClinicaSepriceAPI.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+using ClinicaSepriceAPI.Services;
+
+namespace ClinicaSepriceAPI.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class LiquidacionMedicoController : ControllerBase
+    {
+        private readonly ILiquidacionMedicoService _liquidacionMedicoService;
+
+        public LiquidacionMedicoController(ILiquidacionMedicoService liquidacionMedicoService)
+        {
+            _liquidacionMedicoService = liquidacionMedicoService;
+        }
+
+        //Creacion de liquidacion de honorarios
+        [HttpPost("altaLiquidacion")]
+         public async Task<ActionResult<LiqMedResponseDTO>> CrearLiquidacion([FromBody] LiqMedCrearDTO liquidacionDTO)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);
+                }
+
+                var resultado = await _liquidacionMedicoService.CrearLiquidacionAsync(liquidacionDTO);
+
+                return CreatedAtAction(
+                    nameof(CrearLiquidacion),
+                    resultado
+                );
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(new { mensaje = ex.Message });
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { mensaje = "Error interno del servidor al procesar la liquidación" });
+            }
+        }
+
+    }
+}

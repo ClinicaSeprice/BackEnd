@@ -20,9 +20,13 @@ namespace ClinicaSepriceAPI.Profiles
             //Mapeo de los roles
             CreateMap<RolDTO, Rol>();
 
-            //Mapeo de las liquidaciones de honorarios médicos
-            CreateMap<LiquidacionesMedicosDTO, LiquidacionesMedicosDTO>()
-                .ForMember(dest => dest.FechaLiquidacion, opt => opt.MapFrom(src => DateTime.Now));
+            //Mapeo de la liquidacion de honorarios medicos
+            CreateMap<LiqMedCrearDTO, LiquidacionMedico>();
+            CreateMap<LiquidacionMedico, LiqMedResponseDTO>()
+                .ForMember(
+                dto => dto.NombreMedico,
+                otp => otp.MapFrom(src => $"{src.Medico.Persona.Nombre} {src.Medico.Persona.Apellido}"));
+                
         }
     }
 }

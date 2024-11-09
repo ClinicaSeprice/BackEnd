@@ -10,7 +10,7 @@ namespace ClinicaSepriceAPI.Exceptions
         {
         }
 
-        public MetodoDePagoException(string message) : base(message)
+        public MetodoDePagoException(string message) : base(MedotoDePagoNoExiste)
         {
         }
 
