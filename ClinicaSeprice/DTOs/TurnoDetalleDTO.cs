@@ -13,6 +13,7 @@ namespace ClinicaSepriceAPI.DTOs
         //Informacion de turno
         public int IdTurno { get; set; }
         public DateTime FechaTurno { get; set; }
+        public decimal PrecioTurno { get; set; }
         public string Motivo { get; set; }
         public string Estado { get; set; }
         public string Notas { get; set; }

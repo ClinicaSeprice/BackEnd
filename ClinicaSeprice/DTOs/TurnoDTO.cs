@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
+using System.Text.Json.Serialization;
 
 namespace ClinicaSepriceAPI.DTOs
 {
@@ -18,10 +19,15 @@ namespace ClinicaSepriceAPI.DTOs
         [StringLength(200)]
         public string Motivo { get; set; }
 
+        public decimal PrecioTurno { get; set; }
+
         [StringLength(100)]
-        public string Estado { get; set; } = "Pendiente"; 
+        public string Estado { get; set; } = "Ingresado"; 
 
         [StringLength(500)]
         public string Notas { get; set; }
+
+        [JsonIgnore]
+        public List<FacturaDTO> Facturas { get; set; }
     }
 }

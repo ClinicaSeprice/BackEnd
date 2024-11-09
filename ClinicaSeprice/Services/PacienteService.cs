@@ -65,5 +65,61 @@ namespace ClinicaSepriceAPI.Services
 
             }
         }
+
+        public async Task<List<DatosPacientesDTO>> ObtenerPacientesConDatosCompletosAsync()
+        {
+            var pacientes = await _dbContext.Personas
+                .Include(p => p.Direcciones)
+                .Include(p => p.Turnos)
+                .ThenInclude(t => t.Facturas)
+                .Include(p => p.HistoriaClinica)
+                .Select(p => new DatosPacientesDTO
+                {
+                    Nombre = p.Nombre,
+                    Apellido = p.Apellido,
+                    Dni = p.Dni,
+                    Email = p.Email,
+                    Telefono = p.Telefono,
+                    FechaNacimiento = p.FechaNacimiento,
+                    FechaRegistro = p.FechaRegistro,
+                    Direccion = new DireccionDto
+                    {
+                        Calle = p.Direcciones.FirstOrDefault().Calle,
+                        Numero = p.Direcciones.FirstOrDefault().Numero,
+                        Complemento = p.Direcciones.FirstOrDefault().Complemento,
+                        Ciudad = p.Direcciones.FirstOrDefault().Ciudad,
+                        Provincia = p.Direcciones.FirstOrDefault().Provincia,
+                        CodigoPostal = p.Direcciones.FirstOrDefault().CodigoPostal
+                    },
+                    Turnos = p.Turnos.Select(t => new TurnoDTO
+                    {
+                        Motivo = t.Motivo,
+                        PrecioTurno = t.PrecioTurno,
+                        Estado = t.Estado,
+                        Notas = t.Notas,
+                        Facturas = t.Facturas.Select(f => new FacturaDTO
+                        {
+                            NumeroTransaccion = f.NumeroTransaccion,
+                            MontoTotal = f.MontoTotal,
+                            MontoPaciente = f.MontoPaciente,
+                            FechaPago = f.FechaPago
+                        }).ToList()
+                    }).ToList(),
+                    HistoriaClinica = p.HistoriaClinica != null ? new HistoriaClinicaDTO
+                    {
+                        IdHistoria = p.HistoriaClinica.IdHistoria,                        
+                        Antecedentes = p.HistoriaClinica.Antecedentes,
+                        Diagnosticos = p.HistoriaClinica.Diagnosticos,
+                        Tratamientos = p.HistoriaClinica.Tratamientos,
+                        Peso = p.HistoriaClinica.Peso,
+                        Altura = p.HistoriaClinica.Altura,
+                        Imc = p.HistoriaClinica.Imc                      
+                    } : null
+                })
+                .ToListAsync();
+
+            return pacientes;
+        }
+
     }
 }

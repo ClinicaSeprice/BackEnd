@@ -18,13 +18,16 @@ namespace ClinicaSepriceAPI.Models
 
         public string Tratamientos { get; set; }
 
-        [Range(0, 999.999)]
+        [Required]
+        [Column(TypeName = "decimal(10,2)")]
         public decimal Peso { get; set; }
 
-        [Range(0, 999.99)]
+        [Required]
+        [Column(TypeName = "decimal(10,2)")]
         public decimal Altura { get; set; }
 
-        [Range(0, 99.99)]
+        [Required]
+        [Column(TypeName = "decimal(10,2)")]
         public decimal Imc { get; set; }
 
         [Required]

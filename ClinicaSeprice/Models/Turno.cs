@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClinicaSepriceAPI.Models
 {
@@ -22,6 +23,10 @@ namespace ClinicaSepriceAPI.Models
 
         public string Notas { get; set; }
 
+        [DisplayFormat(DataFormatString = "{0:F2}", ApplyFormatInEditMode = true)]
+        [Column(TypeName = "decimal(10,2)")]
+        public decimal PrecioTurno {  get; set; }
+
         public bool Baja { get; set; } = false;
 
         public DateTime FechaCreacion { get; set; }
@@ -34,5 +39,6 @@ namespace ClinicaSepriceAPI.Models
         public Persona Persona { get; set; }
 
         public ICollection<Factura> Facturas { get; set; }
+
     }
 }

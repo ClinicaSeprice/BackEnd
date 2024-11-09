@@ -19,23 +19,29 @@ namespace ClinicaSepriceAPI.Services
         public async Task<bool> RegistrarTurnoAsync(TurnoDTO turnoDto)
         {
             // Verificar que el paciente existe
-            bool existePaciente = await _context.Personas.AnyAsync((Persona p) => p.IdPersona == turnoDto.IdPersona);
+            bool existePaciente = await _context.Personas.AnyAsync(p => p.IdPersona == turnoDto.IdPersona);
             if (!existePaciente)
             {
                 throw new TurnoException(TurnoException.PacienteNoExiste);
             }
 
-            bool existeMedico = await _context.Medicos.AnyAsync((Medico m) => m.IdMedico == turnoDto.IdMedico);
+            bool existeMedico = await _context.Medicos.AnyAsync(m => m.IdMedico == turnoDto.IdMedico);
             if (!existeMedico)
             {
                 throw new TurnoException(TurnoException.MedicoNoExiste);
             }
 
-            HorarioDisponible? horarioDisponible = await _context.HorariosDisponibles.FirstOrDefaultAsync((HorarioDisponible h) => h.IdHorario == turnoDto.IdHorario);
-
+            HorarioDisponible? horarioDisponible = await _context.HorariosDisponibles.FirstOrDefaultAsync(h => h.IdHorario == turnoDto.IdHorario);
             if (horarioDisponible == null || horarioDisponible.Estado == true)
             {
                 throw new TurnoException(TurnoException.HorarioNoDisponible);
+            }
+
+            // Obtener el precio activo de la tabla PreciosTurnos
+            PrecioTurno precioActivo = await _context.PreciosTurnos.FirstOrDefaultAsync(p => p.Activo);
+            if (precioActivo == null)
+            {
+                throw new Exception("No hay un precio activo configurado para los turnos.");
             }
 
             Turno turno = new Turno
@@ -44,6 +50,7 @@ namespace ClinicaSepriceAPI.Services
                 IdMedico = turnoDto.IdMedico,
                 IdHorario = turnoDto.IdHorario,
                 Motivo = turnoDto.Motivo,
+                PrecioTurno = precioActivo.Precio,
                 Estado = turnoDto.Estado,
                 Notas = turnoDto.Notas,
                 FechaCreacion = DateTime.Now,
@@ -78,6 +85,7 @@ namespace ClinicaSepriceAPI.Services
                     FechaTurno = t.HorarioDisponible.Fecha,
                     Motivo = t.Motivo,
                     Estado = t.Estado,
+                    PrecioTurno= t.PrecioTurno,
                     Notas = t.Notas,
 
                     // Información del Horario
@@ -120,6 +128,29 @@ namespace ClinicaSepriceAPI.Services
             }
 
             _context.Turnos.Update(turno);
+            return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<bool> CambiarPrecioDeTurnosAsync(decimal nuevoPrecio)
+        {
+            // Desactivar el precio actualmente activo
+            var precioActual = await _context.PreciosTurnos.FirstOrDefaultAsync(p => p.Activo);
+            if (precioActual != null)
+            {
+                precioActual.Activo = false;
+                precioActual.FechaBaja = DateTime.Now;
+                _context.PreciosTurnos.Update(precioActual);
+            }
+
+            // Crear el nuevo precio y marcarlo como activo
+            var nuevoPrecioTurno = new PrecioTurno
+            {
+                Precio = nuevoPrecio,
+                Activo = true,
+                FechaAlta = DateTime.Now
+            };
+
+            _context.PreciosTurnos.Add(nuevoPrecioTurno);
             return await _context.SaveChangesAsync() > 0;
         }
     }

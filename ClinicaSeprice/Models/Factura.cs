@@ -20,8 +20,12 @@ namespace ClinicaSepriceAPI.Models
 
         public string NumeroTransaccion { get; set; }
 
+        [Required]
+        [Column(TypeName = "decimal(10,2)")]
         public decimal MontoTotal { get; set; }
 
+        [Required]
+        [Column(TypeName = "decimal(10,2)")]
         public decimal MontoPaciente { get; set; }
 
         public DateTime FechaPago { get; set; } = DateTime.Now;

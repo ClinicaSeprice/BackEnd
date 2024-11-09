@@ -27,7 +27,7 @@ namespace ClinicaSepriceAPI.Controllers
                 {
                     return BadRequest("El registro de rol falló.");
                 }
-                return Ok("Rol registrado exitosamente.");
+                return Ok(new { message = "Rol registrado exitosamente." });
             }
             catch (Exception ex)
             {

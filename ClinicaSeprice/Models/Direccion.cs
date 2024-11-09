@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClinicaSepriceAPI.Models
 {
@@ -8,6 +9,7 @@ namespace ClinicaSepriceAPI.Models
         public int IdDireccion { get; set; }
 
         [Required]
+        [ForeignKey("Persona")]
         public int IdPersona { get; set; }
 
         [Required]
@@ -34,7 +36,7 @@ namespace ClinicaSepriceAPI.Models
         public DateTime FechaAlta { get; set; } = DateTime.Now;
 
         public DateTime FechaModificacion { get; set; } = DateTime.Now;
-
+        
         public Persona Persona { get; set; }
     }
 }
