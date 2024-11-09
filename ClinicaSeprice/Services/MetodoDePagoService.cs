@@ -4,6 +4,7 @@ using ClinicaSepriceAPI.DTOs;
 using ClinicaSepriceAPI.Interfaces;
 using ClinicaSepriceAPI.Exceptions;
 using ClinicaSepriceAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClinicaSepriceAPI.Services
 {
@@ -37,6 +38,20 @@ namespace ClinicaSepriceAPI.Services
             _dbContext.MetodosPago.Add(nuevoMetodoDePago);
             await _dbContext.SaveChangesAsync();
             return true;
+        }
+
+        public async Task<List<MetodoDePagoDTO>> ObtenerMetodosDePagoAsync()
+        {
+            var metodosDePago = await _dbContext.MetodosPago
+                .Select(m => new MetodoDePagoDTO
+                {
+                    IdMetodoPago=m.IdMetodoPago,
+                    Nombre = m.Nombre,
+                    Habilitado = m.Habilitado
+                })
+                .ToListAsync();
+
+            return metodosDePago;
         }
     }
 }

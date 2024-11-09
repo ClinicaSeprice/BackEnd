@@ -24,13 +24,15 @@ namespace ClinicaSepriceAPI.Controllers
             {
                 var registroExitoso = await _usuarioService.RegistrarUsuarioAsync(registroDto);
                 if (!registroExitoso)
-                    return BadRequest("El registro de usuario falló.");
-
-                return Ok("Usuario registrado exitosamente.");
+                {
+                    return BadRequest( new { message = "El registro de usuario falló." });
+                }                   
+                return Ok(new { message = "Usuario registrado exitosamente." });
+               
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -45,7 +47,7 @@ namespace ClinicaSepriceAPI.Controllers
             }
             catch (Exception ex)
             {
-                return Unauthorized(ex.Message);
+                return Unauthorized(new { message = ex.Message });
             }
         }
     }

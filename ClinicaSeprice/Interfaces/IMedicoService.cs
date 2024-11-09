@@ -5,7 +5,7 @@ namespace ClinicaSepriceAPI.Interfaces
     public interface IMedicoService
     {
         Task<bool> RegistrarMedicoAsync(MedicoDTO medicoDto);
-       
 
+        Task<List<MedicoDTO>> ObtenerMedicosAsync();
     }
 }

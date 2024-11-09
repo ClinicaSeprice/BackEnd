@@ -1,10 +1,10 @@
-﻿using ClinicaSepriceAPI.Data;
+﻿using AutoMapper;
+using ClinicaSepriceAPI.Data;
 using ClinicaSepriceAPI.DTOs;
 using ClinicaSepriceAPI.Exceptions;
 using ClinicaSepriceAPI.Interfaces;
 using ClinicaSepriceAPI.Models;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper;
 
 namespace ClinicaSepriceAPI.Services
 
@@ -15,7 +15,7 @@ namespace ClinicaSepriceAPI.Services
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
 
-        public PacienteService(AppDbContext dbContext, IConfiguration configuration, 
+        public PacienteService(AppDbContext dbContext, IConfiguration configuration,
             IMapper mapper)
         {
             _dbContext = dbContext;
@@ -50,12 +50,12 @@ namespace ClinicaSepriceAPI.Services
         {
             try
             {
-                var personaBuscada = await _dbContext.Personas.AsNoTracking()
+                var personaBuscada = await _dbContext.Personas
                     .Where(p => p.Dni == dni).ToListAsync();
 
                 if (personaBuscada == null || !personaBuscada.Any())
                 {
-                    throw new KeyNotFoundException($"No se encontró paciente con DNI: {dni}");
+                    throw new UsuarioExisteException(UsuarioExisteException.PacienteNoExiste +  dni);
                 }
                 return _mapper.Map<IEnumerable<PacienteDTO>>(personaBuscada);
             }
@@ -64,6 +64,62 @@ namespace ClinicaSepriceAPI.Services
                 throw;
 
             }
+        }
+
+        public async Task<List<DatosPacientesDTO>> ObtenerPacientesConDatosCompletosAsync()
+        {
+            var pacientes = await _dbContext.Personas
+                .Include(p => p.Direcciones)
+                .Include(p => p.Turnos)
+                .ThenInclude(t => t.Facturas)
+                .Include(p => p.HistoriaClinica)
+                .Select(p => new DatosPacientesDTO
+                {
+                    Nombre = p.Nombre,
+                    Apellido = p.Apellido,
+                    Dni = p.Dni,
+                    Email = p.Email,
+                    Telefono = p.Telefono,
+                    FechaNacimiento = p.FechaNacimiento,
+                    FechaRegistro = p.FechaRegistro,
+                    Direccion = p.Direcciones                        
+                        .Select(d => new DireccionDto
+                        {
+                            Calle = d.Calle,
+                            Numero = d.Numero,
+                            Complemento = d.Complemento,
+                            Ciudad = d.Ciudad,
+                            Provincia = d.Provincia,
+                            CodigoPostal = d.CodigoPostal
+                        })
+                        .FirstOrDefault(),
+                    Turnos = p.Turnos.Select(t => new TurnoDTO
+                    {
+                        Motivo = t.Motivo,
+                        PrecioTurno = t.PrecioTurno,
+                        Estado = t.Estado,
+                        Notas = t.Notas,
+                        Facturas = t.Facturas.Select(f => new FacturaDTO
+                        {
+                            NumeroTransaccion = f.NumeroTransaccion,
+                            MontoTotal = f.MontoTotal,
+                            MontoPaciente = f.MontoPaciente,
+                            FechaPago = f.FechaPago
+                        }).ToList()
+                    }).ToList(),
+                    HistoriaClinica = p.HistoriaClinica != null ? new HistoriaClinicaDTO
+                    {                        
+                        Antecedentes = p.HistoriaClinica.Antecedentes,
+                        Diagnosticos = p.HistoriaClinica.Diagnosticos,
+                        Tratamientos = p.HistoriaClinica.Tratamientos,
+                        Peso = p.HistoriaClinica.Peso,
+                        Altura = p.HistoriaClinica.Altura,
+                        Imc = p.HistoriaClinica.Imc
+                    } : null
+                })
+                .ToListAsync();
+
+            return pacientes;
         }
     }
 }

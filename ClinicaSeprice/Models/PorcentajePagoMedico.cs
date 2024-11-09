@@ -10,8 +10,9 @@ namespace ClinicaSepriceAPI.Models
 
         [Required]
         public int IdMedico { get; set; }
-
+                
         [Required]
+        [Column(TypeName = "decimal(10,2)")]
         public decimal Porcentaje { get; set; }
 
         [Required]

@@ -21,9 +21,11 @@ namespace ClinicaSepriceAPI.Controllers
         public async Task<IActionResult> AddDireccion(int idPersona, [FromBody] DireccionDto direccionDto)
         {
             var direccionExitosa = await _direccionService.AgregarDireccionAsync(idPersona, direccionDto);
-            if (!direccionExitosa) return BadRequest("No se pudo agregar la dirección.");
-
-            return Ok("Dirección agregada exitosamente.");
+            if (!direccionExitosa)
+            {
+                return BadRequest(new { message = "No se pudo agregar la dirección." });
+            }
+            return Ok(new { message = "Dirección agregada exitosamente." });            
         }
     }
 }

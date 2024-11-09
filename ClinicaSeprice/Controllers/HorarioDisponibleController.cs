@@ -27,10 +27,9 @@ namespace ClinicaSepriceAPI.Controllers
 
             if (!success)
             {
-                return BadRequest(new { message = errorMessage });  // Devolver solo el mensaje de error
+                return BadRequest(new { message = errorMessage });  
             }
-
-            return Ok("Horario registrado con éxito.");
+            return Ok(new { message = "Horario registrado con éxito." });            
         }
 
 

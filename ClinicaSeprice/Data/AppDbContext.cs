@@ -28,15 +28,16 @@ namespace ClinicaSepriceAPI.Data
         public DbSet<PorcentajePagoMedico> PorcentajesPagoMedicos { get; set; }
         public DbSet<LiquidacionMedico> LiquidacionesMedicos { get; set; }
         public DbSet<DetalleLiquidacionMedico> DetallesLiquidacionesMedicos { get; set; }
+        public DbSet<PrecioTurno> PreciosTurnos { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
 
             // Relación uno a muchos entre Persona y Direccion
             modelBuilder.Entity<Direccion>()
-                .HasOne(d => d.Persona)
-                .WithMany(p => p.Direcciones)
-                .HasForeignKey(d => d.IdPersona);
+                         .HasOne(d => d.Persona)
+                         .WithMany(p => p.Direcciones) // La propiedad 'Direcciones' en Persona
+                         .HasForeignKey(d => d.IdPersona);
 
             // Relación muchos a muchos entre Persona y Rol
             modelBuilder.Entity<PersonaRol>()
@@ -79,6 +80,19 @@ namespace ClinicaSepriceAPI.Data
                 .WithOne(p => p.HistoriaClinica)
                 .HasForeignKey<HistoriaClinica>(h => h.IdPersona);
 
+            modelBuilder.Entity<HistoriaClinica>()
+                .Property(p => p.Peso)
+                .HasColumnType("decimal(10,2)");
+
+            modelBuilder.Entity<HistoriaClinica>()
+                .Property(p => p.Altura)
+                .HasColumnType("decimal(10,2)");
+
+            modelBuilder.Entity<HistoriaClinica>()
+               .Property(p => p.Imc)
+               .HasColumnType("decimal(10,2)");
+
+
             // Relación uno a muchos entre Medico y HorarioDisponible
             modelBuilder.Entity<HorarioDisponible>()
                 .HasOne(h => h.Medico)
@@ -119,6 +133,10 @@ namespace ClinicaSepriceAPI.Data
                 .WithMany(o => o.Planes)
                 .HasForeignKey(p => p.IdObraSocial);
 
+            modelBuilder.Entity<PlanObraSocial>()
+                .Property(p => p.Cobertura)
+                .HasColumnType("decimal(10,2)");
+
             // Relación uno a muchos entre Turno y Pago
             modelBuilder.Entity<Factura>()
                 .HasOne(p => p.Turno)
@@ -136,17 +154,38 @@ namespace ClinicaSepriceAPI.Data
                 .HasOne(p => p.MetodoPago)
                 .WithMany()
                 .HasForeignKey(p => p.IdMetodoPago);
+
+            modelBuilder.Entity<Factura>()
+                .Property(p => p.MontoTotal)
+                .HasColumnType("decimal(10,2)");
+
+            modelBuilder.Entity<Factura>()
+                .Property(p => p.MontoPaciente)
+                .HasColumnType("decimal(10,2)");
+
             // Relación entre PorcentajePagoMedico y Medico
             modelBuilder.Entity<PorcentajePagoMedico>()
                 .HasOne(p => p.Medico)
                 .WithMany(m => m.Porcentajes)
                 .HasForeignKey(p => p.IdMedico);
 
+            modelBuilder.Entity<PorcentajePagoMedico>()
+                .Property(p => p.Porcentaje)
+                .HasColumnType("decimal(10,2)");
+
             // Relación entre LiquidacionMedico y Medico
             modelBuilder.Entity<LiquidacionMedico>()
                 .HasOne(l => l.Medico)
                 .WithMany(m => m.Liquidaciones)
                 .HasForeignKey(l => l.IdMedico);
+
+            modelBuilder.Entity<LiquidacionMedico>()
+                .Property(p => p.Porcentaje)
+                .HasColumnType("decimal(10,2)");
+
+            modelBuilder.Entity<LiquidacionMedico>()
+                .Property(p => p.MontoTotal)
+                .HasColumnType("decimal(10,2)");
 
             // Relación entre DetalleLiquidacionMedico y LiquidacionMedico
             modelBuilder.Entity<DetalleLiquidacionMedico>()
@@ -159,6 +198,18 @@ namespace ClinicaSepriceAPI.Data
                 .HasOne(d => d.Turno)
                 .WithMany()
                 .HasForeignKey(d => d.IdTurno);
+
+            modelBuilder.Entity<DetalleLiquidacionMedico>()
+                .Property(p => p.MontoTurno)
+                .HasColumnType("decimal(10,2)");
+
+            modelBuilder.Entity<DetalleLiquidacionMedico>()
+                .Property(p => p.MontoLiquidado)
+                .HasColumnType("decimal(10,2)");
+
+            modelBuilder.Entity<PrecioTurno>()
+                .Property(p => p.Precio)
+                .HasColumnType("decimal(10,2)");            
 
             base.OnModelCreating(modelBuilder);
         }

@@ -28,9 +28,9 @@ namespace ClinicaSepriceAPI.Services
                 throw new ObraSocialException(ObraSocialException.ObraSocialYaExiste);
 
             var nuevaObrasocial = new ObraSocial
-            {
-                IdObraSocial = obraSocialDTO.IdObraSocial,
+            {                
                 Nombre = obraSocialDTO.Nombre,
+                Cuit=  obraSocialDTO.Cuit,
                 FechaAlta = DateTime.Now,
             };
 
@@ -57,6 +57,19 @@ namespace ClinicaSepriceAPI.Services
             catch (Exception ex) {
                 throw;
             }
+        }
+
+        public async Task<IEnumerable<ObraSocialDTO>> ObtenerTodasLasObrasSocialesAsync()
+        {
+            var obrasSociales = await _dbContext.ObrasSociales.AsNoTracking().ToListAsync();
+
+            return obrasSociales.Select(o => new ObraSocialDTO
+            {
+                IdObraSocial = o.IdObraSocial,
+                Nombre = o.Nombre,
+                Cuit = o.Cuit,
+                FechaAlta = o.FechaAlta
+            }).ToList();
         }
     }
 }

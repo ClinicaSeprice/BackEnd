@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClinicaSepriceAPI.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20241108025434_Initial")]
-    partial class Initial
+    [Migration("20241109104231_DecimalesTablas")]
+    partial class DecimalesTablas
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -127,10 +127,10 @@ namespace ClinicaSepriceAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("MontoPaciente")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<decimal>("MontoTotal")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<string>("NumeroTransaccion")
                         .HasColumnType("longtext");
@@ -155,7 +155,7 @@ namespace ClinicaSepriceAPI.Migrations
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdHistoria"));
 
                     b.Property<decimal>("Altura")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<string>("Antecedentes")
                         .HasColumnType("longtext");
@@ -173,10 +173,10 @@ namespace ClinicaSepriceAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Imc")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<decimal>("Peso")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<string>("Tratamientos")
                         .HasColumnType("longtext");
@@ -246,13 +246,13 @@ namespace ClinicaSepriceAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("MontoTotal")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<string>("NumeroTransaccion")
                         .HasColumnType("longtext");
 
                     b.Property<decimal>("Porcentaje")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.HasKey("IdLiquidacion");
 
@@ -328,8 +328,8 @@ namespace ClinicaSepriceAPI.Migrations
 
                     MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdObraSocial"));
 
-                    b.Property<int>("Cuit")
-                        .HasColumnType("int");
+                    b.Property<long>("Cuit")
+                        .HasColumnType("bigint");
 
                     b.Property<DateTime>("FechaAlta")
                         .HasColumnType("datetime(6)");
@@ -464,7 +464,7 @@ namespace ClinicaSepriceAPI.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<decimal>("Cobertura")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.Property<DateTime>("FechaAlta")
                         .HasColumnType("datetime(6)");
@@ -505,13 +505,41 @@ namespace ClinicaSepriceAPI.Migrations
                         .HasColumnType("int");
 
                     b.Property<decimal>("Porcentaje")
-                        .HasColumnType("decimal(65,30)");
+                        .HasColumnType("decimal(10,2)");
 
                     b.HasKey("IdPorcentaje");
 
                     b.HasIndex("IdMedico");
 
                     b.ToTable("PorcentajesPagoMedicos");
+                });
+
+            modelBuilder.Entity("ClinicaSepriceAPI.Models.PrecioTurno", b =>
+                {
+                    b.Property<int>("IdPrecio")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("IdPrecio"));
+
+                    b.Property<bool>("Activo")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<DateTime>("FechaAlta")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("FechaBaja")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime?>("FechaModificacion")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("decimal(10,2)");
+
+                    b.HasKey("IdPrecio");
+
+                    b.ToTable("PreciosTurnos");
                 });
 
             modelBuilder.Entity("ClinicaSepriceAPI.Models.Rol", b =>
@@ -575,6 +603,9 @@ namespace ClinicaSepriceAPI.Migrations
 
                     b.Property<string>("Notas")
                         .HasColumnType("longtext");
+
+                    b.Property<decimal>("PrecioTurno")
+                        .HasColumnType("decimal(10,2)");
 
                     b.HasKey("IdTurno");
 

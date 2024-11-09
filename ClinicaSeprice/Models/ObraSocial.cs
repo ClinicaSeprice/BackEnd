@@ -12,7 +12,7 @@ namespace ClinicaSepriceAPI.Models
         [StringLength(100)]
         public string Nombre { get; set; }
 
-        public int Cuit { get; set; }
+        public long Cuit { get; set; }
 
         public bool baja { get; set; } = false;
 

@@ -1,10 +1,8 @@
-﻿using ClinicaSepriceAPI.Models;
-using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace ClinicaSepriceAPI.DTOs
 {
-    public class PacienteDTO
+    public class DatosPacientesDTO
     {
         [Required]
         [MaxLength(100)]
@@ -31,7 +29,11 @@ namespace ClinicaSepriceAPI.DTOs
         [DataType(DataType.Date)]
         public DateTime? FechaRegistro { get; set; }
 
-        public bool Baja { get; set; }     
-     
+        public bool Baja { get; set; }
+
+
+        public DireccionDto Direccion { get; set; }
+        public List<TurnoDTO> Turnos { get; set; }
+        public HistoriaClinicaDTO HistoriaClinica { get; set; }
     }
 }

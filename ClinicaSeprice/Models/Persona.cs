@@ -43,6 +43,6 @@ namespace ClinicaSepriceAPI.Models
 
         public Usuario Usuario { get; set; }
 
-        public HistoriaClinica HistoriaClinica { get; set; }
+        public HistoriaClinica HistoriaClinica { get; set; }        
     }
 }
