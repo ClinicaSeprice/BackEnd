@@ -23,14 +23,17 @@ namespace ClinicaSepriceAPI.Controllers
             {
                 var registroExitoso = await _pacienteService.RegistrarPacienteAsync(pacienteDto);
                 if (!registroExitoso)
-                    return BadRequest("El registro de paciente falló.");
+                    return BadRequest(new
+                    {
+                        message = "El registro de paciente falló."
+                    });
 
                 return Ok(new { message = "Paciente registrado exitosamente." });
 
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -42,14 +45,14 @@ namespace ClinicaSepriceAPI.Controllers
                 var pacientes = await _pacienteService.ObtenerPacientePorDniAsync(dni);
                 if (!pacientes?.Any() ?? true)
                 {
-                    return NotFound($"No se encontró ningun paciente con Dni {dni}");
+                    return NotFound( new {message = $"No se encontró ningun paciente con Dni {dni}" });
                 }
                 return Ok(pacientes);
             }
             catch
             (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
         }
 
@@ -63,7 +66,7 @@ namespace ClinicaSepriceAPI.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+                return BadRequest(new { message = ex.Message});
             }
         }
     }

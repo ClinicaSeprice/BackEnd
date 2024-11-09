@@ -1,10 +1,10 @@
-﻿using ClinicaSepriceAPI.Data;
+﻿using AutoMapper;
+using ClinicaSepriceAPI.Data;
 using ClinicaSepriceAPI.DTOs;
 using ClinicaSepriceAPI.Exceptions;
 using ClinicaSepriceAPI.Interfaces;
 using ClinicaSepriceAPI.Models;
 using Microsoft.EntityFrameworkCore;
-using AutoMapper;
 
 namespace ClinicaSepriceAPI.Services
 
@@ -15,7 +15,7 @@ namespace ClinicaSepriceAPI.Services
         private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
 
-        public PacienteService(AppDbContext dbContext, IConfiguration configuration, 
+        public PacienteService(AppDbContext dbContext, IConfiguration configuration,
             IMapper mapper)
         {
             _dbContext = dbContext;
@@ -50,12 +50,12 @@ namespace ClinicaSepriceAPI.Services
         {
             try
             {
-                var personaBuscada = await _dbContext.Personas.AsNoTracking()
+                var personaBuscada = await _dbContext.Personas
                     .Where(p => p.Dni == dni).ToListAsync();
 
                 if (personaBuscada == null || !personaBuscada.Any())
                 {
-                    throw new KeyNotFoundException($"No se encontró paciente con DNI: {dni}");
+                    throw new UsuarioExisteException(UsuarioExisteException.PacienteNoExiste +  dni);
                 }
                 return _mapper.Map<IEnumerable<PacienteDTO>>(personaBuscada);
             }
@@ -82,15 +82,17 @@ namespace ClinicaSepriceAPI.Services
                     Telefono = p.Telefono,
                     FechaNacimiento = p.FechaNacimiento,
                     FechaRegistro = p.FechaRegistro,
-                    Direccion = new DireccionDto
-                    {
-                        Calle = p.Direcciones.FirstOrDefault().Calle,
-                        Numero = p.Direcciones.FirstOrDefault().Numero,
-                        Complemento = p.Direcciones.FirstOrDefault().Complemento,
-                        Ciudad = p.Direcciones.FirstOrDefault().Ciudad,
-                        Provincia = p.Direcciones.FirstOrDefault().Provincia,
-                        CodigoPostal = p.Direcciones.FirstOrDefault().CodigoPostal
-                    },
+                    Direccion = p.Direcciones                        
+                        .Select(d => new DireccionDto
+                        {
+                            Calle = d.Calle,
+                            Numero = d.Numero,
+                            Complemento = d.Complemento,
+                            Ciudad = d.Ciudad,
+                            Provincia = d.Provincia,
+                            CodigoPostal = d.CodigoPostal
+                        })
+                        .FirstOrDefault(),
                     Turnos = p.Turnos.Select(t => new TurnoDTO
                     {
                         Motivo = t.Motivo,
@@ -106,20 +108,18 @@ namespace ClinicaSepriceAPI.Services
                         }).ToList()
                     }).ToList(),
                     HistoriaClinica = p.HistoriaClinica != null ? new HistoriaClinicaDTO
-                    {
-                        IdHistoria = p.HistoriaClinica.IdHistoria,                        
+                    {                        
                         Antecedentes = p.HistoriaClinica.Antecedentes,
                         Diagnosticos = p.HistoriaClinica.Diagnosticos,
                         Tratamientos = p.HistoriaClinica.Tratamientos,
                         Peso = p.HistoriaClinica.Peso,
                         Altura = p.HistoriaClinica.Altura,
-                        Imc = p.HistoriaClinica.Imc                      
+                        Imc = p.HistoriaClinica.Imc
                     } : null
                 })
                 .ToListAsync();
 
             return pacientes;
         }
-
     }
 }

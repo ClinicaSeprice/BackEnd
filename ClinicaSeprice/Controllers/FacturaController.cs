@@ -20,14 +20,20 @@ namespace ClinicaSepriceAPI.Controllers
         public async Task<IActionResult> RegistrarFactura([FromBody] FacturaDTO facturaDto)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+                return BadRequest(new
+                {
+                    message = ModelState
+                });
 
             try
             {
                 bool result = await _facturaService.RegistrarFacturaAsync(facturaDto);
                 if (!result)
                 {
-                    return StatusCode(500, FacturaException.ErrorAlRegistrar);
+                    return StatusCode(500, new
+                    {
+                        message = FacturaException.ErrorAlRegistrar
+                    });
                 }
                   
                 return Ok(new { message = "Factura registrada con éxito." });
