@@ -6,6 +6,9 @@ namespace ClinicaSepriceAPI.DTOs
 {
     public class PlanObraSocialDTO
     {
+
+        public int IdPlan { get; set; }
+
         [Required]
         public int IdObraSocial { get; set; }
 

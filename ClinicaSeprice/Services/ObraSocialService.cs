@@ -58,5 +58,18 @@ namespace ClinicaSepriceAPI.Services
                 throw;
             }
         }
+
+        public async Task<IEnumerable<ObraSocialDTO>> ObtenerTodasLasObrasSocialesAsync()
+        {
+            var obrasSociales = await _dbContext.ObrasSociales.AsNoTracking().ToListAsync();
+
+            return obrasSociales.Select(o => new ObraSocialDTO
+            {
+                IdObraSocial = o.IdObraSocial,
+                Nombre = o.Nombre,
+                Cuit = o.Cuit,
+                FechaAlta = o.FechaAlta
+            }).ToList();
+        }
     }
 }

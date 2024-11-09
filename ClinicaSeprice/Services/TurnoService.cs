@@ -153,5 +153,19 @@ namespace ClinicaSepriceAPI.Services
             _context.PreciosTurnos.Add(nuevoPrecioTurno);
             return await _context.SaveChangesAsync() > 0;
         }
+
+        public async Task<PrecioTurnoDTO> ObtenerPrecioActualActivoAsync()
+        {
+            var precioActual = await _context.PreciosTurnos
+                .Where(p => p.Activo)
+                .Select(p => new PrecioTurnoDTO
+                {
+                    IdPrecio = p.IdPrecio,
+                    NuevoPrecio = p.Precio, 
+                })
+                .FirstOrDefaultAsync();
+
+            return precioActual;
+        }
     }
 }

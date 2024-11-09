@@ -3,6 +3,7 @@ using ClinicaSepriceAPI.DTOs;
 using ClinicaSepriceAPI.Exceptions;
 using ClinicaSepriceAPI.Interfaces;
 using ClinicaSepriceAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClinicaSepriceAPI.Services
 {
@@ -37,5 +38,28 @@ namespace ClinicaSepriceAPI.Services
             return true;
 
         }
+
+        public async Task<IEnumerable<PlanObraSocialDTO>> ObtenerPlanesPorIdObraSocialAsync(int idObraSocial)
+        {
+            var planes = await _dbContext.PlanesObraSocial
+                .Where(p => p.IdObraSocial == idObraSocial)
+                .AsNoTracking()
+                .Select(p => new PlanObraSocialDTO
+                {
+                    IdPlan = p.IdPlan,                   
+                    NombrePlan = p.NombrePlan,
+                    Cobertura = p.Cobertura,
+                    FechaAlta = p.FechaAlta
+                })
+                .ToListAsync();
+
+            if (!planes.Any())
+            {
+                throw new KeyNotFoundException($"No se encontraron planes para la obra social con Id: {idObraSocial}");
+            }
+
+            return planes;
+        }
+
     }
 }
