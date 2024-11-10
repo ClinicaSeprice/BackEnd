@@ -72,6 +72,8 @@ namespace ClinicaSepriceAPI
             services.AddScoped<ITurnoService, TurnoService>();
 
             services.AddScoped<IFacturaService, FacturaService>();
+            services.AddScoped<ILiquidacionMedicoService, LiquidacionMedicoService>();
+
         }
 
         public static void ConfigureDbContext(this IServiceCollection services, IConfiguration configuration)

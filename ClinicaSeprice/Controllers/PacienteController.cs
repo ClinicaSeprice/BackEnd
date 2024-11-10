@@ -29,11 +29,6 @@ namespace ClinicaSepriceAPI.Controllers
                     });
 
                 return Ok(new { message = "Paciente registrado exitosamente." });
-
-<<<<<<< HEAD
-                return Ok(new { message = "Paciente registrado exitosamente." });
-=======
->>>>>>> 1a32a0b8a2d398fd4819676a43c43b8e961f17ba
             }
             catch (Exception ex)
             {
