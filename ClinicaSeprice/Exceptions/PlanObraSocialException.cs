@@ -3,6 +3,7 @@
     public class PlanObraSocialException: Exception
     {
         public static readonly string PlanObraSocialYaExiste = "El Plan ya existe en la Obra Social.";
+        public static readonly string PlanObraSocialNoEncontrado = "El Plan no fue encontrado. Plan buscado: ";
 
         public PlanObraSocialException() : base(PlanObraSocialYaExiste)
         {
