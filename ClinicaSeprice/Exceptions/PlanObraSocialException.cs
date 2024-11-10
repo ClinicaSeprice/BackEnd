@@ -1,9 +1,11 @@
 ﻿namespace ClinicaSepriceAPI.Exceptions
 {
-    public class PlanObraSocialException: Exception
+    public class PlanObraSocialException : Exception
     {
         public static readonly string PlanObraSocialYaExiste = "El Plan ya existe en la Obra Social.";
-        public static readonly string PlanObraSocialNoEncontrado = "El Plan no fue encontrado. Plan buscado: ";
+        public static readonly string PlanObraSocialNoEncontrado = "Obra Social no tiene Planes disponibles. ";
+
+        public object DataObject { get; }
 
         public PlanObraSocialException() : base(PlanObraSocialYaExiste)
         {
@@ -11,6 +13,11 @@
 
         public PlanObraSocialException(string message) : base(message)
         {
+        }
+
+        public PlanObraSocialException(string message, object dataObject) : base(message)
+        {
+            DataObject = dataObject;
         }
 
         public PlanObraSocialException(string message, Exception inner) : base(message, inner)

@@ -1,4 +1,5 @@
 ﻿using ClinicaSepriceAPI.DTOs;
+using ClinicaSepriceAPI.Exceptions;
 using ClinicaSepriceAPI.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -50,11 +51,15 @@ namespace ClinicaSepriceAPI.Controllers
                 var planes = await _planObraSocialService.ObtenerPlanesPorIdObraSocialAsync(idObraSocial);
                 return Ok(planes);
             }
-            catch (KeyNotFoundException ex)
+            catch (PlanObraSocialException ex)
             {
-                return NotFound(ex.Message);
+                return NotFound(new
+                {
+                    message = ex.Message                    
+                });
             }
         }
+
 
     }
 
