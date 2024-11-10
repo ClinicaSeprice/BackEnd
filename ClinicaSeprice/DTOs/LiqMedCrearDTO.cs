@@ -14,8 +14,5 @@ namespace ClinicaSepriceAPI.DTOs
         [Required]
         public int IdMetodoPago { get; set; }
         public string NumeroTransaccion {   get; set; }
-        //public Medico Medico { get; set; }
-        //public MetodoPago MedodoPago { get; set; }  
-
     }
 }

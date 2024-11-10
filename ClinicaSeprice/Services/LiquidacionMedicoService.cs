@@ -24,8 +24,6 @@ namespace ClinicaSepriceAPI.Services
         //Metodo para registra una liquidacion de honorarios a los medicos
         public async Task<bool> CrearLiquidacionAsync(LiqMedCrearDTO liquidacionDTO)
         {
-            //var liquidacion = _mapper.Map<LiquidacionMedico>(liquidacionDTO);
-
             var medico = await _appDbContext.Medicos
                 .Include(m => m.Persona)
                 .FirstOrDefaultAsync(m => m.IdMedico == liquidacionDTO.IdMedico);
@@ -59,8 +57,43 @@ namespace ClinicaSepriceAPI.Services
             return true;
 
         }
-        
+
+        //Metodo para consultar una liquidacion de honorarios a medicos
+        //public async Task<List<LiqMedResponseDTO>> ObtenerLiquidacionesAsync()
+        //{
+        //    var liquidaciones = await _appDbContext.LiquidacionesMedicos
+        //        .Select(m => new LiqMedResponseDTO
+        //        {
+        //            IdLiquidacion = m.IdLiquidacion,
+        //            IdMedico = m.IdMedico,
+        //            NombreMedico = 
+
+        //        })
+        //        .ToListAsync();
+        //    return liquidaciones;
+        //}
+        public async Task<List<LiqMedResponseDTO>> ObtenerLiquidacionAsync()
+        {
+            var liquidaciones = await _appDbContext.LiquidacionesMedicos
+                .Include(l => l.Medico)
+                .ThenInclude(m => m.Persona)
+                .Include(l => l.MetodoPago)
+                .Select(l => new LiqMedResponseDTO
+                {
+                    IdLiquidacion = l.IdLiquidacion,
+                    IdMedico = l.IdMedico,
+                    NombreMedico = l.Medico.Persona.Nombre,
+                    ApellidoMedico = l.Medico.Persona.Apellido,
+                    Especialidad = l.Medico.Especialidad,
+                    FechaLiquidacion = l.FechaLiquidacion,
+                    Porcentaje = l.Porcentaje,
+                    MontoTotal = l.MontoTotal,
+                    MetodoDePago = l.MetodoPago.Nombre,
+                    //NumeroTransaccion = l.NumeroTransaccion,
+                })
+                .ToListAsync();
+
+            return liquidaciones;
+        }
     }
-
-
 }

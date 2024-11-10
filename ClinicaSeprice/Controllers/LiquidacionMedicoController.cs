@@ -18,7 +18,7 @@ namespace ClinicaSepriceAPI.Controllers
 
         //Creacion de liquidacion de honorarios
         [HttpPost("altaLiquidacion")]
-         public async Task<ActionResult<LiqMedResponseDTO>> CrearLiquidacion([FromBody] LiqMedCrearDTO liquidacionDTO)
+        public async Task<ActionResult<LiqMedResponseDTO>> CrearLiquidacion([FromBody] LiqMedCrearDTO liquidacionDTO)
         {
             try
             {
@@ -30,7 +30,7 @@ namespace ClinicaSepriceAPI.Controllers
                 var resultado = await _liquidacionMedicoService.CrearLiquidacionAsync(liquidacionDTO);
 
                 return Ok(new { message = "Alta liquidacion registrada con éxito" });
-                
+
             }
             catch (KeyNotFoundException ex)
             {
@@ -42,5 +42,22 @@ namespace ClinicaSepriceAPI.Controllers
             }
         }
 
+        //Consultar liquidaciones de honorarios de medicos
+        [HttpGet("obtenerLiquidaciones")]
+        public async Task<IActionResult> ObtenerLiquidaciones()
+        {
+            try
+            {
+                var liquidaciones = await _liquidacionMedicoService.ObtenerLiquidacionAsync();
+                return Ok(liquidaciones);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new
+                {
+                    message = ex.Message
+                });
+            }
+        }
     }
 }
