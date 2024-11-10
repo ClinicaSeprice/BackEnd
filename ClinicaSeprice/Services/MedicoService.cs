@@ -20,7 +20,7 @@ namespace ClinicaSepriceAPI.Services
         }
 
         // Método para registrar un nuevo medico
-        public async Task<bool> RegistrarMedicoAsync(MedicoDTO medicoDto)
+        public async Task<Medico> RegistrarMedicoAsync(MedicoDTO medicoDto)
         {
             if (_dbContext.Usuarios.Any(u => u.User == medicoDto.User))
                 throw new UsuarioExisteException(UsuarioExisteException.UsuarioYaExiste);
@@ -47,7 +47,6 @@ namespace ClinicaSepriceAPI.Services
                 FechaRegistro = DateTime.Now
             };
 
-
             var nuevoMedico = new Medico
             {
                 Legajo = medicoDto.Legajo,
@@ -59,15 +58,17 @@ namespace ClinicaSepriceAPI.Services
             _dbContext.Usuarios.Add(nuevoUsuario);
             _dbContext.Medicos.Add(nuevoMedico);
             await _dbContext.SaveChangesAsync();
-            return true;
+
+            return nuevoMedico;
         }
 
-        public async Task<List<MedicoDTO>> ObtenerMedicosAsync()
+
+        public async Task<List<MedicoHorarioDTO>> ObtenerMedicosAsync()
         {
             var medicos = await _dbContext.Medicos
-                .Select(m => new MedicoDTO
+                .Select(m => new MedicoHorarioDTO
                 {
-                    IdMedico=m.IdMedico,
+                    IdMedico = m.IdMedico,
                     Nombre = m.Persona.Nombre,
                     Apellido = m.Persona.Apellido,
                     Dni = m.Persona.Dni,
@@ -75,13 +76,21 @@ namespace ClinicaSepriceAPI.Services
                     Telefono = m.Persona.Telefono,
                     FechaNacimiento = m.Persona.FechaNacimiento,
                     Legajo = m.Legajo,
-                    Especialidad = m.Especialidad,
-                    FechaAlta = m.FechaAlta
+                    Especialidad = m.Especialidad,                   
+                    HorarioDisponible = m.HorariosDisponibles.Select(h => new HorarioDisponibleDTO
+                    {
+                        IdHorario = h.IdHorario,
+                        Fecha = h.Fecha,
+                        HoraInicio = h.HoraInicio.ToString(@"hh\:mm"),
+                        HoraFin = h.HoraFin.ToString(@"hh\:mm"),
+                        Estado = h.Estado,
+                    }).ToList()
                 })
                 .ToListAsync();
 
             return medicos;
         }
+
 
     }
 }

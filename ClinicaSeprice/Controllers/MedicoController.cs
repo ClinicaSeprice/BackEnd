@@ -1,6 +1,7 @@
 ﻿using ClinicaSepriceAPI.DTOs;
 using ClinicaSepriceAPI.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using System.Text.Json;
 
 namespace ClinicaSepriceAPI.Controllers
 {
@@ -21,12 +22,18 @@ namespace ClinicaSepriceAPI.Controllers
         {
             try
             {
-                var registroExitoso = await _medicoService.RegistrarMedicoAsync(medicoDto);
-                if (!registroExitoso)
+                var medicoCreado = await _medicoService.RegistrarMedicoAsync(medicoDto);
+                if (medicoCreado == null)
                 {
                     return BadRequest(new { message = "El registro del médico falló." });
-                }                   
-                return Ok(new { message = "Médico registrado exitosamente." });               
+                }
+
+                // Retornar solo el IdMedico en la respuesta
+                return Ok(new
+                {                  
+                    medicoCreado.IdMedico,
+                    message = "Médico registrado exitosamente.",
+                });
             }
             catch (Exception ex)
             {
