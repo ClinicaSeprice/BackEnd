@@ -1,11 +1,12 @@
 ﻿using ClinicaSepriceAPI.DTOs;
+using ClinicaSepriceAPI.Models;
 
 namespace ClinicaSepriceAPI.Interfaces
 {
     public interface IMedicoService
     {
-        Task<bool> RegistrarMedicoAsync(MedicoDTO medicoDto);
+        Task<Medico> RegistrarMedicoAsync(MedicoDTO medicoDto);
 
-        Task<List<MedicoDTO>> ObtenerMedicosAsync();
+        Task<List<MedicoHorarioDTO>> ObtenerMedicosAsync();
     }
 }

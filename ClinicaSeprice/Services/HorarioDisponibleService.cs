@@ -50,7 +50,6 @@ namespace ClinicaSepriceAPI.Services
                 Fecha = horarioDisponibleDTO.Fecha.Date,
                 HoraInicio = horaInicio,
                 HoraFin = horaFin,
-                Estado = horarioDisponibleDTO.Estado,
                 FechaCreacion = DateTime.Now,
                 FechaModificacion = DateTime.Now
             };

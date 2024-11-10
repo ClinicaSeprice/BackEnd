@@ -22,7 +22,7 @@ namespace ClinicaSepriceAPI.Models
         [Required]
         public TimeSpan HoraFin { get; set; }
 
-        public bool Estado { get; set; } = false;
+        public bool Estado { get; set; } = true;
 
         public bool Baja { get; set; } = false;
 

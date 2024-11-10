@@ -1,10 +1,10 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using ClinicaSepriceAPI.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace ClinicaSepriceAPI.DTOs
 {
-    public class MedicoDTO
+    public class MedicoHorarioDTO
     {
-
         public int IdMedico { get; set; }
 
         [Required]
@@ -34,25 +34,12 @@ namespace ClinicaSepriceAPI.DTOs
 
         [Required]
 
-        public int Legajo { get; set; }
-
-        public DateTime FechaAlta { get; set; }
-        public DateTime FechaBaja { get; set; }
-        public DateTime FechaModificacion {  get; set; }
-
-        [Required]
-        [MaxLength(100)]
-        public string User { get; set; }
-
-        [Required]
-        [MaxLength(255)]
-        [MinLength(8, ErrorMessage = "La contraseña debe tener al menos 8 caracteres")]
-        public string Password { get; set; }
+        public int Legajo { get; set; }           
 
         [DataType(DataType.Date)]
         public DateTime? FechaNacimiento { get; set; }
 
-       
 
+        public List<HorarioDisponibleDTO> HorarioDisponible { get; set; }
     }
 }
