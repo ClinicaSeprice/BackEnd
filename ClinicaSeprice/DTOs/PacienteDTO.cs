@@ -6,6 +6,9 @@ namespace ClinicaSepriceAPI.DTOs
 {
     public class PacienteDTO
     {
+
+        public int IdPersona { get; set; }
+
         [Required]
         [MaxLength(100)]
         public string Nombre { get; set; }
