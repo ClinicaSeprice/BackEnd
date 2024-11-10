@@ -47,7 +47,7 @@ namespace ClinicaSepriceAPI.Services
                 .Select(p => new PlanObraSocialDTO
                 {
                     IdPlan = p.IdPlan,
-                    IdObraSocial= p.IdObraSocial,
+                    IdObraSocial = p.IdObraSocial,
                     NombrePlan = p.NombrePlan,
                     Cobertura = p.Cobertura,
                     FechaAlta = p.FechaAlta
@@ -56,11 +56,12 @@ namespace ClinicaSepriceAPI.Services
 
             if (!planes.Any())
             {
-                throw new KeyNotFoundException($"No se encontraron planes para la obra social con Id: {idObraSocial}");
+                throw new PlanObraSocialException(PlanObraSocialException.PlanObraSocialNoEncontrado, new { idObraSocial });
             }
 
             return planes;
         }
+
 
     }
 }
