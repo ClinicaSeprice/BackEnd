@@ -30,7 +30,7 @@ namespace ClinicaSepriceAPI.Services
                 throw new UsuarioExisteException(UsuarioExisteException.PacienteYaExisteConDNI);
 
             var nuevaPersona = new Persona
-            {
+            {                
                 Nombre = pacienteDto.Nombre,
                 Apellido = pacienteDto.Apellido,
                 Dni = pacienteDto.Dni,
@@ -48,32 +48,41 @@ namespace ClinicaSepriceAPI.Services
         //Metodo para consultar paciente por dni
         public async Task<IEnumerable<PacienteDTO>> ObtenerPacientePorDniAsync(int dni)
         {
-            try
-            {
-                var personaBuscada = await _dbContext.Personas
-                    .Where(p => p.Dni == dni).ToListAsync();
+            var personas = await _dbContext.Personas
+                .Where(p => p.Dni == dni)
+                .ToListAsync();
 
-                if (personaBuscada == null || !personaBuscada.Any())
-                {
-                    throw new UsuarioExisteException(UsuarioExisteException.PacienteNoExiste +  dni);
-                }
-                return _mapper.Map<IEnumerable<PacienteDTO>>(personaBuscada);
-            }
-            catch (Exception ex)
+            if (personas == null || !personas.Any())
             {
-                throw;
+                throw new UsuarioExisteException(UsuarioExisteException.PacienteNoExiste + dni);
             }
+
+            // Realizamos la conversión manual de Persona a PacienteDTO
+            var pacientesDto = personas.Select(p => new PacienteDTO
+            {
+                IdPersona = p.IdPersona,             
+                Nombre = p.Nombre,
+                Apellido = p.Apellido,
+                Dni = p.Dni,
+                FechaNacimiento=p.FechaNacimiento,
+                Telefono = p.Telefono,
+                Email = p.Email               
+            });
+
+            return pacientesDto;
         }
+
+
 
         public async Task<List<DatosPacientesDTO>> ObtenerPacientesConDatosCompletosAsync()
         {
-            var pacientes = await _dbContext.Personas
+            var pacientes = await _dbContext.Personas                
                 .Include(p => p.Direcciones)
                 .Include(p => p.Turnos)
                 .ThenInclude(t => t.Facturas)
                 .Include(p => p.HistoriaClinica)
                 .Select(p => new DatosPacientesDTO
-                {
+                {                    
                     Nombre = p.Nombre,
                     Apellido = p.Apellido,
                     Dni = p.Dni,
