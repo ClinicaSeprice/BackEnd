@@ -22,6 +22,6 @@
 
         public PlanObraSocialException(string message, Exception inner) : base(message, inner)
         {
-        }
+        }        
     }
 }

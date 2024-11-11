@@ -52,9 +52,12 @@ namespace ClinicaSepriceAPI.Services
             };
 
             _context.Facturas.Add(factura);
+
+            turno.Estado = "Pagado";
+            turno.FechaModificacion = DateTime.Now;
+
             return await _context.SaveChangesAsync() > 0;
         }
-
 
         public async Task<IEnumerable<FacturaDetalleDTO>> ObtenerTodasLasFacturasDetalladasAsync()
         {
@@ -116,7 +119,5 @@ namespace ClinicaSepriceAPI.Services
                 })
                 .ToListAsync();
         }
-
-
     }
 }

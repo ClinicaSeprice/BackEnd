@@ -3,6 +3,8 @@
     
     public class ObraSocialException: Exception
     {
+        public object DataObject { get; }
+
         public static readonly string ObraSocialYaExiste = "La Obra Social ya existe";
         public static readonly string ObraSocialNoEncontrada = "La Obra social no se encontró. Obra Social buscada: ";
 
@@ -17,5 +19,10 @@
         public ObraSocialException(string message, Exception inner) : base(message, inner)
         {
         }
+
+        public ObraSocialException(string message, object dataObject) : base(message)
+        {
+            DataObject = dataObject;
+        }       
     }
 }

@@ -51,7 +51,7 @@ namespace ClinicaSepriceAPI.Services
                 IdHorario = turnoDto.IdHorario,
                 Motivo = turnoDto.Motivo,
                 PrecioTurno = precioActivo.Precio,
-                Estado = turnoDto.Estado,
+                Estado = "Reservado",
                 Notas = turnoDto.Notas,
                 FechaCreacion = DateTime.Now,
                 FechaModificacion = DateTime.Now

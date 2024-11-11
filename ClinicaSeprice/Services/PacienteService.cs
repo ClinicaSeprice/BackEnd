@@ -56,8 +56,7 @@ namespace ClinicaSepriceAPI.Services
             {
                 throw new UsuarioExisteException(UsuarioExisteException.PacienteNoExiste + dni);
             }
-
-            // Realizamos la conversión manual de Persona a PacienteDTO
+            
             var pacientesDto = personas.Select(p => new PacienteDTO
             {
                 IdPersona = p.IdPersona,             
@@ -71,8 +70,6 @@ namespace ClinicaSepriceAPI.Services
 
             return pacientesDto;
         }
-
-
 
         public async Task<List<DatosPacientesDTO>> ObtenerPacientesConDatosCompletosAsync()
         {

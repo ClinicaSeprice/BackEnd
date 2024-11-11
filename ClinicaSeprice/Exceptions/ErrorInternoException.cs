@@ -2,6 +2,7 @@
 {
     public class ErrorInternoException : Exception
     {
+        public object DataObject { get; }
         public ErrorInternoException()
          : base("Ocurrió un error interno.")
         {
@@ -16,5 +17,10 @@
             : base(message, inner)
         {
         }
+
+        public ErrorInternoException(string message, object dataObject) : base(message)
+        {
+            DataObject = dataObject;
+        }       
     }
 }
