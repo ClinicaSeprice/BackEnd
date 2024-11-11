@@ -32,7 +32,7 @@ namespace ClinicaSepriceAPI.Services
             }
 
             HorarioDisponible? horarioDisponible = await _context.HorariosDisponibles.FirstOrDefaultAsync(h => h.IdHorario == turnoDto.IdHorario);
-            if (horarioDisponible == null || horarioDisponible.Estado == true)
+            if (horarioDisponible == null || horarioDisponible.Estado == false)
             {
                 throw new TurnoException(TurnoException.HorarioNoDisponible);
             }

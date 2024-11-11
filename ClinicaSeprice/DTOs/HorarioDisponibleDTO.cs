@@ -23,6 +23,6 @@ namespace ClinicaSepriceAPI.DTOs
         [DataType(DataType.Time)]
         public string HoraFin { get; set; }
 
-        public bool Estado { get; set; } = false;
+        public bool Estado { get; set; } = true;
     }
 }
