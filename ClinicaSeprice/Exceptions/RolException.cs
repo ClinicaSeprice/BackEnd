@@ -2,6 +2,8 @@
 {
     public class RolException: Exception
     {
+        public object DataObject { get; }
+
         public static readonly string RolYaExiste = "El rol ya existe";
         public static readonly string RolNoEncontrado = "El rol buscado no existe. Rol buscado: ";
 
@@ -16,6 +18,12 @@
         public RolException(string message, Exception inner) : base(message, inner)
         {
         }
+
+        public RolException(string message, object dataObject) : base(message)
+        {
+            DataObject = dataObject;
+        }
+        
     }
    
 }

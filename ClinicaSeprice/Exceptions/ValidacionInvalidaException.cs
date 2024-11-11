@@ -2,6 +2,7 @@
 {
     public class ValidacionInvalidaException : Exception
     {
+        public object DataObject { get; }
         public ValidacionInvalidaException()
             : base("La validación falló.")
         {
@@ -16,5 +17,11 @@
             : base(message, inner)
         {
         }
+
+        public ValidacionInvalidaException(string message, object dataObject) : base(message)
+        {
+            DataObject = dataObject;
+        }
+       
     }
 }

@@ -2,6 +2,8 @@
 {
     public class TurnoException: Exception
     {
+        public object DataObject { get; }
+
         public static readonly string ErrorTurno = "Error en el proceso de turno.";
         public static readonly string PacienteNoExiste = "Paciente no existe.";
         public static readonly string MedicoNoExiste = "Medico ingresado no existe.";
@@ -20,5 +22,11 @@
         public TurnoException(string message, Exception inner) : base(message, inner)
         {
         }
+
+        public TurnoException(string message, object dataObject) : base(message)
+        {
+            DataObject = dataObject;
+        }
+       
     }
 }

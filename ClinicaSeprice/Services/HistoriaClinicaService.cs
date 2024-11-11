@@ -4,6 +4,7 @@ using ClinicaSepriceAPI.Exceptions;
 using ClinicaSepriceAPI.Helpers;
 using ClinicaSepriceAPI.Interfaces;
 using ClinicaSepriceAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ClinicaSepriceAPI.Services
 {
@@ -36,11 +37,13 @@ namespace ClinicaSepriceAPI.Services
 
         // Método para registrar una nueva HC
         public async Task<bool> RegistrarHistoriaClinicaAsync(HistoriaClinicaDTO historiaClinicaDto)
-        {
-            if (_dbContext.HistoriasClinicas.Any(u => u.IdHistoria == historiaClinicaDto.IdHistoria))
-                throw new HistoriaException(HistoriaException.historiaYaExiste);
+        {      
 
-         
+            if (_dbContext.HistoriasClinicas.Any(u => u.IdHistoria == historiaClinicaDto.IdHistoria))
+            {
+                throw new HistoriaException(HistoriaException.historiaYaExiste);
+            }
+
             var nuevaHistoriaClinica = new HistoriaClinica
             {
                 IdHistoria = historiaClinicaDto.IdHistoria,
