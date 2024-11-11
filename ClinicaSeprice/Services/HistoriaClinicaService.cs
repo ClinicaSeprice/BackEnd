@@ -41,7 +41,7 @@ namespace ClinicaSepriceAPI.Services
 
             if (_dbContext.HistoriasClinicas.Any(u => u.IdHistoria == historiaClinicaDto.IdHistoria))
             {
-                throw new HistoriaExisteException(HistoriaExisteException.historiaYaExiste);
+                throw new HistoriaException(HistoriaException.historiaYaExiste);
             }
 
             var nuevaHistoriaClinica = new HistoriaClinica
