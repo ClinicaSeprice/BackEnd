@@ -39,6 +39,10 @@ namespace ClinicaSepriceAPI.Services
                 FechaRegistro = DateTime.Now
             };
 
+            // Guarda primero la persona para generar el IdPersona
+            _dbContext.Personas.Add(nuevaPersona);
+            await _dbContext.SaveChangesAsync(); // Genera el IdPersona
+
             var nuevoUsuario = new Usuario
             {
                 User = medicoDto.User,
@@ -55,12 +59,22 @@ namespace ClinicaSepriceAPI.Services
                 Persona = nuevaPersona
             };
 
+            var personaRol = new PersonaRol
+            {
+                IdPersona = nuevaPersona.IdPersona, // Ahora IdPersona tiene un valor
+                IdRol = 2, // ID del rol para médico
+                FechaAlta = DateTime.Now,
+                FechaModificacion = DateTime.Now
+            };
+
             _dbContext.Usuarios.Add(nuevoUsuario);
             _dbContext.Medicos.Add(nuevoMedico);
-            await _dbContext.SaveChangesAsync();
+            _dbContext.PersonaRoles.Add(personaRol);
 
+            await _dbContext.SaveChangesAsync(); // Guarda nuevoUsuario, nuevoMedico, y personaRol
             return nuevoMedico;
         }
+
 
 
         public async Task<List<MedicoHorarioDTO>> ObtenerMedicosAsync()
