@@ -42,6 +42,18 @@ namespace ClinicaSepriceAPI.Services
 
             _dbContext.Personas.Add(nuevaPersona);
             await _dbContext.SaveChangesAsync();
+
+            var personaRol = new PersonaRol
+            {
+                IdPersona = nuevaPersona.IdPersona, 
+                IdRol = 3,
+                FechaAlta = DateTime.Now,
+                FechaModificacion = DateTime.Now
+            };
+
+            _dbContext.PersonaRoles.Add(personaRol);
+
+            await _dbContext.SaveChangesAsync();
             return true;
         }
 
