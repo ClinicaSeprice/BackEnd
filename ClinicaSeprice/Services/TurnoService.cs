@@ -37,6 +37,13 @@ namespace ClinicaSepriceAPI.Services
                 throw new TurnoException(TurnoException.HorarioNoDisponible);
             }
 
+            // Verificar si el horario ya está reservado en otro turno
+            bool horarioOcupado = await _context.Turnos.AnyAsync(t => t.IdHorario == turnoDto.IdHorario && t.Estado == "Reservado" && t.Estado == "Pagado");
+            if (horarioOcupado)
+            {
+                throw new TurnoException("El horario ya está reservado para otro turno.");
+            }
+
             // Obtener el precio activo de la tabla PreciosTurnos
             PrecioTurno precioActivo = await _context.PreciosTurnos.FirstOrDefaultAsync(p => p.Activo);
             if (precioActivo == null)
@@ -60,7 +67,7 @@ namespace ClinicaSepriceAPI.Services
             _context.Turnos.Add(turno);
 
             // Actualizar el estado de HorarioDisponible a ocupado
-            horarioDisponible.Estado = true;
+            horarioDisponible.Estado = false;
             _context.HorariosDisponibles.Update(horarioDisponible);
 
             return await _context.SaveChangesAsync() > 0;
