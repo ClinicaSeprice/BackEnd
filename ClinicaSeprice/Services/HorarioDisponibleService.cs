@@ -64,7 +64,7 @@ namespace ClinicaSepriceAPI.Services
         public async Task<IEnumerable<HorarioDisponibleDTO>> ObtenerHorarioDisponibleDeMedicoAsync(int id)
         {
             return await _context.HorariosDisponibles
-                .Where(h => h.IdMedico == id && !h.Baja)
+                .Where(h => h.IdMedico == id && !h.Baja && h.Estado==true)
                 .Include(h => h.Medico)
                 .Select(h => new HorarioDisponibleDTO
                 {                   
